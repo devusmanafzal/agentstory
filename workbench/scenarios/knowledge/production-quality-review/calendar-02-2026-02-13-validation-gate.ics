@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Northstar Mobility Systems//Synthetic Demo//EN
+METHOD:REQUEST
+UID:gate-260213
+DTSTAMP:20260101T080000Z
+DTSTART;TZID=Europe/Stockholm:20260213T140000
+DTEND;TZID=Europe/Stockholm:20260213T150000
+SUMMARY:Engineering validation gate
+ORGANIZER;CN=Priya Nair:mailto:priya.nair@northstar.example
+ATTENDEE;CN=Maya Chen;RSVP=TRUE:mailto:maya.chen@northstar.example
+ATTENDEE;CN=Elias Berg;RSVP=TRUE:mailto:elias.berg@northstar.example
+ATTENDEE;CN=Lukas Meyer;RSVP=TRUE:mailto:lukas.meyer@northstar.example
+DESCRIPTION:Review validation evidence and release criteria.
+END:VCALENDAR

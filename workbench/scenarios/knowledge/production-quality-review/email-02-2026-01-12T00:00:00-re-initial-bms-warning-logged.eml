@@ -1,0 +1,12 @@
+From: Priya Nair <priya.nair@northstar.example>
+To: maya.chen@northstar.example
+Date: Mon, 12 Jan 2026 00:00:00 +0100
+Subject: Re: Initial BMS warning logged
+Message-ID: <nms-02@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Engineering review found no safety-critical behavior. Please keep the trace with the lot record.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence

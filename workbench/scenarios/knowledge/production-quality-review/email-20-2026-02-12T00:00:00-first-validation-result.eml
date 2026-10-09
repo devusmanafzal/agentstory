@@ -1,0 +1,12 @@
+From: Priya Nair <priya.nair@northstar.example>
+To: maya.chen@northstar.example, lukas.meyer@voltacore.example
+Date: Thu, 12 Feb 2026 00:00:00 +0100
+Subject: First validation result
+Message-ID: <nms-20@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+EV-02 passed 30/30. EV-01 has one repeat warning under cold soak; validation remains open.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence

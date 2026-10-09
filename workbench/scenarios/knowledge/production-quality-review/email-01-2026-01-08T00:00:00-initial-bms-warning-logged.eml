@@ -1,0 +1,12 @@
+From: Maya Chen <maya.chen@northstar.example>
+To: elias.berg@northstar.example, priya.nair@northstar.example
+Date: Thu, 08 Jan 2026 00:00:00 +0100
+Subject: Initial BMS warning logged
+Message-ID: <nms-01@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+One BMS diagnostic warning was logged on L260108-A during end-of-line. We are recording it as an isolated event and retaining the raw log.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence

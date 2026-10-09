@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Industrial AI Workbench</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      font: 15px/1.55 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    button { font: inherit; }
+    .shell { min-height: 100vh; }
+    .topbar {
+      align-items: center;
+      border-bottom: 1px solid var(--cp-border);
+      display: flex;
+      justify-content: space-between;
+      padding: 18px clamp(20px, 5vw, 72px);
+    }
+    .brand { align-items: center; display: flex; gap: 12px; }
+    .brand-mark {
+      align-items: center;
+      background: var(--cp-accent);
+      border-radius: 10px;
+      color: var(--cp-accent-fg);
+      display: flex;
+      font-weight: 700;
+      height: 34px;
+      justify-content: center;
+      letter-spacing: .04em;
+      width: 34px;
+    }
+    .brand-name { font-weight: 650; letter-spacing: -.01em; }
+    .brand-subtitle { color: var(--cp-text-muted); font-size: 12px; }
+    .theme-button, .text-button {
+      background: transparent;
+      border: 0;
+      color: var(--cp-text-muted);
+      cursor: pointer;
+      padding: 8px;
+    }
+    .theme-button:hover, .text-button:hover { color: var(--cp-accent); }
+    .container { margin: 0 auto; max-width: 1160px; padding: 60px 24px 80px; }
+    .hero { max-width: 760px; }
+    .eyebrow {
+      color: var(--cp-accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(34px, 5vw, 58px); letter-spacing: -.045em; line-height: 1.04; margin: 14px 0 20px; }
+    h2 { font-size: 25px; letter-spacing: -.025em; line-height: 1.2; }
+    h3 { font-size: 16px; margin-bottom: 8px; }
+    .lead { color: var(--cp-text-muted); font-size: 19px; max-width: 650px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .primary-button, .secondary-button {
+      border-radius: .625rem;
+      cursor: pointer;
+      display: inline-block;
+      font-weight: 650;
+      padding: 11px 17px;
+      text-decoration: none;
+    }
+    .primary-button {
+      background: var(--cp-accent);
+      border: 1px solid var(--cp-accent);
+      color: var(--cp-accent-fg);
+    }
+    .primary-button:hover { background: var(--cp-accent-hover); border-color: var(--cp-accent-hover); }
+    .secondary-button {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      color: var(--cp-text);
+    }
+    .secondary-button:hover { border-color: var(--cp-border-strong); }
+    .section { margin-top: 64px; scroll-margin-top: 24px; }
+    .section-heading { align-items: end; display: flex; justify-content: space-between; margin-bottom: 18px; }
+    .section-heading p { color: var(--cp-text-muted); margin-bottom: 0; }
+    .scenario-card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+      overflow: hidden;
+    }
+    .scenario-main { display: grid; gap: 28px; grid-template-columns: 1.35fr .65fr; padding: 30px; }
+    .scenario-title { align-items: center; display: flex; gap: 12px; }
+    .status-dot { background: var(--cp-success); border-radius: 50%; height: 9px; width: 9px; }
+    .scenario-description { color: var(--cp-text-muted); max-width: 620px; }
+    .metadata { border-left: 1px solid var(--cp-border); display: grid; gap: 16px; padding-left: 28px; }
+    .meta-label { color: var(--cp-text-soft); font-size: 12px; }
+    .meta-value { font-weight: 650; }
+    .scenario-footer { align-items: center; background: var(--cp-surface-soft); border-top: 1px solid var(--cp-border); display: flex; justify-content: space-between; padding: 16px 30px; }
+    .small-note { color: var(--cp-text-muted); font-size: 13px; }
+    .knowledge-grid { display: grid; gap: 12px; grid-template-columns: repeat(4, 1fr); }
+    .knowledge-card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: .625rem;
+      padding: 18px;
+    }
+    .knowledge-icon { color: var(--cp-accent); font-size: 20px; font-weight: 700; }
+    .knowledge-count { font-size: 25px; font-weight: 700; letter-spacing: -.03em; margin-top: 7px; }
+    .knowledge-label { color: var(--cp-text-muted); font-size: 13px; }
+    .knowledge-note { color: var(--cp-text-soft); font-size: 12px; margin: 7px 0 0; }
+    .disclaimer-card { background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 10px; margin-top: 30px; padding: 16px 18px; }
+    .disclaimer-card p { color: var(--cp-text-muted); font-size: 13px; margin: 6px 0 10px; }
+    .disclaimer-card a { color: var(--cp-link); }
+    .disclaimer-card .hero-actions { margin-top: 14px; }
+    .disclaimer-card .primary-button { font-size: 13px; padding: 8px 12px; }
+    .acknowledgement { align-items: center; color: var(--cp-text); display: flex; font-size: 13px; gap: 8px; }
+    .acknowledgement input { accent-color: var(--cp-accent); }
+    .primary-button:disabled { cursor: not-allowed; opacity: .55; }
+    .resource-layout { display: grid; gap: 20px; grid-template-columns: .82fr 1.18fr; }
+    .resource-card, .resource-panel {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .resource-card:hover { border-color: var(--cp-accent); }
+    .use-case-card.inactive { opacity: .55; }
+    .use-case-card.inactive:hover { border-color: var(--cp-border); }
+    .use-case-card.inactive .use-case-button { pointer-events: none; }
+    .resource-card h3, .resource-panel h3 { margin-bottom: 8px; }
+    .resource-card p, .resource-panel p { color: var(--cp-text-muted); }
+    .resource-list { color: var(--cp-text-muted); display: grid; gap: 8px; margin: 14px 0 0; padding-left: 20px; }
+    .resource-list li::marker { color: var(--cp-accent); }
+    .resource-panel { scroll-margin-top: 24px; }
+    .resource-panel + .resource-panel { margin-top: 20px; }
+    .panel-heading { align-items: start; display: flex; justify-content: space-between; gap: 20px; }
+    .panel-label { color: var(--cp-accent); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .upcoming-label { margin-top: 28px; }
+    .prompt-card { background: var(--cp-accent-soft); border: 1px solid var(--cp-highlight); border-radius: .625rem; margin-top: 12px; padding: 16px; }
+    .prompt-card p { color: var(--cp-text); margin-bottom: 12px; }
+    .copy-button { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: .625rem; color: var(--cp-text-muted); cursor: pointer; font-size: 13px; padding: 7px 10px; }
+    .copy-button:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+    .footer-note { border-top: 1px solid var(--cp-border); color: var(--cp-text-soft); font-size: 13px; margin-top: 68px; padding-top: 20px; }
+    @media (max-width: 760px) {
+      .topbar { padding: 16px 20px; }
+      .container { padding: 40px 18px 60px; }
+      .scenario-main { grid-template-columns: 1fr; padding: 22px; }
+      .metadata { border-left: 0; border-top: 1px solid var(--cp-border); padding: 20px 0 0; }
+      .scenario-footer { align-items: flex-start; flex-direction: column; gap: 14px; padding: 16px 22px; }
+      .knowledge-grid { grid-template-columns: repeat(2, 1fr); }
+      .resource-layout { grid-template-columns: 1fr; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">IA</div>
+        <div>
+          <div class="brand-name">Industrial AI Workbench</div>
+          <div class="brand-subtitle">A self-guided Copilot learning experience</div>
+        </div>
+      </div>
+      <button class="theme-button" id="themeToggle" type="button" aria-label="Toggle colour theme">Theme</button>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="eyebrow">Start here</div>
+        <h1>Find a useful starting point for Copilot.</h1>
+        <p class="lead">Choose an industrial use-case, explore its connected knowledge, and use the prompts and templates to run the experience in your own workspace.</p>
+        <section class="disclaimer-card" aria-label="Demo disclaimer">
+          <div class="eyebrow">Before you begin</div>
+          <p>Industrial AI Workbench is an independent demonstration resource, not a Microsoft product or Microsoft-endorsed publication. All scenarios and data are synthetic and provided as-is for demonstration and evaluation only.</p>
+          <label class="acknowledgement"><input id="disclaimerAck" type="checkbox"> I understand these are demonstration materials.</label>
+          <p><a href="DISCLAIMER.txt">Read the full disclaimer</a></p>
+          <div class="hero-actions">
+            <button class="primary-button" id="useCasesButton" type="button" disabled>Browse use-cases</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="section" id="use-cases">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Use-cases</div>
+            <h2>Choose a situation to explore</h2>
+          </div>
+          <p>Each use-case includes the situation, knowledge, prompts, and outcomes.</p>
+        </div>
+        <div class="resource-layout">
+          <article class="resource-card use-case-card inactive">
+            <div class="eyebrow">Available now</div>
+            <h3>Production quality review</h3>
+            <p>Investigate a rising component quality issue using information shared across plant, engineering, quality, and supplier teams.</p>
+            <a class="primary-button use-case-button" href="Production-Quality-Review.html">Explore use-case</a>
+          </article>
+          <article class="resource-card use-case-card inactive">
+            <div class="eyebrow">Available now</div>
+            <h3>RFQ comparison and award note</h3>
+            <p>Normalize supplier quotations with different structures, compare trade-offs, and prepare an evidence-based award recommendation.</p>
+            <a class="primary-button use-case-button" href="RFQ-Comparison-Award.html">Explore use-case</a>
+          </article>
+          <article class="resource-card use-case-card inactive">
+            <div class="eyebrow">Available now</div>
+            <h3>Supplier performance review pack</h3>
+            <p>Assemble delivery, quality, cost, and relationship signals from internal reports and mail history into a supplier review pack.</p>
+            <a class="primary-button use-case-button" href="Supplier-Performance-Review.html">Explore use-case</a>
+          </article>
+          <article class="resource-card use-case-card inactive">
+            <div class="eyebrow">Available now</div>
+            <h3>Supply base risk scan</h3>
+            <p>Scan a supplier list against synthetic financial, operational, logistics, and geopolitical signals to create a ranked risk register.</p>
+            <a class="primary-button use-case-button" href="Supply-Base-Risk-Scan.html">Explore use-case</a>
+          </article>
+        </div>
+        <div class="eyebrow upcoming-label">Upcoming</div>
+        <div class="resource-layout">
+          <article class="resource-card">
+            <h3>Supplier disruption response</h3>
+            <p>Assess the impact of a supplier capacity constraint on production plans, customer commitments, and mitigation options.</p>
+            <button class="secondary-button" type="button" disabled>Coming soon</button>
+          </article>
+          <article class="resource-card">
+            <h3>Maintenance failure investigation</h3>
+            <p>Connect maintenance records, sensor trends, technician notes, and work orders to identify probable causes and preventive actions.</p>
+            <button class="secondary-button" type="button" disabled>Coming soon</button>
+          </article>
+          <article class="resource-card">
+            <h3>Production line bottleneck review</h3>
+            <p>Analyze throughput data, shift reports, downtime logs, and operator feedback to find bottlenecks and improvement options.</p>
+            <button class="secondary-button" type="button" disabled>Coming soon</button>
+          </article>
+          <article class="resource-card">
+            <h3>New product launch readiness</h3>
+            <p>Assess engineering changes, supplier readiness, quality risks, training needs, and production milestones before launch.</p>
+            <button class="secondary-button" type="button" disabled>Coming soon</button>
+          </article>
+          <article class="resource-card">
+            <h3>Safety incident investigation</h3>
+            <p>Reconstruct an incident from reports, interviews, procedures, and corrective actions, then prepare a leadership briefing.</p>
+            <button class="secondary-button" type="button" disabled>Coming soon</button>
+          </article>
+          <article class="resource-card">
+            <h3>Energy efficiency improvement</h3>
+            <p>Review energy data, production volumes, equipment settings, and site initiatives to identify reduction opportunities.</p>
+            <button class="secondary-button" type="button" disabled>Coming soon</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="resources">
+        <div class="section-heading">
+          <div><div class="eyebrow">Resources</div><h2>Everything needed to run a demo</h2></div>
+          <p>Use-case pages contain the relevant knowledge and prompts.</p>
+        </div>
+        <div class="resource-layout">
+          <article class="resource-card"><div class="eyebrow">Included</div><h3>Knowledge packs</h3><p>Realistic collections of documents, email messages, meetings, transcripts, notes, spreadsheets, and presentations.</p></article>
+          <article class="resource-card"><div class="eyebrow">Included</div><h3>Prompt and output guidance</h3><p>Practical prompts, suggested outcomes, templates, and facilitation notes for each use-case.</p></article>
+        </div>
+      </section>
+
+      <p class="footer-note">Industrial AI Workbench · Synthetic demonstration environment · Designed to be extended with additional industry scenarios</p>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("useCasesButton").addEventListener("click", () => {
+      document.getElementById("use-cases").scrollIntoView({ behavior: "smooth" });
+    });
+    const disclaimerAck = document.getElementById("disclaimerAck");
+    const useCaseButtons = [...document.querySelectorAll(".use-case-button")];
+    const setUseCasesEnabled = (enabled) => {
+      useCaseButtons.forEach((button) => {
+        button.tabIndex = enabled ? 0 : -1;
+        button.setAttribute("aria-disabled", String(!enabled));
+        button.closest(".use-case-card").classList.toggle("inactive", !enabled);
+      });
+    };
+    setUseCasesEnabled(false);
+    disclaimerAck.addEventListener("change", (event) => {
+      const enabled = event.currentTarget.checked;
+      document.getElementById("useCasesButton").disabled = !enabled;
+      setUseCasesEnabled(enabled);
+    });
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(button.dataset.copy);
+        button.textContent = "Copied";
+        window.setTimeout(() => { button.textContent = "Copy prompt"; }, 1400);
+      });
+    });
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = nextTheme;
+    });
+  </script>
+</body>
+</html>

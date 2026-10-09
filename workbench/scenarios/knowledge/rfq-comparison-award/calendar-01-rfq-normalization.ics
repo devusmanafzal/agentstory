@@ -1,0 +1,10 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Industrial AI Workbench//Synthetic
+BEGIN:VEVENT
+DTSTART:Avery Ortiz; Jordan Lee; Samira Khan; Mateo Ruiz; Chen WeiT090000
+DTEND:Avery Ortiz; Jordan Lee; Samira Khan; Mateo Ruiz; Chen WeiT100000
+SUMMARY:RFQ normalization workshop
+DESCRIPTION:Synthetic demo meeting.
+END:VEVENT
+END:VCALENDAR

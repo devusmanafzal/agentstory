@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Northstar Mobility Systems//Synthetic Demo//EN
+METHOD:REQUEST
+UID:evidence-260218
+DTSTAMP:20260101T080000Z
+DTSTART;TZID=Europe/Stockholm:20260218T130000
+DTEND;TZID=Europe/Stockholm:20260218T134500
+SUMMARY:Supplier evidence readiness review
+ORGANIZER;CN=Lukas Meyer:mailto:lukas.meyer@northstar.example
+ATTENDEE;CN=Maya Chen;RSVP=TRUE:mailto:maya.chen@northstar.example
+ATTENDEE;CN=Priya Nair;RSVP=TRUE:mailto:priya.nair@northstar.example
+ATTENDEE;CN=Sofia Lind;RSVP=TRUE:mailto:sofia.lind@northstar.example
+DESCRIPTION:Prepare supplier reproduction evidence and raw traces for the 2026-02-20 follow-up review.
+END:VCALENDAR

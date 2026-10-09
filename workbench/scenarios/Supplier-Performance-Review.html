@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supplier Performance Review · Industrial AI Workbench</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font: 15px/1.5 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; }
+    button { font: inherit; }
+    .topbar { align-items: center; border-bottom: 1px solid var(--cp-border); display: flex; justify-content: space-between; padding: 16px clamp(20px, 5vw, 72px); }
+    .back-link, .theme-button { background: transparent; border: 0; color: var(--cp-text-muted); cursor: pointer; padding: 7px; text-decoration: none; }
+    .back-link:hover, .theme-button:hover { color: var(--cp-accent); }
+    .brand { align-items: center; display: flex; gap: 10px; }
+    .brand-mark { align-items: center; background: var(--cp-accent); border-radius: 9px; color: var(--cp-accent-fg); display: flex; font-size: 12px; font-weight: 700; height: 30px; justify-content: center; width: 30px; }
+    .brand-name { font-size: 14px; font-weight: 650; }
+    .container { margin: 0 auto; max-width: 900px; padding: 46px 22px 70px; }
+    .eyebrow { color: var(--cp-accent); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(34px, 6vw, 52px); letter-spacing: -.05em; line-height: 1.05; margin: 12px 0 12px; }
+    h2 { font-size: 21px; letter-spacing: -.025em; }
+    h3 { font-size: 15px; margin-bottom: 5px; }
+    .intro { color: var(--cp-text-muted); font-size: 16px; max-width: 760px; }
+    .hero-meta { color: var(--cp-text-soft); font-size: 13px; margin-top: 18px; }
+    .context-grid { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); margin-top: 28px; }
+    .context-card { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; padding: 15px; }
+    .context-card h3 { margin: 6px 0 4px; }
+    .context-card p { color: var(--cp-text-muted); font-size: 13px; margin-bottom: 0; }
+    .surface-card { align-items: center; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 4px solid var(--cp-accent); border-radius: 10px; display: flex; gap: 16px; margin-top: 14px; padding: 14px 16px; }
+    .surface-card h2 { font-size: 17px; margin: 3px 0 3px; }
+    .surface-card p { color: var(--cp-text-muted); font-size: 13px; margin: 0; }
+    .surface-badge { background: var(--cp-accent-soft); border: 1px solid var(--cp-highlight); border-radius: 999px; color: var(--cp-accent); font-size: 12px; font-weight: 700; padding: 7px 10px; white-space: nowrap; }
+    .story-launcher { align-items: center; background: var(--cp-accent-soft); border: 1px solid var(--cp-highlight); border-radius: 999px; color: var(--cp-text); cursor: pointer; display: inline-flex; gap: 6px; margin: 0 0 0 7px; max-width: 100%; padding: 3px 8px 3px 4px; text-align: left; vertical-align: middle; width: max-content; }
+    .story-launcher:hover { border-color: var(--cp-accent); }
+    .story-icon { align-items: center; background: var(--cp-surface); border-radius: 50%; color: var(--cp-accent); display: flex; height: 22px; justify-content: center; width: 22px; }
+    .story-launcher strong { display: block; font-size: 11px; white-space: nowrap; }
+    .story-launcher > span:nth-child(2) > span { display: none; }
+    .story-arrow { color: var(--cp-accent); font-size: 14px; }
+    .story-panel { align-items: center; background: var(--cp-overlay); display: flex; inset: 0; justify-content: center; padding: 22px; position: fixed; z-index: 10; }
+    .story-panel[hidden] { display: none; }
+    .story-dialog { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; box-shadow: var(--cp-shadow); max-height: min(680px, 90vh); max-width: 650px; overflow: auto; padding: 26px 28px; position: relative; width: 100%; }
+    .story-dialog h2 { margin: 5px 0 18px; }
+    .story-close { background: transparent; border: 1px solid var(--cp-border); border-radius: 50%; color: var(--cp-text-muted); cursor: pointer; font-size: 18px; height: 30px; line-height: 1; position: absolute; right: 18px; top: 18px; width: 30px; }
+    .story-close:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+    .story-copy { color: var(--cp-text-muted); font-size: 15px; }
+    .story-copy p { margin: 0 0 15px; }
+    .story-copy p:last-child { margin-bottom: 0; }
+    .modal-open { overflow: hidden; }
+    .source-dashboard { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; margin-top: 22px; padding: 18px 20px; }
+    .source-header { align-items: center; display: flex; justify-content: space-between; margin-bottom: 14px; }
+    .source-header h2 { font-size: 18px; margin: 0; }
+    .source-total { color: var(--cp-text-muted); font-size: 13px; }
+    .source-grid { display: grid; gap: 8px; grid-template-columns: repeat(5, 1fr); }
+    .source-item { background: var(--cp-surface-soft); border-radius: 8px; padding: 11px; }
+    .source-count { color: var(--cp-accent); font-size: 21px; font-weight: 700; letter-spacing: -.03em; }
+    .source-label { color: var(--cp-text-muted); display: block; font-size: 12px; margin-top: 2px; }
+    .task-card { background: var(--cp-accent-soft); border: 1px solid var(--cp-highlight); border-radius: 16px; margin-top: 22px; padding: 20px 22px; }
+    .task p { color: var(--cp-text-muted); margin-bottom: 0; }
+    .action-section { margin-top: 22px; }
+    .core-actions { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); margin-top: 14px; }
+    .core-action { align-items: center; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; color: var(--cp-text); cursor: pointer; display: flex; flex-direction: column; min-height: 150px; padding: 20px 12px; text-align: center; text-decoration: none; }
+    .core-action:hover { border-color: var(--cp-accent); }
+    .core-action:disabled { cursor: default; opacity: .72; }
+    .core-action:disabled:hover { border-color: var(--cp-border); }
+    .core-action-number { align-items: center; background: var(--cp-accent); border-radius: 50%; color: var(--cp-accent-fg); display: flex; font-size: 21px; font-weight: 700; height: 48px; justify-content: center; margin-bottom: 13px; width: 48px; }
+    .core-action h3 { font-size: 16px; margin-bottom: 4px; }
+    .core-action p { color: var(--cp-text-muted); font-size: 12px; margin: 0; }
+    .action-panel { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; margin-top: 12px; padding: 18px 20px; }
+    .action-panel[hidden] { display: none; }
+    .mode-switch { display: flex; gap: 10px; margin: 16px 0; }
+    .mode-button { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 9px; color: var(--cp-text-muted); cursor: pointer; flex: 1; padding: 12px 14px; text-align: left; }
+    .mode-button:hover, .mode-button.active { border-color: var(--cp-accent); }
+    .mode-button strong { color: var(--cp-text); display: block; font-size: 14px; }
+    .mode-button span { display: block; font-size: 12px; margin-top: 2px; }
+    .steps { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); margin-top: 20px; }
+    .step { border-top: 1px solid var(--cp-border); padding-top: 14px; }
+    .step-number { align-items: center; background: var(--cp-accent); border-radius: 50%; color: var(--cp-accent-fg); display: flex; font-size: 11px; font-weight: 700; height: 22px; justify-content: center; margin-bottom: 9px; width: 22px; }
+    .step p { color: var(--cp-text-muted); font-size: 13px; margin-bottom: 0; }
+    .button-row { display: flex; gap: 10px; margin-top: 20px; }
+    .primary-button, .secondary-button { border-radius: .625rem; cursor: pointer; display: inline-block; font-weight: 650; padding: 10px 15px; text-decoration: none; }
+    .primary-button { background: var(--cp-accent); border: 1px solid var(--cp-accent); color: var(--cp-accent-fg); }
+    .primary-button:hover { background: var(--cp-accent-hover); border-color: var(--cp-accent-hover); }
+    .secondary-button { background: var(--cp-surface); border: 1px solid var(--cp-border); color: var(--cp-text); }
+    .secondary-button:hover { border-color: var(--cp-border-strong); }
+    .mode-detail { border-top: 1px solid var(--cp-border); margin-top: 20px; padding-top: 18px; }
+    .mode-detail[hidden] { display: none; }
+    .mode-detail p, .mode-detail li { color: var(--cp-text-muted); font-size: 13px; }
+    .mode-detail ol { display: grid; gap: 5px; margin: 8px 0 0; padding-left: 20px; }
+    .folder-tree { background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; color: var(--cp-text-muted); font: 12px/1.65 Consolas, "Courier New", Courier, monospace; margin-top: 12px; padding: 10px 12px; white-space: pre-line; }
+    .download-grid { display: grid; gap: 8px; grid-template-columns: repeat(2, 1fr); margin-top: 16px; }
+    .download-link { background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; color: var(--cp-text); display: block; padding: 11px 12px; text-decoration: none; }
+    .download-link:hover { border-color: var(--cp-accent); }
+    .download-link strong { display: block; font-size: 13px; }
+    .download-link span { color: var(--cp-text-muted); display: block; font-size: 11px; margin-top: 2px; }
+    .small-note { color: var(--cp-text-soft); font-size: 12px; margin: 12px 0 0; }
+    .prompt { background: var(--cp-accent-soft); border: 1px solid var(--cp-highlight); border-radius: 8px; margin-top: 10px; padding: 13px; }
+    .prompt p { color: var(--cp-text); margin-bottom: 10px; }
+    .copy-button { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 7px; color: var(--cp-text-muted); cursor: pointer; font-size: 12px; padding: 6px 9px; }
+    .copy-button:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+    .outcome-card { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; margin-top: 22px; padding: 18px 20px; }
+    .outcome-list { color: var(--cp-text-muted); display: grid; gap: 6px; grid-template-columns: 1fr 1fr; margin: 12px 0 0; padding-left: 20px; }
+    .outcome-list li::marker { color: var(--cp-accent); }
+    .disclaimer-card { background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 10px; margin-top: 22px; padding: 14px 16px; }
+    .disclaimer-card p { color: var(--cp-text-muted); font-size: 12px; margin: 5px 0 0; }
+    .disclaimer-card a { color: var(--cp-link); }
+    .footer-note { border-top: 1px solid var(--cp-border); color: var(--cp-text-soft); font-size: 12px; margin-top: 44px; padding-top: 16px; }
+    @media (max-width: 650px) { .container { padding: 34px 17px 55px; } .context-grid, .source-grid, .core-actions, .outcome-list { grid-template-columns: 1fr 1fr; } .surface-card { align-items: flex-start; flex-direction: column; gap: 8px; } .mode-switch, .steps { grid-template-columns: 1fr; flex-direction: column; } .button-row { flex-wrap: wrap; } }
+    @media (max-width: 420px) { .context-grid, .source-grid, .outcome-list { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="index.html">← Industrial AI Workbench</a>
+    <div class="brand"><div class="brand-mark">IA</div><div class="brand-name">Industrial AI Workbench</div></div>
+    <button class="theme-button" id="themeToggle" type="button">Theme</button>
+  </header>
+
+  <main class="container">
+    <div class="eyebrow">Use-case · Production quality review</div>
+    <h1>Turn supplier performance signals into an executive review pack.</h1>
+    <p class="intro">Reconcile delivery, quality, cost, and resilience evidence into differentiated supplier actions.<button class="story-launcher" id="storyToggle" type="button" aria-expanded="false">
+      <span class="story-icon" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 6h8M8 10h6"/></svg>
+      </span>
+      <span><strong>Read the scenario story</strong><span>Understand the situation before you begin</span></span>
+      <span class="story-arrow" aria-hidden="true">→</span>
+    </button></p>
+    <div class="hero-meta">Synthetic demo data · 45–60 minutes · Industrial procurement</div>
+    <section class="surface-card" aria-label="Recommended Copilot experience">
+      <span class="surface-badge">Recommended: Cowork</span>
+      <div><h2>Use Cowork for the full investigation</h2><p>This scenario combines many sources, several reasoning steps, and a final leadership presentation.</p></div>
+    </section>
+    <div class="story-panel" id="storyPanel" hidden>
+      <section class="story-dialog" role="dialog" aria-modal="true" aria-labelledby="storyTitle">
+        <button class="story-close" id="storyClose" type="button" aria-label="Close scenario story">×</button>
+        <div class="eyebrow">The story behind the Knowledge Pack</div>
+        <h2 id="storyTitle">How the evidence became a decision</h2>
+        <div class="story-copy"><p>The fictional council reviews Atlas Forge, Meridian Seals, and Redwood Controls across Q2 and Q3 2026.</p><p>Atlas delivery improves from 89% to 96%, but quality remains 1,320 PPM and 1,180 expedite hours are recorded. Meridian adds a 4.8% surcharge without index evidence.</p><p>Redwood capacity claims differ between a supplier email and internal data.</p><p>The executive review needs monitored improvement, commercial challenge, and funded resilience qualification.</p></div>
+      </section>
+    </div>
+
+    <section class="context-grid" aria-label="Use-case context">
+      <article class="context-card"><div class="eyebrow">Situation</div><h3>A rising quality signal</h3><p>Battery-management faults are increasing at a manufacturing plant.</p></article>
+      <article class="context-card"><div class="eyebrow">Challenge</div><h3>A distributed story</h3><p>The relevant information is spread across teams and many sources.</p></article>
+      <article class="context-card"><div class="eyebrow">Outcome</div><h3>A clear next step</h3><p>Recommend a corrective action supported by the available knowledge.</p></article>
+    </section>
+
+    <section class="source-dashboard" id="knowledge-sources" aria-label="Knowledge Pack">
+      <div class="source-header"><h2>Knowledge Pack</h2><span class="source-total">26 scenario items</span></div>
+      <div class="source-grid">
+        <div class="source-item"><div class="source-count">6</div><span class="source-label">Documents</span></div>
+        <div class="source-item"><div class="source-count">10</div><span class="source-label">Email messages</span></div>
+        <div class="source-item"><div class="source-count">6</div><span class="source-label">Meetings</span></div>
+        <div class="source-item"><div class="source-count">3</div><span class="source-label">Workbooks</span></div>
+        <div class="source-item"><div class="source-count">1</div><span class="source-label">Presentations</span></div>
+      </div>
+    </section>
+
+    <section class="task-card">
+      <div class="eyebrow">Your task</div>
+      <h3>Assess supplier performance, explain the gaps, and recommend differentiated actions.</h3>
+      <p>Bring together the connected sources. Cowork will turn the investigation into a traceable recommendation and leadership-ready artifact.</p>
+    </section>
+
+    <section class="action-section" aria-label="Core actions">
+      <div class="eyebrow">Three core actions</div>
+      <div class="core-actions">
+        <button class="core-action" id="knowledgeAction" type="button" aria-expanded="false">
+          <div class="core-action-number">1</div>
+          <h3>Get the Knowledge Pack</h3>
+          <p>Choose what to download</p>
+        </button>
+        <button class="core-action" id="loadingAction" type="button" aria-expanded="false">
+          <div class="core-action-number">2</div>
+          <h3>Load it into Copilot</h3>
+          <p>Attach or store the files</p>
+        </button>
+        <button class="core-action" id="promptAction" type="button" aria-expanded="false">
+          <div class="core-action-number">3</div>
+          <h3>Run the prompts</h3>
+          <p>Check, then analyze</p>
+        </button>
+      </div>
+
+      <div class="action-panel" id="knowledge-panel" hidden>
+        <div class="eyebrow">Download the Knowledge Pack</div>
+        <div class="download-grid">
+          <a class="download-link" href="knowledge/supplier-performance-review/downloads/supplier-performance-review-knowledge-pack-complete.zip" download><strong>Complete Knowledge Pack</strong><span>Extracts to Supplier Performance Review/ · 26 items</span></a>
+        </div>
+        <p class="small-note">Download and extract the ZIP before moving to step 2.</p>
+      </div>
+      <div class="action-panel" id="loading-panel" hidden>
+        <div class="eyebrow">Choose how to load the Knowledge Pack</div>
+        <div class="mode-switch" role="tablist" aria-label="Knowledge loading options">
+          <button class="mode-button active" type="button" role="tab" aria-selected="true" data-mode="attach"><strong>Attach files directly</strong><span>Fastest start</span></button>
+          <button class="mode-button" type="button" role="tab" aria-selected="false" data-mode="cloud"><strong>Use OneDrive or SharePoint</strong><span>Realistic workspace</span></button>
+        </div>
+        <div class="mode-detail" id="attach-detail">
+          <strong>Direct attachment</strong>
+          <ol><li>Extract the downloaded Knowledge Pack.</li><li>Start a new Copilot or Cowork conversation.</li><li>Attach the files and run the knowledge check.</li></ol>
+        </div>
+        <div class="mode-detail" id="cloud-detail" hidden>
+          <strong>OneDrive or SharePoint</strong>
+          <ol><li>Extract the ZIP; it creates the <strong>Supplier Performance Review</strong> folder.</li><li>Upload that folder directly to OneDrive or SharePoint.</li><li>Wait until the files are available, then run the knowledge check.</li></ol>
+          <div class="folder-tree">Supplier Performance Review/
+├── Documents/
+├── Emails/
+├── Meetings/
+├── Transcripts/
+├── Notes/
+├── Spreadsheets/
+└── Presentations/</div>
+        </div>
+      </div>
+
+      <div class="action-panel" id="prompt-panel" hidden>
+        <div class="eyebrow">Prompt Pack</div>
+        <div class="prompt"><p>Review the files I provided. List accessible documents, emails, meetings, notes, workbooks, presentations, and synthetic signal excerpts. Do not analyze yet; identify unavailable or incomplete sources.</p><button class="copy-button" type="button" data-copy="Review the files I provided. List accessible documents, emails, meetings, notes, workbooks, presentations, and synthetic signal excerpts. Do not analyze yet; identify unavailable or incomplete sources.">Copy knowledge check</button></div>
+        <div class="prompt"><p>Reconcile delivery, quality, cost, expedite, and resilience evidence across scorecards, emails, meetings, reports, and the prior presentation. Identify contradictions, recommend differentiated actions, and create an executive review pack with citations.</p><button class="copy-button" type="button" data-copy="Reconcile delivery, quality, cost, expedite, and resilience evidence across scorecards, emails, meetings, reports, and the prior presentation. Identify contradictions, recommend differentiated actions, and create an executive review pack with citations.">Copy Cowork prompt</button></div>
+      </div>
+    </section>
+
+    <section class="outcome-card">
+      <div class="eyebrow">Expected outcome</div>
+      <h2>What should the demo produce?</h2>
+      <ul class="outcome-list">
+        <li>Supplier-by-supplier performance narrative</li>
+        <li>Reconciled scorecard and business impact</li>
+        <li>Differentiated action plan with owners and dates</li>
+        <li>Contradictions and escalation thresholds</li>
+        <li>Executive review presentation</li>
+      </ul>
+    </section>
+
+    <section class="disclaimer-card" aria-label="Demo disclaimer">
+      <div class="eyebrow">Demo materials only</div>
+      <p>Industrial AI Workbench is an independent resource, not a Microsoft product or Microsoft-endorsed publication. All content is synthetic and provided as-is for demonstration and evaluation only. <a href="DISCLAIMER.txt">Read the full disclaimer</a></p>
+    </section>
+
+    <p class="footer-note">Industrial AI Workbench · Synthetic demonstration environment</p>
+  </main>
+  <script>
+    const modeButtons = [...document.querySelectorAll("[data-mode]")];
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const mode = button.dataset.mode;
+        modeButtons.forEach((item) => {
+          const selected = item === button;
+          item.classList.toggle("active", selected);
+          item.setAttribute("aria-selected", String(selected));
+        });
+        document.getElementById("attach-detail").hidden = mode !== "attach";
+        document.getElementById("cloud-detail").hidden = mode !== "cloud";
+      });
+    });
+    const actionPanels = [
+      ["knowledgeAction", "knowledge-panel"],
+      ["loadingAction", "loading-panel"],
+      ["promptAction", "prompt-panel"]
+    ];
+    actionPanels.forEach(([buttonId, panelId]) => {
+      document.getElementById(buttonId).addEventListener("click", () => {
+        const panel = document.getElementById(panelId);
+        const shouldOpen = panel.hidden;
+        actionPanels.forEach(([otherButtonId, otherPanelId]) => {
+          document.getElementById(otherPanelId).hidden = true;
+          document.getElementById(otherButtonId).setAttribute("aria-expanded", "false");
+        });
+        if (shouldOpen) {
+          panel.hidden = false;
+          document.getElementById(buttonId).setAttribute("aria-expanded", "true");
+          panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+    });
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        if (!navigator.clipboard) {
+          button.textContent = "Copy unavailable";
+          return;
+        }
+        await navigator.clipboard.writeText(button.dataset.copy);
+        button.textContent = "Copied";
+        window.setTimeout(() => { button.textContent = "Copy prompt"; }, 1400);
+      });
+    });
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = nextTheme;
+    });
+    document.getElementById("storyToggle").addEventListener("click", (event) => {
+      const panel = document.getElementById("storyPanel");
+      panel.hidden = false;
+      document.body.classList.add("modal-open");
+      event.currentTarget.setAttribute("aria-expanded", "true");
+      document.getElementById("storyClose").focus();
+    });
+    const closeStory = () => {
+      document.getElementById("storyPanel").hidden = true;
+      document.body.classList.remove("modal-open");
+      document.getElementById("storyToggle").setAttribute("aria-expanded", "false");
+      document.getElementById("storyToggle").focus();
+    };
+    document.getElementById("storyClose").addEventListener("click", closeStory);
+    document.getElementById("storyPanel").addEventListener("click", (event) => {
+      if (event.target.id === "storyPanel") closeStory();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !document.getElementById("storyPanel").hidden) closeStory();
+    });
+  </script>
+</body>
+</html>

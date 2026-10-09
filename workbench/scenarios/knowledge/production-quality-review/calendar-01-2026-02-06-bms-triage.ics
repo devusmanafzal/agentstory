@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Northstar Mobility Systems//Synthetic Demo//EN
+METHOD:REQUEST
+UID:triage-260206
+DTSTAMP:20260101T080000Z
+DTSTART;TZID=Europe/Stockholm:20260206T090000
+DTEND;TZID=Europe/Stockholm:20260206T094500
+SUMMARY:BMS fault triage
+ORGANIZER;CN=Maya Chen:mailto:maya.chen@northstar.example
+ATTENDEE;CN=Elias Berg;RSVP=TRUE:mailto:elias.berg@northstar.example
+ATTENDEE;CN=Priya Nair;RSVP=TRUE:mailto:priya.nair@northstar.example
+ATTENDEE;CN=Lukas Meyer;RSVP=TRUE:mailto:lukas.meyer@northstar.example
+ATTENDEE;CN=Sofia Lind;RSVP=TRUE:mailto:sofia.lind@northstar.example
+DESCRIPTION:Review rising fault signal and agree immediate containment.
+END:VCALENDAR

@@ -1,0 +1,55 @@
+file,date,source_type,stakeholder,storyline_role
+README.txt,2026-01-01,readme,Northstar demo team,Safe demo disclaimer
+calendar-01-2026-02-06-bms-triage.ics,2026-02-06,calendar invite,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Scheduled review
+calendar-02-2026-02-13-validation-gate.ics,2026-02-13,calendar invite,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Scheduled review
+calendar-03-2026-02-20-follow-up.ics,2026-02-20,calendar invite,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Scheduled review
+calendar-04-2026-02-18-evidence-readiness.ics,2026-02-18,calendar invite,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Scheduled review
+document-01-incident-brief.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-02-engineering-change-note.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-03-supplier-bulletin.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-04-risk-assessment.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-05-containment-proposal.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-06-validation-plan.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-07-executive-briefing.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+document-08-corrective-action-template.docx,2026-01-01,business document,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decision support / evidence
+email-01-2026-01-08T00:00:00-initial-bms-warning-logged.eml,2026-01-08,email,Maya Chen,Chronology and decision trail
+email-02-2026-01-12T00:00:00-re-initial-bms-warning-logged.eml,2026-01-12,email,Priya Nair,Chronology and decision trail
+email-03-2026-01-15T00:00:00-voltacore-firmware-3-8-1-status.eml,2026-01-15,email,Lukas Meyer,Chronology and decision trail
+email-04-2026-01-19T00:00:00-weekly-quality-signal-two-additional-warni.eml,2026-01-19,email,Maya Chen,Chronology and decision trail
+email-05-2026-01-22T00:00:00-supplier-notice-firmware-3-8-2-planned.eml,2026-01-22,email,Lukas Meyer,Chronology and decision trail
+email-06-2026-01-23T00:00:00-request-for-matched-firmware-samples.eml,2026-01-23,email,Priya Nair,Chronology and decision trail
+email-07-2026-01-26T00:00:00-weekly-count-now-above-baseline.eml,2026-01-26,email,Maya Chen,Chronology and decision trail
+email-08-2026-01-29T00:00:00-voltacore-bulletin-vc-bms-38-2.eml,2026-01-29,email,Lukas Meyer,Chronology and decision trail
+email-09-2026-01-30T00:00:00-engineering-concern-on-retry-timing.eml,2026-01-30,email,Priya Nair,Chronology and decision trail
+email-10-2026-02-02T00:00:00-escalation-18-faults-in-weekly-count.eml,2026-02-02,email,Maya Chen,Chronology and decision trail
+email-11-2026-02-03T00:00:00-decision-prepare-containment-options.eml,2026-02-03,email,Elias Berg,Chronology and decision trail
+email-12-2026-02-04T00:00:00-containment-cost-assumptions.eml,2026-02-04,email,Sofia Lind,Chronology and decision trail
+email-13-2026-02-05T00:00:00-supplier-response-internal-fleet-compariso.eml,2026-02-05,email,Lukas Meyer,Chronology and decision trail
+email-14-2026-02-06T00:00:00-triage-outcome-hold-d-e-f.eml,2026-02-06,email,Maya Chen,Chronology and decision trail
+email-15-2026-02-06T00:00:00-customer-message-wording.eml,2026-02-06,email,Elias Berg,Chronology and decision trail
+email-16-2026-02-07T00:00:00-validation-matrix-draft.eml,2026-02-07,email,Priya Nair,Chronology and decision trail
+email-17-2026-02-09T00:00:00-scenario-b-recommendation.eml,2026-02-09,email,Sofia Lind,Chronology and decision trail
+email-18-2026-02-10T00:00:00-supplier-asks-for-voltage-traces.eml,2026-02-10,email,Lukas Meyer,Chronology and decision trail
+email-19-2026-02-11T00:00:00-containment-active.eml,2026-02-11,email,Maya Chen,Chronology and decision trail
+email-20-2026-02-12T00:00:00-first-validation-result.eml,2026-02-12,email,Priya Nair,Chronology and decision trail
+email-21-2026-02-13T00:00:00-screening-update-d-and-e.eml,2026-02-13,email,Maya Chen,Chronology and decision trail
+email-22-2026-02-13T00:00:00-disagreement-on-failure-classification.eml,2026-02-13,email,Lukas Meyer,Chronology and decision trail
+email-23-2026-02-14T00:00:00-validation-gate-decision.eml,2026-02-14,email,Elias Berg,Chronology and decision trail
+email-24-2026-02-16T00:00:00-shipment-gate-requirement.eml,2026-02-16,email,Sofia Lind,Chronology and decision trail
+email-25-2026-02-17T00:00:00-f-screening-capacity-constraint.eml,2026-02-17,email,Maya Chen,Chronology and decision trail
+email-26-2026-02-18T00:00:00-ev-03-review-item.eml,2026-02-18,email,Priya Nair,Chronology and decision trail
+email-27-2026-02-19T00:00:00-supplier-report-timing.eml,2026-02-19,email,Lukas Meyer,Chronology and decision trail
+email-28-2026-02-20T00:00:00-follow-up-decision-containment-continues.eml,2026-02-20,email,Elias Berg,Chronology and decision trail
+email-29-2026-02-20T00:00:00-corrective-action-opened.eml,2026-02-20,email,Maya Chen,Chronology and decision trail
+email-30-2026-02-20T00:00:00-procurement-closeout-actions.eml,2026-02-20,email,Sofia Lind,Chronology and decision trail
+notes-01-2026-02-06-triage.docx,2026-02-06,meeting notes,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decisions and actions
+notes-02-2026-02-13-validation-gate.docx,2026-02-13,meeting notes,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decisions and actions
+notes-03-2026-02-20-follow-up.docx,2026-02-20,meeting notes,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Decisions and actions
+presentation-01-executive-decision-briefing.pptx,2026-01-01,presentation,Elias Berg; Priya Nair; Maya Chen,Decision-ready briefing
+presentation-02-engineering-validation-readout.pptx,2026-01-01,presentation,Elias Berg; Priya Nair; Maya Chen,Decision-ready briefing
+transcript-01-2026-02-06-triage.docx,2026-02-06,meeting transcript,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Uncertain discussion
+transcript-02-2026-02-13-validation-gate.docx,2026-02-13,meeting transcript,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Uncertain discussion
+transcript-03-2026-02-20-follow-up.docx,2026-02-20,meeting transcript,Maya Chen; Elias Berg; Priya Nair; Lukas Meyer; Sofia Lind,Uncertain discussion
+workbook-01-quality-trend.xlsx,2026-01-01,spreadsheet,Maya Chen; Priya Nair; Sofia Lind,Analysis evidence
+workbook-02-containment-scenarios.xlsx,2026-01-01,spreadsheet,Maya Chen; Priya Nair; Sofia Lind,Analysis evidence
+workbook-03-engineering-validation.xlsx,2026-01-01,spreadsheet,Maya Chen; Priya Nair; Sofia Lind,Analysis evidence

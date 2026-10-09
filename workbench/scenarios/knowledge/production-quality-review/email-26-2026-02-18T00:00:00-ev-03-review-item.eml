@@ -1,0 +1,12 @@
+From: Priya Nair <priya.nair@northstar.example>
+To: maya.chen@northstar.example, lukas.meyer@voltacore.example
+Date: Wed, 18 Feb 2026 00:00:00 +0100
+Subject: EV-03 review item
+Message-ID: <nms-26@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thermal transition is 23/24 pass. The single review item overlaps a harness disturbance, so we need a repeat.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence

@@ -1,0 +1,12 @@
+From: Priya Nair <priya.nair@northstar.example>
+To: maya.chen@northstar.example, lukas.meyer@voltacore.example
+Date: Fri, 30 Jan 2026 00:00:00 +0100
+Subject: Engineering concern on retry timing
+Message-ID: <nms-09@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+The 250 ms retry may make a transient visible. That is a plausible mechanism, not a confirmed failure mode.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence

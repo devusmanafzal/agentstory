@@ -1,0 +1,12 @@
+From: Lukas Meyer <lukas.meyer@voltacore.example>
+To: priya.nair@northstar.example
+Date: Tue, 10 Feb 2026 00:00:00 +0100
+Subject: Supplier asks for voltage traces
+Message-ID: <nms-18@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+We need timestamped voltage traces, fixture ID, and checksum to reproduce the warning.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence

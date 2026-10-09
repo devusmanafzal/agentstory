@@ -1,0 +1,12 @@
+From: Priya Nair <priya.nair@northstar.example>
+To: maya.chen@northstar.example, lukas.meyer@voltacore.example
+Date: Sat, 07 Feb 2026 00:00:00 +0100
+Subject: Validation matrix draft
+Message-ID: <nms-16@northstar.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Five test families cover cold-start, recovery, thermal transition, rollback, and harness disturbance. Raw logs are mandatory.
+
+--
+Northstar Mobility Systems | Fictional demo correspondence
