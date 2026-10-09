@@ -15,7 +15,7 @@ Before the demo
 
 During the demo
 
-1. Start from Start-Here.html.
+1. Start from workbench/index.html.
 2. Open the selected use-case.
 3. Use the recommended Copilot experience shown on the page.
 4. Follow the Knowledge Pack and Prompt Pack guidance.
