@@ -5,213 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Unified Deal Attach Advisor</title>
-<style>
-:root{--bg:#F6F7FB;--surface:#FFFFFF;--surface2:#F1F4FA;--ink:#0F172A;--muted:#64748B;--line:#E2E8F0;--brand:#2563EB;--brand2:#7C3AED;--ok:#10B981;--warn:#F59E0B;--shadow:0 10px 30px rgba(15,23,42,.08);--radius:18px}
-@media (prefers-color-scheme: dark){:root{--bg:#0B1020;--surface:#121A2E;--surface2:#18223A;--ink:#E7ECF7;--muted:#97A3BA;--line:#25314D;--shadow:0 10px 30px rgba(0,0,0,.35)}}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
-.top{background:linear-gradient(120deg,#0EA5A4 0%,#2563EB 50%,#7C3AED 100%);color:#fff;padding-block:22px 64px;padding-inline:24px;position:relative;overflow:hidden}
-.top::after{content:"";position:absolute;inset-inline-end:-80px;inset-block-start:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.12)}
-.wrap{max-width:1180px;margin-inline:auto}
-.brandrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:12px}
-.logo .mark{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:22px;backdrop-filter:blur(4px)}
-.logo h1{font-size:20px;margin:0}.logo p{margin:0;opacity:.85;font-size:13px}
-.nav{display:flex;gap:6px;background:rgba(255,255,255,.15);padding:5px;border-radius:999px;flex-wrap:wrap}
-.nav button{border:0;background:transparent;color:#fff;padding-block:8px;padding-inline:16px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
-.nav button.active{background:#fff;color:#1E3A8A}
-.headline{margin-block-start:26px;max-width:720px;position:relative;z-index:1}
-.headline h2{font-size:30px;margin:0 0 6px}.headline p{margin:0;opacity:.92}
-.tipbar{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.18);padding-block:6px;padding-inline:12px;border-radius:999px;margin-block-start:14px;font-size:13px}
-main{max-width:1180px;margin-inline:auto;margin-block-start:-44px;padding-inline:24px;padding-block-end:60px;position:relative;z-index:2}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-block-end:18px}
-.card h3{margin:0 0 12px;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.layout{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
-@media (max-width:900px){.layout{grid-template-columns:1fr}}
-.stepper{display:flex;gap:8px;list-style:none;padding:0;margin:0 0 18px}
-.stepper li{flex:1;padding-block:10px;padding-inline:12px;border-radius:12px;background:var(--surface2);color:var(--muted);font-weight:600;font-size:13px;display:flex;gap:8px;align-items:center}
-.stepper li b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--ink);font-size:12px}
-.stepper li.current{background:linear-gradient(90deg,rgba(37,99,235,.14),rgba(124,58,237,.14));color:var(--ink)}
-.stepper li.current b{background:var(--brand);color:#fff}.stepper li.done b{background:var(--ok);color:#fff}
-.field{margin-block-end:16px}.field label.lbl{display:block;font-weight:600;margin-block-end:6px}.field .help{font-size:12px;color:var(--muted)}
-input[type=text],input[type=number],input[type=url],select,textarea{width:100%;padding-block:10px;padding-inline:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit}
-textarea{min-height:96px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:3px solid rgba(37,99,235,.25);border-color:var(--brand)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media (max-width:640px){.row2,.row3{grid-template-columns:1fr}}
-.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:640px){.opts{grid-template-columns:1fr}}
-.opt{position:relative}.opt input{position:absolute;opacity:0}
-.opt span{display:block;padding:12px;border:2px solid var(--line);border-radius:14px;cursor:pointer;height:100%;transition:.15s}
-.opt span b{display:block}.opt span small{color:var(--muted)}
-.opt input:checked + span{border-color:var(--brand);background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(124,58,237,.08));box-shadow:0 4px 14px rgba(37,99,235,.15)}
-.opt input:focus-visible + span{outline:3px solid rgba(37,99,235,.35)}
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:640px){.checks{grid-template-columns:1fr}}
-.checks label{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;cursor:pointer}
-.checks small{display:block;color:var(--muted)}
-.wsec{padding-block:18px;border-block-end:1px dashed var(--line)}.wsec:first-child{padding-block-start:0}
-.wsec-h{display:flex;gap:12px;align-items:center;margin-block-end:14px}.wsec-h b{font-size:17px}
-.wnum{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:800;background:linear-gradient(135deg,var(--brand),var(--brand2))}
-.lic-field input{font-size:22px;font-weight:700;max-width:260px}
-#paneW .master{margin-block-end:10px}
-.lic-row{margin-block-end:0;flex-wrap:wrap}.lic-text{flex:1;min-width:180px}.lic-text label{cursor:pointer}
-.lic-input{display:flex;align-items:center;gap:8px;background:var(--surface2);border:2px solid var(--line);border-radius:14px;padding-block:4px;padding-inline:6px 14px}
-.lic-input:focus-within{border-color:var(--brand)}
-.lic-input input{border:0;background:transparent;font-size:22px;font-weight:800;width:150px;text-align:end;padding-block:6px}
-.lic-input input:focus{outline:none}.lic-input span{color:var(--muted);font-weight:600}
-.qrow{display:block;margin-block-end:16px}.qrow:last-child{margin-block-end:4px}
-.qlbl{font-weight:600;font-size:15px;margin-block-end:8px}
-.qrow .opts{gap:8px}
-.qrow .opt span{padding-block:7px;padding-inline:10px;border-width:1.5px;border-radius:10px;font-size:13.5px;line-height:1.3}
-.qrow .opt span b{font-weight:600}
-.qrow .opt span small{font-size:12px;display:block}
-.qrow .opt span{padding-block:9px;padding-inline:12px}
-.qrow .opt:hover span{border-color:color-mix(in srgb,var(--brand) 45%,var(--line))}
-.qrow .opt input:checked + span{border-color:var(--brand);background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(124,58,237,.12));box-shadow:0 2px 8px rgba(37,99,235,.18)}
-.qrow .opt input:checked + span b{color:var(--brand)}
-.layout{align-items:stretch}
-.side .card{position:static;height:100%;display:flex;flex-direction:column;margin:0}
-#wizard > .card{margin:0}
-.ladder{display:grid;gap:8px;margin-block-start:14px}
-.rung{display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;border:1.5px solid var(--line);opacity:.55;transition:.25s}
-.rung .rk{width:32px;height:32px;border-radius:9px;background:var(--pc);color:#fff;font-weight:800;display:grid;place-items:center;flex:none}
-.rung b{display:block;font-size:14px}.rung small{color:var(--muted);font-size:12px;line-height:1.3;display:block}
-.rung.on{opacity:1;border-color:var(--pc);background:color-mix(in srgb,var(--pc) 10%,transparent);box-shadow:0 4px 14px color-mix(in srgb,var(--pc) 22%,transparent);transform:scale(1.02)}
-.side-foot{margin-block-start:auto;padding-block-start:14px;border-block-start:1px solid var(--line)}
-.sample-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-block:14px;padding-inline:20px}
-.sample-bar .sb-t{font-weight:700}.sample-bar .sb-s{color:var(--muted);font-size:13px;flex:1;min-width:160px}
-body.has-result #sampleBar{display:none!important}
-
-.wiz-actions{display:flex;justify-content:space-between;gap:10px;margin-block-start:8px}
-.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding-block:10px;padding-inline:18px;border-radius:12px;font:inherit;font-weight:600;cursor:pointer;transition:.15s}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}.btn:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none}
-.btn.primary{background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;border:0}
-.btn.big{padding-block:13px;padding-inline:26px;font-size:16px}.btn.ghost{background:transparent}.btn.danger{color:#DC2626}
-.side .card{position:sticky;inset-block-start:16px}
-.meter{height:12px;background:var(--surface2);border-radius:999px;overflow:hidden;margin-block:10px}
-.meter i{display:block;height:100%;background:linear-gradient(90deg,#0EA5A4,#2563EB,#7C3AED);border-radius:999px;transition:width .35s}
-.livepkg{display:inline-block;color:#fff;padding-block:6px;padding-inline:14px;border-radius:999px;font-weight:700;transition:.3s}
-.samples{display:flex;flex-wrap:wrap;gap:8px}.samples button{font-size:13px;padding-block:7px;padding-inline:12px}
-.small{font-size:13px}.muted{color:var(--muted)}.nowrap{white-space:nowrap}
-.hero-result{background:linear-gradient(135deg,var(--pc),#1E293B);color:#fff;border-radius:22px;padding:26px;box-shadow:var(--shadow);margin-block-end:18px;animation:pop .5s ease}
-@keyframes pop{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
-.hr-top{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-.badge-xl{width:96px;height:96px;border-radius:26px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:48px;font-weight:800;border:2px solid rgba(255,255,255,.35)}
-.hero-result h2{margin:2px 0 6px;font-size:30px}.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:12px;opacity:.85}
-.addon-title{font-size:16px;background:rgba(255,255,255,.18);padding-block:4px;padding-inline:10px;border-radius:999px;vertical-align:middle}
-.promise{font-size:17px;font-weight:600;margin:0 0 6px}.cheer{margin:0;opacity:.92}
-.score-row{display:flex;gap:10px;flex-wrap:wrap;margin-block-start:18px}
-.sc{background:rgba(255,255,255,.14);padding-block:8px;padding-inline:12px;border-radius:12px;font-size:13px;display:flex;gap:10px;align-items:center}
-.dots{display:flex;gap:4px}.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3)}.dots i.on{background:#fff}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid2 .card{margin:0}
-@media (max-width:820px){.grid2{grid-template-columns:1fr}}
-.grid2 + .card,.grid2 + section{margin-block-start:18px}
-ul.ticks,ul.reasons{list-style:none;padding:0;margin:0}
-ul.ticks li{padding-inline-start:26px;position:relative;margin-block-end:6px}
-ul.ticks li::before{content:"✓";position:absolute;inset-inline-start:0;color:#fff;background:var(--ok);width:18px;height:18px;border-radius:50%;font-size:11px;display:grid;place-items:center;inset-block-start:3px}
-ul.reasons li{padding-block:7px;border-block-end:1px dashed var(--line)}
-.hint{background:var(--surface2);padding:10px;border-radius:12px;font-size:13px;margin-block-start:12px}
-.pill{font-size:11px;font-weight:700;background:#FEF3C7;color:#92400E;padding-block:2px;padding-inline:8px;border-radius:999px}
-.pill.soft{background:#DBEAFE;color:#1E40AF}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-block-end:10px}
-.kpis div{background:var(--surface2);border-radius:12px;padding:10px;text-align:center}.kpis b{display:block;font-size:16px}.kpis span{font-size:12px;color:var(--muted)}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;gap:6px;align-items:center;padding-block:6px;padding-inline:10px;border-radius:10px;background:var(--surface2);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:13px}
-a.chip:hover{border-color:var(--brand)}.chip small{color:var(--muted)}
-.tag{font-size:10px;font-weight:800;padding-block:2px;padding-inline:6px;border-radius:6px;color:#fff}
-.t-A{background:#7C3AED}.t-C{background:#2563EB}.t-CW{background:#DB2777}.t-GO{background:#059669}.t-SG{background:#B45309}.t-AIA{background:#0891B2}.t-PP{background:#9333EA}.t-D365{background:#0F766E}.t-M365{background:#EA580C}.t-FIN{background:#475569}
-.st{font-size:10px;font-weight:700;padding-block:2px;padding-inline:6px;border-radius:6px;background:#DCFCE7;color:#166534}
-.st-New{background:#DBEAFE;color:#1E40AF}.st-IDpending,.st-Roadmap{background:#FEF3C7;color:#92400E}.st-Retired{background:#FEE2E2;color:#991B1B}
-.addons{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:820px){.addons{grid-template-columns:1fr}}
-.addon{display:flex;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
-.addon .ai{font-size:24px}.addon p{margin:2px 0 8px;font-size:13px;color:var(--muted)}
-.nextsteps li{margin-block-end:6px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-block:12px}
-.disclaimer{font-size:12px;color:var(--muted);margin:0}
-.pkggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}@media (max-width:980px){.pkggrid{grid-template-columns:1fr}}
-.pkg{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border-block-start:6px solid var(--pc);padding:20px;border-inline:1px solid var(--line);border-block-end:1px solid var(--line)}
-.pkg header{display:flex;gap:12px;align-items:center;margin-block-end:10px}.pkg h3{margin:0}.pkg em{color:var(--muted);font-size:13px}
-.badge-l{width:48px;height:48px;border-radius:14px;background:var(--pc);color:#fff;font-weight:800;font-size:22px;display:grid;place-items:center}
-.pkg h4{margin-block:14px 6px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--pc)}
-.pkg ul{margin:0;padding-inline-start:18px;font-size:14px}.pkg ul.ticks{padding:0}
-.pkg details{margin-block-start:12px}.pkg summary{cursor:pointer;font-weight:600;font-size:13px;margin-block-end:8px}
-.signals{background:var(--surface2);padding:8px;border-radius:10px;margin-block-start:12px}
-table{width:100%;border-collapse:collapse}th,td{text-align:start;padding:10px;border-block-end:1px solid var(--line);vertical-align:top}
-th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--surface2);position:sticky;inset-block-start:0}
-.tablewrap{overflow:auto;max-height:620px;border:1px solid var(--line);border-radius:14px}
-.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-block-end:12px}@media (max-width:820px){.filters{grid-template-columns:1fr 1fr}}
-.mini{display:inline-block;color:#fff;font-weight:800;font-size:11px;width:22px;height:22px;border-radius:6px;text-align:center;line-height:22px;margin-inline-end:4px}
-.link{color:var(--brand);font-weight:600;text-decoration:none}
-.settabs{display:flex;gap:8px;margin-block-end:16px;flex-wrap:wrap}
-.settabs button,.ptab{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding-block:9px;padding-inline:16px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
-.settabs button.active{background:var(--ink);color:var(--surface)}
-.ptab.active{background:var(--pc);color:#fff;border-color:var(--pc)}
-#pkgTabs{display:flex;gap:8px;margin-block-end:16px;flex-wrap:wrap}
-.picker{max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:8px;display:grid;gap:6px}
-.pick{display:flex;gap:8px;align-items:center;padding-block:6px;padding-inline:8px;border-radius:8px;font-size:13px;cursor:pointer}
-.pick.on{background:rgba(37,99,235,.08)}
-.icon-btn{border:0;background:transparent;cursor:pointer;font-size:16px;padding:4px}
-.master{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px;border-radius:14px;background:var(--surface2);margin-block-end:12px}
-.switch{position:relative;display:inline-block;width:44px;height:24px;flex:none}.switch input{opacity:0;width:0;height:0;position:absolute}
-.switch i{position:absolute;inset:0;background:#CBD5E1;border-radius:999px;cursor:pointer;transition:.2s}
-.switch i::before{content:"";position:absolute;width:18px;height:18px;inset-inline-start:3px;inset-block-start:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.switch input:checked + i{background:linear-gradient(90deg,#10B981,#2563EB)}.switch input:checked + i::before{transform:translateX(20px)}
-.switch input:focus-visible + i{outline:3px solid rgba(37,99,235,.35)}
-.switch.big{width:54px;height:30px}.switch.big i::before{width:24px;height:24px}.switch.big input:checked + i::before{transform:translateX(24px)}
-.addon-card{border:1px solid var(--line);border-radius:14px;padding:14px;margin-block-end:12px;background:var(--surface);transition:.2s}
-.addon-card.off{opacity:.6}.addon-card.off .ac-body{display:none}
-.ac-head{display:flex;gap:10px;align-items:center}.ac-icon{font-size:20px}.ac-body{margin-block-start:12px}
-.inline{display:flex;gap:8px;align-items:center}
-#addonAdmin.dim{opacity:.45;pointer-events:none}
-.addon-edit{display:grid;grid-template-columns:60px 1fr 2fr 1.3fr;gap:8px;margin-block-end:8px}@media (max-width:820px){.addon-edit{grid-template-columns:1fr}}
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:grid;place-items:center;z-index:50;padding:20px}
-.modal[hidden]{display:none}.modal .card{width:min(640px,100%);max-height:90vh;overflow:auto}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-block-end:12px}
-#toast{position:fixed;inset-block-end:24px;inset-inline-start:50%;transform:translateX(-50%) translateY(30px);background:var(--ink);color:var(--surface);padding-block:10px;padding-inline:18px;border-radius:999px;opacity:0;transition:.25s;z-index:60;font-weight:600}
-#toast.show{opacity:1;transform:translateX(-50%)}
-#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:40}
-#confetti span{position:absolute;inset-block-start:-12px;width:9px;height:14px;border-radius:2px;animation:fall 2.6s ease-in forwards}
-@keyframes fall{to{inset-block-start:105%;opacity:.2;rotate:540deg}}
-.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media (max-width:820px){.howto{grid-template-columns:1fr}}
-.howto div{background:var(--surface2);border-radius:14px;padding:14px;font-size:14px}.howto b{display:block;font-size:15px}
-footer{text-align:center;color:var(--muted);font-size:12px;padding-block-end:30px}
-.mapping summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.mapping summary::-webkit-details-marker{display:none}.mapping summary h3{margin:0}
-.mapping .chev::after{content:" ▾"}.mapping details[open] .chev{font-size:0}.mapping details[open] .chev::after{font-size:13px;content:"Hide ▴"}
-.print-only{display:none}
-.pw-card{width:min(420px,100%)!important}.pw-icon{width:64px;height:64px;margin:4px auto 10px;border-radius:20px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,var(--brand),var(--brand2))}
-.pw-err{color:#DC2626;font-size:13px;font-weight:600;margin-block:-6px 10px}
-[hidden]{display:none!important}
-body.has-result .headline{display:none}
-body.has-result .top{padding-block-end:56px}
-.offer{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-block-end:18px}
-@media (max-width:820px){.offer{grid-template-columns:1fr}}
-.offer-card{position:relative;border-radius:22px;padding:24px;background:var(--surface);border:2px solid var(--pc);box-shadow:0 14px 34px color-mix(in srgb,var(--pc) 22%,transparent);overflow:hidden}
-.offer-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,color-mix(in srgb,var(--pc) 12%,transparent),transparent 60%);pointer-events:none}
-.offer-card > *{position:relative}
-.offer-label{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--pc);padding-block:6px;padding-inline:14px;border-radius:999px;margin-block-end:14px}
-.offer-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.offer-list li{font-size:17px;font-weight:600;padding-block:12px;padding-inline:44px 14px;border-radius:14px;background:var(--surface2);position:relative}
-.offer-list li::before{content:"✓";position:absolute;inset-inline-start:12px;inset-block-start:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--pc);color:#fff;font-size:13px;display:grid;place-items:center}
-.price-big{font-size:34px;font-weight:800;line-height:1.15;margin-block-end:14px;background:linear-gradient(90deg,var(--pc),#1E293B);-webkit-background-clip:text;background-clip:text;color:transparent}
-@media (prefers-color-scheme: dark){.price-big{background:none;color:#fff}}
-.offer-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-block-end:12px}
-.offer-kpis div{background:var(--surface2);border-radius:12px;padding:12px;text-align:center}.offer-kpis b{display:block;font-size:20px}.offer-kpis span{font-size:12px;color:var(--muted)}
-@media print{
- body{background:#fff}
- body *{visibility:visible}
- .top,.nav,.side,#wizard,#howItWorks,.view:not(#view-recommend),#confetti,footer,#toast,.modal,.card.next,.actions{display:none!important}
- main{margin:0;padding:0;max-width:none}
- .card,.hero-result{box-shadow:none;break-inside:avoid}
- .hero-result,.offer-card,.offer-label,.offer-list li::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
- .offer-card{box-shadow:none;break-inside:avoid}
- .price-big{color:#0F172A;background:none}
- .tag,.st,.pill,ul.ticks li::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
- .mapping .chev{display:none}
- .print-only{display:block}
- #printStamp{font-size:11px;color:#64748B;text-align:center;margin-block-start:10px}
-}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
-</style>
+<link rel="stylesheet" href="stylesheets/main.css">
+<script defer src="data/catalogue.js"></script>
+<script defer src="data/packages.js"></script>
+<script defer src="data/addons.js"></script>
+<script defer src="data/config.js"></script>
+<script defer src="scripts/state.js"></script>
+<script defer src="scripts/recommendations.js"></script>
+<script defer src="scripts/shared.js"></script>
+<script defer src="scripts/app.js"></script>
 </head>
 <body>
 <div id="confetti" aria-hidden="true"></div>
@@ -222,7 +24,6 @@ body.has-result .top{padding-block-end:56px}
       <button data-view="recommend" class="active">✨ Get a recommendation</button>
       <button data-view="packages">📦 Packages</button>
       <button data-view="catalogue">📚 VBD catalogue</button>
-      <button data-view="settings">🔒 Settings</button>
     </nav>
   </div>
   <div class="headline"><h2>Turn every Copilot deal into a success story.</h2>
@@ -231,35 +32,21 @@ body.has-result .top{padding-block-end:56px}
 </div></header>
 
 <main>
+<div class="card" id="startupError" role="alert" hidden></div>
 <!-- RECOMMEND -->
 <section class="view" id="view-recommend">
   <div class="card sample-bar" id="sampleBar"><span class="sb-t">🎯 Try a sample deal</span><span class="sb-s">See how the advisor works in one click.</span>
-    <div class="samples" id="samples"><button class="btn" data-s="s">🌱 Starter</button><button class="btn" data-s="m">🚀 Scaling</button><button class="btn" data-s="l">✨ Transforming</button></div></div>
+    <div class="samples" id="samples"></div></div>
   <div id="wizard" class="layout">
     <div class="card">
       <form id="dealForm" autocomplete="off">
         <div class="wsec">
           <div class="wsec-h lic-row"><span class="wnum">1</span><div class="lic-text"><label for="licenses"><b>Copilot licences (seats)</b></label><div class="small muted" id="licHint"></div></div>
-            <div class="lic-input"><input type="number" id="licenses" min="0" step="50" value="1000"><span>seats</span></div></div>
+            <div class="lic-input"><input type="number" id="licenses" min="0" step="50"><span>seats</span></div></div>
         </div>
         <div class="wsec">
           <div class="wsec-h"><span class="wnum">2</span><div><b>Customer journey</b><div class="small muted">Pick the option that best describes the customer today.</div></div></div>
-          <div class="qrow" role="radiogroup" aria-label="Where is the customer with Copilot today?"><div class="qlbl">Where is the customer with Copilot today?</div><div class="opts">
-            <label class="opt"><input type="radio" name="stage" value="0" checked><span><b>🔍 Evaluating</b><small>Just purchased or getting started</small></span></label>
-            <label class="opt"><input type="radio" name="stage" value="1"><span><b>🛠️ Deploying</b><small>Rollout is underway</small></span></label>
-            <label class="opt"><input type="radio" name="stage" value="2"><span><b>🏁 Broadly deployed</b><small>In use across the organisation</small></span></label></div></div>
-          <div class="qrow" role="radiogroup" aria-label="What does adoption need most?"><div class="qlbl">What does adoption need most?</div><div class="opts">
-            <label class="opt"><input type="radio" name="adoption" value="0" checked><span><b>👋 First users</b><small>Initial enablement &amp; skilling</small></span></label>
-            <label class="opt"><input type="radio" name="adoption" value="1"><span><b>📣 Scale</b><small>Expand across teams / BUs</small></span></label>
-            <label class="opt"><input type="radio" name="adoption" value="2"><span><b>📈 Optimise</b><small>Improve usage &amp; prove value</small></span></label></div></div>
-          <div class="qrow" role="radiogroup" aria-label="What is the agent ambition?"><div class="qlbl">What is the agent ambition?</div><div class="opts">
-            <label class="opt"><input type="radio" name="agents" value="0" checked><span><b>— None yet</b><small>Copilot focus for now</small></span></label>
-            <label class="opt"><input type="radio" name="agents" value="1"><span><b>🤖 First agents</b><small>1–3 productivity agents</small></span></label>
-            <label class="opt"><input type="radio" name="agents" value="2"><span><b>⚙️ Core processes</b><small>Automate business-critical work</small></span></label></div></div>
-          <div class="qrow" role="radiogroup" aria-label="Governance / integration complexity"><div class="qlbl">Governance / integration complexity</div><div class="opts">
-            <label class="opt"><input type="radio" name="complexity" value="0" checked><span><b>Standard</b><small>Single BU, standard data</small></span></label>
-            <label class="opt"><input type="radio" name="complexity" value="1"><span><b>Moderate</b><small>Several BUs or integrations</small></span></label>
-            <label class="opt"><input type="radio" name="complexity" value="2"><span><b>High</b><small>Regulated, multi-country, testing needed</small></span></label></div></div>
+          <div id="journeyQuestions"></div>
         </div>
         <div class="wsec" id="secSignals">
           <div class="wsec-h"><span class="wnum" id="numSignals">3</span><div><b>Special signals</b><div class="small muted" id="trigIntro">Tick anything that applies — we'll suggest the right add-ons. Nothing applies? Skip it.</div></div></div>
@@ -275,10 +62,10 @@ body.has-result .top{padding-block-end:56px}
           <div class="row2">
             <div class="field" id="fSeller"><label class="lbl" for="seller">Your name</label><input type="text" id="seller" placeholder="Account executive"></div>
             <div class="field" id="fMotion"><label class="lbl" for="motion">Deal motion</label>
-              <select id="motion"><option value="netnew">Net-new Copilot</option><option value="expansion">Copilot expansion</option><option value="agents">Agents expansion</option><option value="security">E7 / security-led</option><option value="renewal">Renewal &amp; value realisation</option></select></div>
+              <select id="motion"></select></div>
           </div>
         </div>
-        <div class="wiz-actions" style="justify-content:flex-end">
+        <div class="wiz-actions justify-end">
           <button type="button" class="btn primary big" id="btnRecommend">✨ Recommend my package</button>
         </div>
       </form>
@@ -286,704 +73,47 @@ body.has-result .top{padding-block-end:56px}
     <aside class="side"><div class="card">
       <h3>📊 Live fit</h3>
       <div class="small muted">Deal signal score</div>
-      <div style="font-size:34px;font-weight:800"><span id="liveScore">0</span><span class="muted" style="font-size:18px">/10</span></div>
-      <div class="meter"><i id="liveBar" style="width:0%"></i></div>
-      <div class="small muted" style="margin-bottom:6px">Currently pointing to</div>
+      <div class="live-score"><span id="liveScore">0</span><span class="muted score-max">/10</span></div>
+      <div class="meter"><i class="meter-empty" id="liveBar"></i></div>
+      <div class="small muted mb-6">Currently pointing to</div>
       <span class="livepkg" id="livePkg">S</span>
       <div class="ladder" id="ladder"></div>
-      <p class="small muted side-foot" style="margin-bottom:0">💡 Licences are one signal — ambition and complexity matter just as much.</p>
+      <p class="small muted side-foot mb-0">💡 Licences are one signal — ambition and complexity matter just as much.</p>
     </div></aside>
   </div>
   <div id="result" hidden></div>
   <div class="print-only" id="printStamp"></div>
-  <div class="card" id="howItWorks" style="margin-top:18px"><h3>🧭 How it works</h3><div class="howto">
+  <div class="card mt-18" id="howItWorks"><h3>🧭 How it works</h3><div class="howto">
     <div><b>1 · Share the basics</b>Licences, deal motion and where the customer is on their Copilot journey.</div>
-    <div><b>2 · Get your package</b>Foundation, Adopt &amp; Extend or Transform — with the reasons, so you can explain it confidently.</div>
+    <div><b>2 · Get your package</b><span id="packageStory"></span></div>
     <div><b>3 · Attach &amp; validate</b>Copy the summary into your proposal and confirm scope with your Unified specialist.</div></div></div>
 </section>
 
 <!-- PACKAGES -->
 <section class="view" id="view-packages" hidden>
-  <div class="card"><h3>📦 Three packages, one simple story</h3><p class="muted" style="margin:0">Packages are cumulative: Adopt &amp; Extend builds on Foundation, Transform builds on Adopt &amp; Extend. Sizes reflect customer ambition — not customer size.</p></div>
+  <div class="card"><h3>📦 Three packages, one simple story</h3><p class="muted no-margin" id="packageInheritance"></p></div>
   <div class="pkggrid" id="pkgGrid"></div>
-  <div class="card" id="addonSection" style="margin-top:18px"><h3>➕ Optional trigger-based add-ons</h3><div class="addons" id="addonGrid"></div></div>
-  <div style="text-align:center"><button class="btn primary big" data-goto="recommend">✨ Find the right package for my deal</button></div>
+  <div class="card mt-18" id="addonSection"><h3>➕ Optional trigger-based add-ons</h3><div class="addons" id="addonGrid"></div></div>
+  <div class="text-center"><button class="btn primary big" data-goto="recommend">✨ Find the right package for my deal</button></div>
 </section>
 
 <!-- CATALOGUE -->
 <section class="view" id="view-catalogue" hidden>
-  <div class="card"><div class="toolbar"><h3 style="margin:0">📚 Available VBDs</h3><span class="small muted" id="catCount"></span></div>
+  <div class="card"><div class="toolbar"><h3 class="no-margin">📚 Available VBDs</h3><span class="small muted" id="catCount"></span></div>
     <div class="filters">
       <input type="text" id="catSearch" placeholder="Search by name or ID…" aria-label="Search VBDs">
-      <select id="catTag" aria-label="Unified offering"><option value="">All offerings</option><option value="A">A · EDE – Agents</option><option value="C">C · EDE/DE – Copilot and Agents</option><option value="CW">CW · Copilot Cowork</option><option value="GO">GO · Catalyst / Copilot GO</option><option value="SG">SG · Secured &amp; Governed Agentic AI</option><option value="AIA">AIA · AI Apps and Agents</option><option value="PP">PP · Power Platform and Agentic Apps</option><option value="D365">D365 · Dynamics 365 / DSP START</option><option value="M365">M365 · Microsoft 365 Foundations</option><option value="FIN">FIN · FinOps for AI</option></select>
-      <select id="catStage" aria-label="Journey stage"><option value="">All journey stages</option><option>Inspire &amp; Design</option><option>Empower &amp; Achieve</option><option>Secure &amp; Govern</option><option>Scale &amp; Optimize</option></select>
-      <select id="catStatus" aria-label="Status"><option value="">All statuses</option><option>Active</option><option>New</option><option>ID pending</option><option>Roadmap</option><option>Retired</option></select>
+      <select id="catTag" aria-label="Unified offering"><option value="">All offerings</option></select>
+      <select id="catStage" aria-label="Journey stage"><option value="">All journey stages</option></select>
+      <select id="catStatus" aria-label="Status"><option value="">All statuses</option></select>
     </div>
     <div class="tablewrap"><table><thead><tr><th>VBD</th><th>ESXP ID</th><th>Unified offering</th><th>Journey / pillar</th><th>Status</th><th>In package</th><th></th></tr></thead><tbody id="catBody"></tbody></table></div>
-    <p class="small muted">Source: FY27 Copilot &amp; Agents VBDs — complete list at a glance (DE / EDE), checked 5 Oct 2026, covering all four AI Business Solutions conversations. Cowork package mapping and pending IDs need validation before quoting.</p>
+    <p class="small muted" id="catalogueSource"></p>
   </div>
 </section>
 
-<!-- SETTINGS -->
-<section class="view" id="view-settings" hidden>
-  <div class="card"><div class="toolbar"><div><h3 style="margin:0">⚙️ Settings</h3><span class="small muted">Changes are saved automatically in this browser. Export to share with your team.</span></div>
-    <div class="actions" style="margin:0"><button class="btn" id="btnExport">⬇️ Export</button><button class="btn" id="btnImport">⬆️ Import</button><button class="btn" id="btnLock">🔒 Lock</button><button class="btn danger" id="btnReset">↺ Reset defaults</button><input type="file" id="fileImport" accept="application/json" hidden></div></div>
-    <div class="settabs"><button class="active" data-pane="paneP">📦 Packages</button><button data-pane="paneV">📚 VBD list</button><button data-pane="paneA">➕ Add-ons</button><button data-pane="paneR">🎚️ Decision rules</button><button data-pane="paneW">🧭 Wizard</button><button data-pane="paneO">🧾 Output</button></div>
-
-    <div class="setpane" id="paneP">
-      <div id="pkgTabs"></div>
-      <form id="pkgForm" autocomplete="off">
-        <div class="row3">
-          <div class="field"><label class="lbl">Package title</label><input type="text" name="name"></div>
-          <div class="field"><label class="lbl">Icon (emoji)</label><input type="text" name="icon"></div>
-          <div class="field"><label class="lbl">Colour</label><input type="text" name="color" placeholder="#2563EB"></div>
-        </div>
-        <div class="row2">
-          <div class="field"><label class="lbl">Seller shorthand</label><input type="text" name="tagline"></div>
-          <div class="field"><label class="lbl">Promise</label><input type="text" name="promise"></div>
-        </div>
-        <div class="row2">
-          <div class="field"><label class="lbl">Suitable when <span class="help">(one per line)</span></label><textarea name="suitable"></textarea></div>
-          <div class="field"><label class="lbl">Customer outcome <span class="help">(one per line)</span></label><textarea name="outcomes"></textarea></div>
-        </div>
-        <div class="row2">
-          <div class="field"><label class="lbl">Scope of services <span class="help">(one per line)</span></label><textarea name="scope"></textarea></div>
-          <div class="field"><label class="lbl">Customer commitment needed <span class="help">(one per line)</span></label><textarea name="commitment"></textarea></div>
-        </div>
-        <div class="row3">
-          <div class="field"><label class="lbl">EDE hours – min</label><input type="number" name="hoursMin" min="0"></div>
-          <div class="field"><label class="lbl">EDE hours – max</label><input type="number" name="hoursMax" min="0"></div>
-          <div class="field"><label class="lbl">Indicative price</label><input type="text" name="price"></div>
-        </div>
-        <div class="row3">
-          <div class="field"><label class="lbl">Typical duration</label><input type="text" name="duration"></div>
-          <div class="field"><label class="lbl">Delivery vehicle (DE / EDE)</label><input type="text" name="vehicle"></div>
-          <div class="field"><label class="lbl">Typical deal signals</label><input type="text" name="signals"></div>
-        </div>
-        <div class="field"><div class="toolbar"><label class="lbl" style="margin:0">VBDs added at this level <span class="help" id="pickCount"></span></label><input type="text" id="pickSearch" placeholder="Filter VBDs…" style="max-width:260px" aria-label="Filter VBDs"></div>
-          <div class="picker" id="vbdPicker"></div><div class="help">Selections save instantly. Higher packages automatically include the VBDs of lower ones.</div></div>
-        <button type="button" class="btn primary" id="btnSavePkg">💾 Save package</button>
-      </form>
-    </div>
-
-    <div class="setpane" id="paneV" hidden>
-      <div class="toolbar"><input type="text" id="admSearch" placeholder="Search VBDs…" style="max-width:320px" aria-label="Search VBDs"><button class="btn primary" id="btnAddVbd">＋ Add VBD</button></div>
-      <div class="tablewrap"><table><thead><tr><th>ID</th><th>Name</th><th>Offering</th><th>Journey stage</th><th>Status</th><th></th></tr></thead><tbody id="admBody"></tbody></table></div>
-    </div>
-
-    <div class="setpane" id="paneA" hidden>
-      <div class="master">
-        <label class="switch big"><input type="checkbox" id="addonsMaster" aria-label="Offer add-ons"><i></i></label>
-        <div><b>Offer trigger-based add-ons</b><div class="small muted">When OFF, add-ons are hidden everywhere: on the Packages page, in the wizard's step 3 and in recommendations.</div></div>
-        <button class="btn primary" id="btnAddAddon" style="margin-inline-start:auto">＋ Add add-on</button>
-      </div>
-      <p class="small muted">Switch each add-on ON or OFF. OFF add-ons stay saved here but are not shown on the Packages page, not asked in the wizard and never recommended.</p>
-      <div id="addonAdmin"></div>
-    </div>
-
-    <div class="setpane" id="paneW" hidden>
-      <p class="small muted" style="margin-top:0">The wizard always starts with Copilot licences, then the customer-journey questions. Switch on the optional fields below to ask for them in a “Deal details” section at the end. All are OFF by default.</p>
-      <div class="master"><label class="switch big"><input type="checkbox" data-wiz="showCustomer" aria-label="Customer details"><i></i></label>
-        <div><b>Customer details</b><div class="small muted">Customer name and opportunity / proposal ID — shown on the recommendation and in the copied summary.</div></div></div>
-      <div class="master"><label class="switch big"><input type="checkbox" data-wiz="showSeller" aria-label="Seller name"><i></i></label>
-        <div><b>Seller details</b><div class="small muted">The seller's own name.</div></div></div>
-      <div class="master"><label class="switch big"><input type="checkbox" data-wiz="showMotion" aria-label="Deal motion"><i></i></label>
-        <div><b>Deal motion</b><div class="small muted">Net-new, expansion, agents, E7 / security-led or renewal. When ON, a renewal suggests + Value Realisation and a security-led deal suggests + Secure &amp; Govern.</div></div></div>
-    </div>
-
-    <div class="setpane" id="paneO" hidden>
-      <div class="master">
-        <label class="switch big"><input type="checkbox" id="printToggle" aria-label="Allow Print / PDF"><i></i></label>
-        <div><b>Allow Print / PDF on the recommendation</b><div class="small muted">When ON, sellers see a “Print / PDF” button. The printout contains only the recommended package — no header, wizard, “How it works” or footer. Default: ON.</div></div>
-      </div>
-    </div>
-
-    <div class="setpane" id="paneR" hidden>
-      <p class="small muted" style="margin-top:0">Five signals are scored 0–2 (max 10). Thresholds are illustrative design assumptions — calibrate them against historical opportunities.</p>
-      <div class="row2">
-        <div class="field"><label class="lbl" for="rBand1">Licence band 1 starts at (score 1)</label><input type="number" id="rBand1" min="0"></div>
-        <div class="field"><label class="lbl" for="rBand2">Licence band 2 starts at (score 2)</label><input type="number" id="rBand2" min="0"></div>
-        <div class="field"><label class="lbl" for="rThrM">Score needed for M</label><input type="number" id="rThrM" min="0" max="10"></div>
-        <div class="field"><label class="lbl" for="rThrL">Score needed for L</label><input type="number" id="rThrL" min="0" max="10"></div>
-        <div class="field"><label class="lbl" for="rHigh">High complexity requires at least</label><select id="rHigh"><option value="S">S</option><option value="M">M</option><option value="L">L</option></select></div>
-        <div class="field"><label class="lbl">&nbsp;</label><label class="checks" style="display:block"><label><input type="checkbox" id="rCore"><span><b>Core-process agents force L</b><small>Ambition beats seat count</small></span></label></label></div>
-      </div>
-      <button type="button" class="btn primary" id="btnSaveRules">💾 Save rules</button>
-    </div>
-  </div>
-</section>
 </main>
 
-<div class="modal" id="pwModal" hidden><div class="card pw-card" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
-  <div class="pw-icon">🔒</div>
-  <h3 id="pwTitle" style="justify-content:center">Settings are protected</h3>
-  <p class="small muted" style="text-align:center;margin-top:0">Enter the admin password to configure packages, VBDs and rules.</p>
-  <form id="pwForm" autocomplete="off">
-    <div class="field"><label class="lbl" for="pwInput">Password</label><input type="password" id="pwInput" autocomplete="off"></div>
-    <div class="pw-err" id="pwError" hidden>That password isn't right — please try again.</div>
-    <div class="actions" style="justify-content:center"><button type="submit" class="btn primary">🔓 Unlock settings</button><button type="button" class="btn" id="pwCancel">Cancel</button></div>
-  </form>
-</div></div>
-<div class="modal" id="vbdModal" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="vbdModalTitle">
-  <h3 id="vbdModalTitle">Add VBD</h3>
-  <form id="vbdForm" autocomplete="off">
-    <div class="row2"><div class="field"><label class="lbl">ESXP ID</label><input type="text" name="id" placeholder="e.g. 17072"></div>
-      <div class="field"><label class="lbl">Status</label><select name="status"><option>Active</option><option>New</option><option>ID pending</option><option>Roadmap</option><option>Retired</option></select></div></div>
-    <div class="field"><label class="lbl">Name</label><input type="text" name="name"></div>
-    <div class="row3"><div class="field"><label class="lbl">Unified offering</label><select name="tag"><option value="A">A · EDE – Agents</option><option value="C">C · Copilot and Agents</option><option value="CW">CW · Cowork</option><option value="GO">GO · Catalyst</option><option value="SG">SG · Secured &amp; Governed</option><option value="AIA">AIA · AI Apps and Agents</option><option value="PP">PP · Power Platform and Agentic Apps</option><option value="D365">D365 · Dynamics 365 / DSP START</option><option value="M365">M365 · Microsoft 365 Foundations</option><option value="FIN">FIN · FinOps for AI</option></select></div>
-      <div class="field"><label class="lbl">Journey stage</label><select name="stage"><option>Inspire &amp; Design</option><option>Empower &amp; Achieve</option><option>Secure &amp; Govern</option><option>Scale &amp; Optimize</option></select></div>
-      <div class="field"><label class="lbl">Pillar</label><select name="pillar"><option>Business Value</option><option>Enablement &amp; Deployment</option><option>Skilling &amp; Adoption</option><option>Infrastructure &amp; Governance</option></select></div></div>
-    <div class="field"><label class="lbl">Link (https)</label><input type="url" name="url" placeholder="Leave blank to auto-build the ESXP link"></div>
-    <div class="field"><label class="lbl">Notes</label><input type="text" name="notes" placeholder="Eligibility, duration, prerequisites…"></div>
-    <div class="actions"><button type="submit" class="btn primary">💾 Save VBD</button><button type="button" class="btn" id="btnCancelVbd">Cancel</button></div>
-  </form>
-</div></div>
 <div id="toast" role="status" aria-live="polite"></div>
 <footer>Prototype for internal seller enablement · Validate eligibility, funding, capacity and VBD availability with your Unified specialist before quoting.</footer>
-<script>
-const DEFAULT_VBDS = [
- // id, name, tag, stage, pillar, status
- ["17072","Microsoft 365 Copilot Business Value Workshop","C","Inspire & Design","Business Value","Active"],
- ["18273","Business Scenario Alignment with Microsoft Agent Factory","A","Inspire & Design","Business Value","Active"],
- ["AITW","AI Transformation Workshop","C","Inspire & Design","Business Value","ID pending"],
- ["18673","Copilot Cowork Immersion Workshop","CW","Inspire & Design","Business Value","New"],
- ["17957","Microsoft 365 Copilot Business Value Activation","C","Empower & Achieve","Business Value","New"],
- ["16489","CGO: Microsoft 365 Copilot Guided Outcomes (Copilot GO)","GO","Empower & Achieve","Business Value","New"],
- ["17924","User Experience Research & Feedback","A","Scale & Optimize","Business Value","Active"],
- ["18677","Copilot Cowork Optimization","CW","Scale & Optimize","Business Value","New"],
- ["18276","AI Architecture Design and Solutioning with Microsoft Agent Factory","A","Inspire & Design","Enablement & Deployment","Active"],
- ["17739","AI Agents Pilot – Workforce Productivity","A","Inspire & Design","Enablement & Deployment","Active"],
- ["17743","AI Agents Pilot – Business Process Automation","A","Inspire & Design","Enablement & Deployment","Active"],
- ["16630","User Experience Assessment","A","Inspire & Design","Enablement & Deployment","Active"],
- ["17046","Microsoft 365 Copilot Enablement Workshop","C","Empower & Achieve","Enablement & Deployment","Active"],
- ["17052","Microsoft 365 Copilot Enablement Activation","C","Empower & Achieve","Enablement & Deployment","Active"],
- ["18017","AI Agents Activation – Workforce Productivity","A","Empower & Achieve","Enablement & Deployment","Active"],
- ["17995","AI Agents Activation – Business Process Automation","A","Empower & Achieve","Enablement & Deployment","Active"],
- ["18179","AI Agents Activation – Sales & Service","A","Empower & Achieve","Enablement & Deployment","Active"],
- ["17969","Copilot Chat Activation","C","Empower & Achieve","Enablement & Deployment","Active"],
- ["18681","Copilot Cowork Activation","CW","Empower & Achieve","Enablement & Deployment","New"],
- ["16163","Microsoft 365 Foundations – Data Readiness for Microsoft 365 Copilot","C","Empower & Achieve","Enablement & Deployment","Active"],
- ["17452","AI Agents Testing & Evals","A","Secure & Govern","Enablement & Deployment","Active"],
- ["14379","Microsoft 365 Copilot Optimization","C","Scale & Optimize","Enablement & Deployment","Active"],
- ["18015","AI Agents Optimization","A","Scale & Optimize","Enablement & Deployment","Active"],
- ["18182","Copilot Chat Optimization","C","Scale & Optimize","Enablement & Deployment","Active"],
- ["17733","AI Agents Hackathon","A","Inspire & Design","Skilling & Adoption","Active"],
- ["17736","AI Agents Immersion Workshop (4-hour variant 17737)","A","Inspire & Design","Skilling & Adoption","Active"],
- ["17963","Microsoft 365 Copilot Immersion Workshop","C","Inspire & Design","Skilling & Adoption","New"],
- ["18135","Copilot Chat Immersion Workshop","C","Inspire & Design","Skilling & Adoption","Active"],
- ["17747","AI Agents Workshop","C","Empower & Achieve","Skilling & Adoption","Active"],
- ["18181","Copilot Chat Workshop","C","Empower & Achieve","Skilling & Adoption","Active"],
- ["16796","Microsoft 365 Copilot Prompt-A-Thon","C","Empower & Achieve","Skilling & Adoption","Active"],
- ["18184","Copilot Chat Prompt-a-thon","C","Empower & Achieve","Skilling & Adoption","Active"],
- ["18051","AI Agents Adoption for End Users Workshop","C","Empower & Achieve","Skilling & Adoption","Active"],
- ["17267","Copilot Chat Training for End Users","C","Empower & Achieve","Skilling & Adoption","Active"],
- ["15332","Business Solutions Advanced Change Coaching","A","Empower & Achieve","Skilling & Adoption","Active"],
- ["17966","Maximize Microsoft 365 Copilot Adoption","C","Scale & Optimize","Skilling & Adoption","Active"],
- ["AMA","Agent Management Activation","A","Empower & Achieve","Infrastructure & Governance","ID pending"],
- ["17729","AI Agents Governance Workshop","C","Secure & Govern","Infrastructure & Governance","Retired"],
- ["18339","Agent Management Workshop","A","Secure & Govern","Infrastructure & Governance","Active"],
- ["18047","AI Agents Center of Excellence (CoE)","C","Scale & Optimize","Infrastructure & Governance","Active"],
- ["AMO","Agent Management Optimization","A","Scale & Optimize","Infrastructure & Governance","Roadmap"],
- ["18218","AI Workload Security Assessment","SG","Secure & Govern","Infrastructure & Governance","Active"],
- ["18233","Securing & Governing Agentic AI with Entra","SG","Secure & Govern","Infrastructure & Governance","Active"],
- ["18307","SAF – AI Security: Strategy & Governance Planning","SG","Secure & Govern","Infrastructure & Governance","Active"],
- ["17737", "AI Agents Immersion Workshop – 4 Hours", "A", "Inspire & Design", "Skilling & Adoption", "New"],
- ["CWGO", "Microsoft 365 Cowork Guided Outcomes (Cowork)", "GO", "Empower & Achieve", "Business Value", "ID pending"],
- ["15435", "Business Solutions Governance Essentials", "SG", "Secure & Govern", "Infrastructure & Governance", "Active"],
- ["18370", "Workshop: Securing AI with Agent 365", "SG", "Secure & Govern", "Infrastructure & Governance", "Active"],
- ["17151", "Operations Essentials", "SG", "Scale & Optimize", "Infrastructure & Governance", "Active"],
- ["16587", "Activate – Power Platform Governance with CoE", "SG", "Secure & Govern", "Infrastructure & Governance", "Active"],
- ["16838", "Purview: DSPM & Securing Generative AI", "SG", "Secure & Govern", "Infrastructure & Governance", "New"],
- ["14199", "Defender for Cloud (AI workloads)", "SG", "Secure & Govern", "Infrastructure & Governance", "New"],
- ["15605", "Workshop – Building AI Apps & Agents", "AIA", "Inspire & Design", "Skilling & Adoption", "Active"],
- ["16786", "Elevate your AI Apps & Agents with Hackathon", "AIA", "Inspire & Design", "Skilling & Adoption", "Active"],
- ["14486", "Proof of Concept for AI Apps & Agents", "AIA", "Inspire & Design", "Enablement & Deployment", "Active"],
- ["16217", "Architecture Design & Review for AI Apps & Agents", "AIA", "Inspire & Design", "Infrastructure & Governance", "Active"],
- ["15448", "Solution Optimization for AI Apps & Agents", "AIA", "Scale & Optimize", "Enablement & Deployment", "Active"],
- ["14546", "Landing Zone Accelerator – Azure AI Platform", "AIA", "Empower & Achieve", "Infrastructure & Governance", "Active"],
- ["14368", "Build & Deploy Azure AI Platform: PoC", "AIA", "Inspire & Design", "Enablement & Deployment", "Active"],
- ["14544", "Build & Deploy Azure AI Platform: ADR", "AIA", "Inspire & Design", "Infrastructure & Governance", "Active"],
- ["14370", "Build & Deploy Azure AI Platform: Upskilling", "AIA", "Empower & Achieve", "Skilling & Adoption", "Active"],
- ["15740", "Build & Deploy Azure AI Platform: Solution Optimization", "AIA", "Scale & Optimize", "Enablement & Deployment", "Active"],
- ["17781", "Workshop – GenAI Ops", "AIA", "Empower & Achieve", "Enablement & Deployment", "Active"],
- ["15990", "AI Agents Production Readiness Assessment", "AIA", "Secure & Govern", "Infrastructure & Governance", "New"],
- ["18274", "Business Scenario Alignment with Agent Factory – 3 Days", "AIA", "Inspire & Design", "Business Value", "New"],
- ["18275", "Business Scenario Alignment with Agent Factory – 4 Hours", "AIA", "Inspire & Design", "Business Value", "New"],
- ["18277", "Architecture Design & Solutioning with Agent Factory – 1 Day", "AIA", "Inspire & Design", "Infrastructure & Governance", "New"],
- ["18278", "Architecture Design & Solutioning with Agent Factory – 3 Days", "AIA", "Inspire & Design", "Infrastructure & Governance", "New"],
- ["18039", "Agentic DevOps & GitHub Copilot Deep Dive", "AIA", "Inspire & Design", "Skilling & Adoption", "New"],
- ["18041", "GitHub Copilot Adoption & Value Realization", "AIA", "Scale & Optimize", "Business Value", "New"],
- ["17118", "Well-Architected Assessment for Azure AI", "AIA", "Secure & Govern", "Infrastructure & Governance", "New"],
- ["16215", "Activate – Power Platform – Copilot Studio", "PP", "Empower & Achieve", "Enablement & Deployment", "Active"],
- ["15206", "Activate – Power Platform – Copilot for Makers", "PP", "Empower & Achieve", "Enablement & Deployment", "Active"],
- ["17833", "Copilot Studio Integration with Azure AI Services", "PP", "Empower & Achieve", "Enablement & Deployment", "Active"],
- ["11533", "Activate – Power Platform: Governance with PPAC / CoE", "PP", "Secure & Govern", "Infrastructure & Governance", "Active"],
- ["15434", "Accelerate – Value Realization from Copilot for Sales", "D365", "Scale & Optimize", "Business Value", "Active"],
- ["16875", "Accelerate – Value Realization from Copilot for Customer Service", "D365", "Scale & Optimize", "Business Value", "Active"],
- ["18193", "AI Agents Activation – Dynamics 365 Finance and Operations", "D365", "Empower & Achieve", "Enablement & Deployment", "New"],
- ["13677", "Activate – Sales Agent for Dynamics 365 Sales", "D365", "Empower & Achieve", "Enablement & Deployment", "New"],
- ["15658", "Activate – Sales Agent for Third Party CRM", "D365", "Empower & Achieve", "Enablement & Deployment", "New"],
- ["16248", "Activate – Copilot in Dynamics 365 Finance and Operations", "D365", "Empower & Achieve", "Enablement & Deployment", "Active"],
- ["16595", "M365 Foundations – Roadmap and AI Readiness", "M365", "Inspire & Design", "Business Value", "Active"],
- ["17849", "Solution Optimization for FinOps (17849)", "FIN", "Scale & Optimize", "Infrastructure & Governance", "New"],
- ["17848", "Solution Optimization for FinOps (17848)", "FIN", "Scale & Optimize", "Infrastructure & Governance", "New"],
- ["17847", "Solution Optimization for FinOps (17847)", "FIN", "Scale & Optimize", "Infrastructure & Governance", "New"],
- ["17308", "Well-Architected Cost Optimization Assessment", "FIN", "Scale & Optimize", "Infrastructure & Governance", "Active"]
-].map(([id,name,tag,stage,pillar,status])=>({id,name,tag,stage,pillar,status,
-  url: /^\d+$/.test(id) ? `https://esxp.microsoft.com/#/omexplanding/services/${id}/geo/USA/details/1` : "", notes:""}));
-
-const TAGS = {
-  A:{label:"EDE – Agents (Hero · OID 20157)", short:"Agents"},
-  C:{label:"EDE/DE – Copilot and Agents (OID 20100 / 20099)", short:"Copilot & Agents"},
-  CW:{label:"Copilot Cowork (package mapping pending)", short:"Cowork"},
-  GO:{label:"DE Catalyst – Microsoft-Funded / Copilot GO (OID 20165)", short:"Catalyst GO"},
-  SG:{label:"EDE – Secured and Governed Agentic AI (Hero · OID 20156)", short:"Secure & Govern"},
-  AIA:{label:"EDE/DE – AI Apps and Agents (OID 20135)", short:"AI Apps & Agents"},
-  PP:{label:"EDE/DE – Power Platform and Agentic Apps", short:"Power Platform"},
-  D365:{label:"EDE/DE – Dynamics 365 · DE – DSP START", short:"Dynamics 365"},
-  M365:{label:"EDE – Microsoft 365 / DE – Microsoft 365 Foundations", short:"M365 Foundations"},
-  FIN:{label:"FinOps for AI (cross-solution)", short:"FinOps for AI"}
-};
-const DEFAULT_PACKAGES = [
- {key:"S", name:"Foundation", color:"#0EA5A4", icon:"🌱",
-  tagline:"Help them get started.",
-  promise:"Get ready, prove value and establish the foundations for Copilot.",
-  suitable:["Customer is evaluating or has just purchased Copilot","Scenarios are not yet prioritised","Data, permissions or adoption foundations need attention","Immediate goal is initial activation, not enterprise agent scale"],
-  outcomes:["Prioritised scenarios and value opportunities","Copilot readiness established","Initial users enabled and productive","Clear path from evaluation to deployment"],
-  scope:["200h of EDE Copilot & Agents (Foundation)","3 VBDs","3 × M365 Foundations – Roadmap and AI Readiness"],
-  vbds:["16595","17072","16163","17963","18135","17969","17267","18673"],
-  vehicle:"DE – Copilot and Agents (20099) · DE Catalyst / Copilot GO (20165) where eligible",
-  hoursMin:200, hoursMax:200, price:"1,4M SEK / 134k EUR", duration:"6–8 weeks",
-  commitment:["Executive sponsor","IT / M365 admin owner","Pilot user group"],
-  signals:"Up to ~500 seats · evaluating / just purchased · no agents yet"},
- {key:"M", name:"Adopt & Extend", color:"#2563EB", icon:"🚀",
-  tagline:"Help them scale and build.",
-  promise:"Drive adoption and extend Copilot with the first production agents.",
-  suitable:["Copilot is being deployed or already in use","Adoption must expand across teams or business units","Customer has identified agent scenarios","Customer wants pilots and initial production activation"],
-  outcomes:["Copilot adoption expanded across target teams","High-value use cases activated","First agents piloted and moved toward production","Initial agent management and governance practices established"],
-  scope:["400h of EDE Copilot & Agents (Enablement)","4 VBDs","6 × M365 Foundations – Roadmap and AI Readiness"],
-  vbds:["16595","17046","17052","16796","17736","17739","18017","18339","17966","18681"],
-  vehicle:"EDE – Copilot and Agents (20100)",
-  hoursMin:400, hoursMax:400, price:"2,5M SEK / 235k EUR", duration:"3–4 months",
-  commitment:["Executive sponsor","Adoption / change lead","Use-case owners for 1–3 agents","Champions network"],
-  signals:"~500–2,500 seats · deployment underway · first agents"},
- {key:"L", name:"Transform", color:"#7C3AED", icon:"✨",
-  tagline:"Help them transform.",
-  promise:"Transform business processes with governed agents at scale.",
-  suitable:["Agents will touch core business processes","Several production agents or business units are involved","Architecture, integrations, testing or evaluations are needed","Agent management, governance, CoE or value optimisation is required"],
-  outcomes:["Business processes redesigned with AI and agents","Production agents deployed against strategic scenarios","Architecture, security, testing and governance established","Enterprise agent operating model and continuous value realisation"],
-  scope:["400h of EDE Copilot & Agents","200h of EDE Secured and Governed Agentic AI","4 VBDs (Copilot and Agents)","4 VBDs (Secured and Governed Agentic AI)","10 × M365 Foundations – Roadmap and AI Readiness"],
-  vbds:["16595","18273","18276","17743","17995","18179","17452","18047","18015","14379","18677"],
-  vehicle:"EDE – Copilot and Agents (20100) + EDE – Agents (20157)",
-  hoursMin:600, hoursMax:600, price:"4,4M SEK / 408k EUR", duration:"6–12 months",
-  commitment:["C-level sponsor","Process owners","Architecture & security leads","CoE / platform team"],
-  signals:"2,500+ seats or core-process agents · high governance needs"}
-];
-const DEFAULT_ADDONS = [
- {key:"secure", enabled:true, auto:true, name:"+ Secure & Govern", icon:"🛡️", trigger:"Sensitive or regulated data", hint:"Finance, health, public sector, HR data…", desc:"Sensitive data or regulated workloads — add AI security and governance.", vbds:["18218","18233","18307","17452"]},
- {key:"bpa", enabled:true, auto:true, name:"+ Agent Factory / BPA", icon:"⚙️", trigger:"Multiple processes to automate", hint:"Several departments want agents", desc:"Multiple business processes to automate — add scenario alignment and BPA pilots.", vbds:["18273","17743","17995"]},
- {key:"cowork", enabled:true, auto:true, name:"+ Copilot Cowork", icon:"🤝", trigger:"Interest in Copilot Cowork", hint:"New Cowork scenarios", desc:"Cowork opportunity — confirm package mapping before quoting.", vbds:["18673","18681","18677"]},
- {key:"optimize", enabled:true, auto:true, name:"+ Adoption & Optimise", icon:"📈", trigger:"Low utilisation today", hint:"Existing licences are under-used", desc:"Existing deployment with low utilisation — prioritise adoption and optimisation.", vbds:["17966","14379","18182","15332"]},
- {key:"value", enabled:true, auto:true, name:"+ Value Realisation", icon:"💎", trigger:"Needs a value case", hint:"Renewal or executive ROI ask", desc:"Renewal or value case — measure and prove business value.", vbds:["17957","17924","18015"]},
- {key:"agentops", enabled:true, auto:true, name:"+ Agent Management / CoE", icon:"🧭", trigger:"Several agents in production", hint:"Needs agent management / CoE", desc:"Several production agents — add agent management and CoE review.", vbds:["18339","AMA","18047"]}
-];
-const DEFAULT_RULES = { v7:true, v10:true, v11:true, addonsEnabled:false, printEnabled:true, showCustomer:false, showSeller:false, showMotion:false, band1:500, band2:2500, thrM:4, thrL:8, coreForcesL:true, highComplexityMin:"M" };
-const STORE_KEY = "unifiedAttach.v1";
-
-function migrate(s){
-  const wasV7=!!(s.rules&&s.rules.v7), wasV10=!!(s.rules&&s.rules.v10), wasV11=!!(s.rules&&s.rules.v11);
-  s.rules=Object.assign(clone(DEFAULT_RULES),s.rules||{});
-  if(!wasV7){ s.rules.addonsEnabled=false; s.rules.v7=true; }
-  if(!wasV11){ s.rules.highComplexityMin="M"; s.rules.printEnabled=true; s.rules.v11=true; }
-  if(!wasV10){
-    const have=new Set((s.vbds||[]).map(v=>v.id)); DEFAULT_VBDS.forEach(v=>{ if(!have.has(v.id)) s.vbds.push(clone(v)); });
-    (s.packages||[]).forEach(p=>{ if(["S","M","L"].includes(p.key) && !p.vbds.includes("16595")) p.vbds.unshift("16595"); });
-    s.rules.v10=true;
-  }
-  s.addons=(s.addons||[]).map(x=>{ const d=DEFAULT_ADDONS.find(y=>y.key===x.key)||{};
-    return Object.assign({enabled:true,auto:true,trigger:d.trigger||String(x.name||"").replace(/^\+\s*/,""),hint:d.hint||"",icon:"➕",desc:"",vbds:[]},x); });
-  const OLD={"€XXk (indicative)":"S","€XXk – €XXk (indicative)":"M","€XXk+ (indicative)":"L"};
-  const OLDH={S:[80,120],M:[160,220],L:[300,450]};
-  const OLDV={S:["17072","16163","17963","18135","17046","17052","17969","17267","16489"],M:["17966","16796","17957","17736","17747","17739","18017","18051","18339"],L:["18273","18276","17743","17995","17452","AMA","18047","14379","18015","15332"]};
-  (s.packages||[]).forEach(p=>{ const d=DEFAULT_PACKAGES.find(x=>x.key===p.key); if(d && OLDV[p.key] && JSON.stringify(p.vbds)===JSON.stringify(OLDV[p.key])) p.vbds=clone(d.vbds); });
-  (s.packages||[]).forEach(p=>{ const d=DEFAULT_PACKAGES.find(x=>x.key===p.key); if(!d) return;
-    if(p.scope && /^(Business value and scenario workshop|Everything in )/.test(p.scope[0]||"")) p.scope=clone(d.scope);
-    if(OLDH[p.key] && p.hoursMin===OLDH[p.key][0] && p.hoursMax===OLDH[p.key][1]){ p.hoursMin=d.hoursMin; p.hoursMax=d.hoursMax; } });
-  (s.packages||[]).forEach(p=>{ if(OLD[p.price]===p.key){ const d=DEFAULT_PACKAGES.find(x=>x.key===p.key); if(d) p.price=d.price; } });
-  return s;
-}
-const activeAddons = () => state.rules.addonsEnabled ? state.addons.filter(a=>a.enabled) : [];
-let state = load();
-function clone(o){return JSON.parse(JSON.stringify(o));}
-function defaults(){return {packages:clone(DEFAULT_PACKAGES), vbds:clone(DEFAULT_VBDS), addons:clone(DEFAULT_ADDONS), rules:clone(DEFAULT_RULES)};}
-function load(){ try{ const s=JSON.parse(localStorage.getItem(STORE_KEY)); if(s&&s.packages&&s.vbds) return migrate(Object.assign(defaults(),s));}catch(e){} return defaults(); }
-function save(){ try{localStorage.setItem(STORE_KEY, JSON.stringify(state));}catch(e){} }
-const $ = (s,r=document)=>r.querySelector(s);
-const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
-const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const vbdById = id => state.vbds.find(v=>v.id===id);
-const pkgByKey = k => state.packages.find(p=>p.key===k);
-function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2400); }
-
-/* ---------- Navigation ---------- */
-const SETTINGS_PASSWORD = "P1@unified";
-let settingsUnlocked = false;
-try{ settingsUnlocked = sessionStorage.getItem("unifiedAttach.unlocked")==="1"; }catch(e){}
-function requestSettings(){
-  if(settingsUnlocked){ show("settings",true); return; }
-  $("#pwInput").value=""; $("#pwError").hidden=true; $("#pwModal").hidden=false; setTimeout(()=>$("#pwInput").focus(),30);
-}
-function submitPassword(ev){
-  ev.preventDefault();
-  if($("#pwInput").value===SETTINGS_PASSWORD){
-    settingsUnlocked=true; try{sessionStorage.setItem("unifiedAttach.unlocked","1");}catch(e){}
-    $("#pwModal").hidden=true; show("settings",true); toast("Settings unlocked 🔓");
-  } else { $("#pwError").hidden=false; $("#pwInput").select(); }
-}
-function lockSettings(){
-  settingsUnlocked=false; try{sessionStorage.removeItem("unifiedAttach.unlocked");}catch(e){}
-  show("recommend"); toast("Settings locked 🔒");
-}
-function show(view, ok){
-  if(view==="settings" && !ok && !settingsUnlocked){ requestSettings(); return; }
-  $$(".view").forEach(v=>v.hidden = v.id!==`view-${view}`);
-  $$(".nav button").forEach(b=>b.classList.toggle("active", b.dataset.view===view));
-  if(view==="packages") renderPackages();
-  if(view==="catalogue") renderCatalogue();
-  if(view==="settings") renderSettings();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-/* ---------- Wizard ---------- */
-function applyWizardFields(){
-  const r=state.rules, act=activeAddons().length;
-  $("#fCustomer").hidden=!r.showCustomer; $("#fSeller").hidden=!r.showSeller; $("#fMotion").hidden=!r.showMotion;
-  $("#secDetails").hidden=!(r.showCustomer||r.showSeller||r.showMotion);
-  $("#secSignals").hidden=!act;
-  $("#numDetails").textContent = act?"4":"3";
-}
-function renderTriggers(){
-  const act=activeAddons(), keep=new Set($$("#triggers input:checked").map(i=>i.value));
-  $("#triggers").innerHTML = act.map(a=>`<label><input type="checkbox" value="${esc(a.key)}" ${keep.has(a.key)?"checked":""}><span><b>${esc(a.icon)} ${esc(a.trigger||a.name)}</b><small>${esc(a.hint||a.desc)}</small></span></label>`).join("");
-  applyWizardFields();
-}
-function goStep(){ applyWizardFields(); updateLive(); }
-function readForm(){
-  const f = $("#dealForm"); const g = n => (f.querySelector(`[name="${n}"]:checked`)||{}).value;
-  return {
-    customer: state.rules.showCustomer?$("#customer").value.trim():"", opp: state.rules.showCustomer?$("#opp").value.trim():"", seller: state.rules.showSeller?$("#seller").value.trim():"",
-    motion: state.rules.showMotion?$("#motion").value:"", licenses: Math.max(0, parseInt($("#licenses").value||"0",10)),
-    stage: +(g("stage")??0), adoption: +(g("adoption")??0), agents: +(g("agents")??0), complexity: +(g("complexity")??0),
-    triggers: $$("#triggers input:checked").map(i=>i.value)
-  };
-}
-function evaluate(d){
-  const r = state.rules, reasons=[];
-  const lic = d.licenses>=r.band2?2:(d.licenses>=r.band1?1:0);
-  const scores = {licenses:lic, stage:d.stage, adoption:d.adoption, agents:d.agents, complexity:d.complexity};
-  const total = Object.values(scores).reduce((a,b)=>a+b,0);
-  let size = total>=r.thrL?"L":(total>=r.thrM?"M":"S");
-  const STAGE=["is evaluating or just getting started with Copilot","is in the middle of deploying Copilot","has Copilot broadly deployed"];
-  const ADOPT=["needs to enable its first users","needs to scale adoption across teams","needs to improve usage and prove value"];
-  const AGENT=["has no agent plans yet","is planning its first agents","wants agents to run core business processes"];
-  const CPLX=["has a standard governance setup","has several business units or integrations to consider","has regulated data or complex, multi-country governance"];
-  reasons.push(`📍 The customer ${STAGE[d.stage]}.`);
-  reasons.push(`👥 It ${ADOPT[d.adoption]}.`);
-  reasons.push(`🤖 It ${AGENT[d.agents]}.`);
-  reasons.push(`🛡️ It ${CPLX[d.complexity]}.`);
-  reasons.push(`📊 ${d.licenses.toLocaleString()} Copilot licences means ${["a focused","a mid-sized","a broad"][lic]} rollout.`);
-  const rank = {S:0,M:1,L:2};
-  if(d.agents===2 && r.coreForcesL && size!=="L"){ size="L"; reasons.push("⬆️ Core-process agent ambition lifts the recommendation to <b>L</b> — this is a transformation conversation."); }
-  if(d.complexity===2 && rank[r.highComplexityMin]>rank[size]){ size=r.highComplexityMin; reasons.push(`⬆️ High governance / integration complexity requires at least <b>${size}</b>.`); }
-  if(d.agents>=1 && size==="S"){ size="M"; reasons.push("⬆️ Agent ambition needs pilots and activation — moved to <b>M</b>."); }
-  if(d.stage===0 && d.licenses>=r.band2) reasons.push("💡 Large seat count but early stage — keep the Foundation activities inside the plan.");
-  const add = new Set(d.triggers);
-  const autoOn = k => { const a=state.addons.find(x=>x.key===k); return a && a.auto; };
-  if(d.complexity===2 && autoOn("secure")) add.add("secure");
-  if(d.motion==="renewal" && autoOn("value")) add.add("value");
-  if(d.motion==="security" && autoOn("secure")) add.add("secure");
-  if(d.agents===2 && size!=="L" && autoOn("bpa")) add.add("bpa");
-  if(d.agents>=1 && d.complexity>=1 && autoOn("agentops")) add.add("agentops");
-  // drop addons fully covered by package
-  const pkgV = new Set(cumulativeVbds(size));
-  const addons = activeAddons().filter(a=>add.has(a.key) && !(a.vbds.length && a.vbds.every(v=>pkgV.has(v))));
-  return {size,total,scores,reasons,addons};
-}
-function cumulativeVbds(size){
-  const order=["S","M","L"], out=[];
-  for(const k of order){ const p=pkgByKey(k); if(p) p.vbds.forEach(v=>{ if(!out.includes(v)) out.push(v);}); if(k===size) break; }
-  return out;
-}
-function updateLive(){
-  const d=readForm(), e=evaluate(d);
-  $("#liveScore").textContent = e.total; $("#liveBar").style.width = (e.total*10)+"%";
-  const p=pkgByKey(e.size); $("#livePkg").textContent = p?`${p.key} · ${p.name}`:e.size;
-  $("#livePkg").style.background = p?p.color:"";
-  $("#ladder").innerHTML = state.packages.map(x=>`<div class="rung ${x.key===e.size?"on":""}" style="--pc:${esc(x.color)}"><span class="rk">${esc(x.key)}</span><div><b>${esc(x.icon)} ${esc(x.name)}</b><small>${esc(x.tagline)}</small></div></div>`).join("");
-  $("#licHint").textContent = `How many seats are in this deal? · ${d.licenses<state.rules.band1?"Focused":d.licenses<state.rules.band2?"Mid-sized":"Broad"} rollout`;
-}
-function vbdChip(id){
-  const v=vbdById(id); if(!v) return `<span class="chip muted">${esc(id)}</span>`;
-  const st = v.status!=="Active"?`<span class="st st-${esc(v.status.replace(/\s/g,""))}">${esc(v.status)}</span>`:"";
-  const inner = `<span class="tag t-${esc(v.tag)}">${esc(v.tag)}</span>${esc(v.name)} ${/^\d+$/.test(v.id)?`<small>${esc(v.id)}</small>`:""}${st}`;
-  return v.url?`<a class="chip" href="${esc(v.url)}" target="_blank" rel="noopener">${inner}</a>`:`<span class="chip">${inner}</span>`;
-}
-function recommend(){
-  const d=readForm(), e=evaluate(d), p=pkgByKey(e.size);
-  const all = cumulativeVbds(e.size);
-  const order=["S","M","L"]; const nextKey = order[order.indexOf(e.size)+1]; const next = nextKey && pkgByKey(nextKey);
-  const cust = d.customer||"your customer";
-  const addTitle = e.addons.map(a=>a.name).join(" ");
-  $("#result").innerHTML = `
-  <div class="hero-result" style="--pc:${esc(p.color)}">
-    <div class="hr-top">
-      <div class="badge-xl">${esc(p.key)}</div>
-      <div>
-        <div class="eyebrow">Recommended Unified attachment ${d.opp?`· ${esc(d.opp)}`:""}</div>
-        <h2>${esc(p.icon)} ${esc(p.name)} ${addTitle?`<span class="addon-title">${esc(addTitle)}</span>`:""}</h2>
-        <p class="promise">${esc(p.promise)}</p>
-        <p class="cheer">Great find! This gives <b>${esc(cust)}</b> a clear path from licences to outcomes — “${esc(p.tagline)}”</p>
-      </div>
-    </div>
-    <div class="score-row">
-      ${Object.entries(e.scores).map(([k,v])=>`<div class="sc"><span>${({licenses:"Licences",stage:"Deployment",adoption:"Adoption",agents:"Agents",complexity:"Complexity"})[k]}</span><div class="dots">${[0,1].map(i=>`<i class="${i<v?"on":""}"></i>`).join("")}</div></div>`).join("")}
-    </div>
-  </div>
-  <div class="offer" style="--pc:${esc(p.color)}">
-    <section class="offer-card"><div class="offer-label">🧩 Scope of services</div>
-      <ul class="offer-list">${p.scope.map(o=>`<li>${esc(o)}</li>`).join("")}</ul></section>
-    <section class="offer-card price"><div class="offer-label">💶 Commercial offer</div>
-      <div class="price-big">${esc(p.price)}</div>
-      <div class="offer-kpis"><div><b>${hrs(p)}</b><span>EDE hours</span></div><div><b>${esc(p.duration)}</b><span>Typical duration</span></div></div>
-      <p class="small"><b>Delivery vehicle:</b> ${esc(p.vehicle)}</p>
-      <p class="small"><b>Customer commitment:</b> ${p.commitment.map(esc).join(" · ")}</p></section>
-  </div>
-  <div class="grid2">
-    <section class="card"><h3>🧠 Why this package</h3><ul class="reasons">${e.reasons.map(r=>`<li>${r}</li>`).join("")}</ul>
-      ${next?`<p class="hint">Not quite ${esc(next.key)} · ${esc(next.name)} yet — revisit when: ${esc(next.suitable[0].toLowerCase())}.</p>`:""}</section>
-    <section class="card"><h3>🎯 Customer outcome</h3><ul class="ticks">${p.outcomes.map(o=>`<li>${esc(o)}</li>`).join("")}</ul></section>
-  </div>
-  ${e.addons.length?`<section class="card"><h3>➕ Recommended add-ons</h3><div class="addons">${e.addons.map(a=>`<div class="addon"><div class="ai">${esc(a.icon)}</div><div><b>${esc(a.name)}</b><p>${esc(a.desc)}</p><div class="chips">${a.vbds.map(vbdChip).join("")}</div></div></div>`).join("")}</div></section>`:""}
-  <section class="card mapping"><details id="mapDetails"><summary><h3>📦 Delivery mapping — VBDs behind this package <span class="pill soft">${all.length} VBDs · cumulative</span></h3><span class="small muted chev">Show details</span></summary>
-    <div class="chips" style="margin-top:12px">${all.map(vbdChip).join("")}</div>
-    <p class="small muted">Legend: ${Object.entries(TAGS).map(([k,t])=>`<span class="tag t-${k}">${k}</span> ${esc(t.short)}`).join(" &nbsp; ")}</p></details></section>
-  <section class="card next"><h3>✅ Your next steps</h3>
-    <ol class="nextsteps"><li>Share the package card with ${esc(cust)} and confirm the outcome resonates.</li><li>Engage your CSAM / Unified specialist to validate eligibility, funding and DE/EDE allocation.</li><li>Confirm delivery capacity and VBD availability (items marked New / ID pending / Retired need checking).</li><li>Attach the Unified opportunity to the deal and record the package in the proposal.</li></ol>
-    <div class="actions"><button class="btn primary" id="btnCopy">📋 Copy summary</button>${state.rules.printEnabled?'<button class="btn" id="btnPrint">🖨️ Print / PDF</button>':''}<button class="btn ghost" id="btnRestart">↺ Start a new deal</button></div>
-    <p class="disclaimer">Prototype logic is illustrative. Package thresholds, Unified eligibility, VBD mapping, DE/EDE delivery, capacity and commercial terms need formal validation before customer use.</p></section>`;
-  $("#result").hidden=false; $("#wizard").hidden=true; $("#howItWorks").hidden=true; document.body.classList.add("has-result");
-  $("#btnCopy").addEventListener("click",()=>copySummary(d,e,p,all));
-  if($("#btnPrint")) $("#btnPrint").addEventListener("click",printRecommendation);
-  $("#btnRestart").addEventListener("click",()=>{ $("#result").hidden=true; $("#wizard").hidden=false; $("#howItWorks").hidden=false; document.body.classList.remove("has-result"); goStep(1); window.scrollTo({top:0,behavior:"smooth"}); });
-  confetti(p.color); window.scrollTo({top:0,behavior:"smooth"});
-}
-function hrs(p){ return p.hoursMin===p.hoursMax||!p.hoursMax ? `${p.hoursMin}` : `${p.hoursMin}–${p.hoursMax}`; }
-function printRecommendation(){
-  const det=$("#mapDetails"), wasOpen=det&&det.open; if(det) det.open=true;
-  $("#printStamp").textContent = `Generated ${new Date().toLocaleDateString()} · Unified Deal Attach Advisor`;
-  document.body.classList.add("printing");
-  const done=()=>{ document.body.classList.remove("printing"); if(det) det.open=wasOpen; window.removeEventListener("afterprint",done); };
-  window.addEventListener("afterprint",done); window.print(); setTimeout(done,1500);
-}
-function copySummary(d,e,p,all){
-  const lines=[`Unified attachment recommendation${d.customer?` – ${d.customer}`:""}${d.opp?` (${d.opp})`:""}`,
-   `Package: ${p.key} · ${p.name}${e.addons.length?" "+e.addons.map(a=>a.name).join(" "):""}`,
-   `Promise: ${p.promise}`,"",
-   "Customer outcome:",...p.outcomes.map(o=>"• "+o),"","Scope of services:",...p.scope.map(o=>"• "+o),"",
-   `Commercial offer: ${hrs(p)} EDE hours · ${p.price} · ${p.duration}`,`Delivery vehicle: ${p.vehicle}`,"",
-   "VBDs:",...all.map(id=>{const v=vbdById(id);return `• ${v?v.name:id}${/^\d+$/.test(id)?" ("+id+")":""}`;}),
-   ...(e.addons.length?["","Add-ons:",...e.addons.map(a=>`• ${a.name}: ${a.desc}`)]:[]),"",
-   "Note: illustrative – validate eligibility, funding, capacity and pricing with the Unified specialist."];
-  const txt=lines.join("\n");
-  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast("Summary copied — paste it into your proposal ✨")).catch(()=>{
-    const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");toast("Summary copied ✨");}catch(x){toast("Copy not available");} ta.remove(); });
-}
-function confetti(color){
-  const box=$("#confetti"); box.innerHTML=""; const cols=[color,"#F59E0B","#10B981","#EC4899","#3B82F6"];
-  for(let i=0;i<70;i++){ const s=document.createElement("span"); s.style.left=Math.random()*100+"%"; s.style.background=cols[i%cols.length];
-    s.style.animationDelay=(Math.random()*0.6)+"s"; s.style.transform=`rotate(${Math.random()*360}deg)`; box.appendChild(s);}
-  setTimeout(()=>box.innerHTML="",3200);
-}
-
-/* ---------- Packages view ---------- */
-function renderPackages(){
-  $("#pkgGrid").innerHTML = state.packages.map(p=>`
-   <article class="pkg" style="--pc:${esc(p.color)}">
-     <header><span class="badge-l">${esc(p.key)}</span><div><h3>${esc(p.icon)} ${esc(p.name)}</h3><em>“${esc(p.tagline)}”</em></div></header>
-     <p class="promise">${esc(p.promise)}</p>
-     <h4>Suitable when</h4><ul>${p.suitable.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-     <h4>Customer outcome</h4><ul class="ticks">${p.outcomes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-     <h4>Scope of services</h4><ul>${p.scope.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-     <h4>Commercial offer</h4>
-     <p class="small"><b>${hrs(p)}</b> EDE hours · <b>${esc(p.price)}</b> · ${esc(p.duration)}</p>
-     <p class="small muted">${esc(p.vehicle)}</p>
-     <details><summary>VBDs added at this level (${p.vbds.length})</summary><div class="chips">${p.vbds.map(vbdChip).join("")}</div></details>
-     <p class="small signals">📍 ${esc(p.signals)}</p>
-   </article>`).join("");
-  const act=activeAddons(); $("#addonSection").hidden = !act.length;
-  $("#addonGrid").innerHTML = act.map(a=>`<div class="addon"><div class="ai">${esc(a.icon)}</div><div><b>${esc(a.name)}</b><p>${esc(a.desc)}</p><div class="chips">${a.vbds.map(vbdChip).join("")}</div></div></div>`).join("");
-}
-
-/* ---------- Catalogue view ---------- */
-function renderCatalogue(){
-  const q=$("#catSearch").value.toLowerCase(), tag=$("#catTag").value, stage=$("#catStage").value, st=$("#catStatus").value;
-  const usedIn = id => state.packages.filter(p=>p.vbds.includes(id)).map(p=>p.key);
-  const rows = state.vbds.filter(v=>(!q||(v.name+" "+v.id+" "+v.notes).toLowerCase().includes(q))&&(!tag||v.tag===tag)&&(!stage||v.stage===stage)&&(!st||v.status===st));
-  $("#catCount").textContent = `${rows.length} of ${state.vbds.length} VBDs`;
-  $("#catBody").innerHTML = rows.map(v=>`<tr>
-    <td><b>${esc(v.name)}</b>${v.notes?`<div class="small muted">${esc(v.notes)}</div>`:""}</td>
-    <td>${/^\d+$/.test(v.id)?esc(v.id):`<span class="muted">pending</span>`}</td>
-    <td><span class="tag t-${esc(v.tag)}">${esc(v.tag)}</span> <span class="small">${esc((TAGS[v.tag]||{}).short||v.tag)}</span></td>
-    <td class="small">${esc(v.stage)}<br><span class="muted">${esc(v.pillar)}</span></td>
-    <td><span class="st st-${esc(v.status.replace(/\s/g,""))}">${esc(v.status)}</span></td>
-    <td>${usedIn(v.id).map(k=>{const p=pkgByKey(k);return `<span class="mini" style="background:${esc(p.color)}">${k}</span>`;}).join("")||'<span class="muted small">—</span>'}</td>
-    <td>${v.url?`<a href="${esc(v.url)}" target="_blank" rel="noopener" class="link">ESXP ↗</a>`:""}</td></tr>`).join("");
-}
-
-/* ---------- Settings ---------- */
-let editPkg="S";
-function renderSettings(){
-  $("#pkgTabs").innerHTML = state.packages.map(p=>`<button class="ptab ${p.key===editPkg?"active":""}" data-k="${esc(p.key)}" style="--pc:${esc(p.color)}">${esc(p.key)} · ${esc(p.name)}</button>`).join("");
-  $$("#pkgTabs .ptab").forEach(b=>b.addEventListener("click",()=>{editPkg=b.dataset.k; renderSettings();}));
-  const p=pkgByKey(editPkg);
-  const f=$("#pkgForm");
-  const set=(n,v)=>{ const el=f.querySelector(`[name="${n}"]`); if(el) el.value=v; };
-  ["name","icon","color","tagline","promise","vehicle","hoursMin","hoursMax","price","duration","signals"].forEach(k=>set(k,p[k]));
-  ["suitable","outcomes","scope","commitment"].forEach(k=>set(k,p[k].join("\n")));
-  renderPkgVbdPicker();
-  const r=state.rules; $("#rBand1").value=r.band1; $("#rBand2").value=r.band2; $("#rThrM").value=r.thrM; $("#rThrL").value=r.thrL; $("#rCore").checked=r.coreForcesL; $("#rHigh").value=r.highComplexityMin;
-  $("#printToggle").checked=!!r.printEnabled;
-  $$("[data-wiz]").forEach(x=>x.checked=!!r[x.dataset.wiz]);
-  renderVbdAdmin(); renderAddonAdmin();
-}
-function renderPkgVbdPicker(){
-  const p=pkgByKey(editPkg), q=($("#pickSearch").value||"").toLowerCase();
-  $("#pickCount").textContent = `${p.vbds.length} selected`;
-  $("#vbdPicker").innerHTML = state.vbds.filter(v=>!q||(v.name+v.id).toLowerCase().includes(q)).map(v=>`<label class="pick ${p.vbds.includes(v.id)?"on":""}"><input type="checkbox" value="${esc(v.id)}" ${p.vbds.includes(v.id)?"checked":""}><span class="tag t-${esc(v.tag)}">${esc(v.tag)}</span><span>${esc(v.name)}</span>${v.status!=="Active"?`<span class="st st-${esc(v.status.replace(/\s/g,""))}">${esc(v.status)}</span>`:""}</label>`).join("");
-  $$("#vbdPicker input").forEach(i=>i.addEventListener("change",()=>{ const set=new Set(p.vbds); i.checked?set.add(i.value):set.delete(i.value); p.vbds=state.vbds.map(v=>v.id).filter(id=>set.has(id)); save(); i.parentElement.classList.toggle("on",i.checked); $("#pickCount").textContent=`${p.vbds.length} selected`; }));
-}
-function savePkg(){
-  const p=pkgByKey(editPkg), f=$("#pkgForm"), g=n=>f.querySelector(`[name="${n}"]`).value;
-  ["name","icon","color","tagline","promise","vehicle","price","duration","signals"].forEach(k=>p[k]=g(k).trim());
-  p.hoursMin=+g("hoursMin")||0; p.hoursMax=+g("hoursMax")||0;
-  ["suitable","outcomes","scope","commitment"].forEach(k=>p[k]=g(k).split("\n").map(s=>s.trim()).filter(Boolean));
-  save(); renderSettings(); toast(`${p.key} · ${p.name} saved 🎉`);
-}
-function saveRules(){
-  const r=state.rules; r.band1=+$("#rBand1").value||0; r.band2=+$("#rBand2").value||0; r.thrM=+$("#rThrM").value||0; r.thrL=+$("#rThrL").value||0; r.coreForcesL=$("#rCore").checked; r.highComplexityMin=$("#rHigh").value;
-  save(); updateLive(); toast("Decision rules saved ✅");
-}
-function renderVbdAdmin(){
-  const q=($("#admSearch").value||"").toLowerCase();
-  $("#admBody").innerHTML = state.vbds.map((v,i)=>({v,i})).filter(({v})=>!q||(v.name+v.id).toLowerCase().includes(q)).map(({v,i})=>`<tr>
-    <td class="small">${esc(v.id)}</td><td>${esc(v.name)}</td><td><span class="tag t-${esc(v.tag)}">${esc(v.tag)}</span></td><td class="small">${esc(v.stage)}</td><td><span class="st st-${esc(v.status.replace(/\s/g,""))}">${esc(v.status)}</span></td>
-    <td class="nowrap"><button class="icon-btn" data-edit="${i}" title="Edit">✏️</button><button class="icon-btn" data-del="${i}" title="Delete">🗑️</button></td></tr>`).join("");
-  $$("#admBody [data-edit]").forEach(b=>b.addEventListener("click",()=>openVbd(+b.dataset.edit)));
-  $$("#admBody [data-del]").forEach(b=>b.addEventListener("click",()=>{ const v=state.vbds[+b.dataset.del]; if(!confirm(`Remove “${v.name}” from the catalogue?`)) return; state.vbds.splice(+b.dataset.del,1); state.packages.forEach(p=>p.vbds=p.vbds.filter(x=>x!==v.id)); state.addons.forEach(a=>a.vbds=a.vbds.filter(x=>x!==v.id)); save(); renderSettings(); toast("VBD removed"); }));
-}
-let vbdEditIdx=-1;
-function openVbd(i){
-  vbdEditIdx=i; const v = i>=0?state.vbds[i]:{id:"",name:"",tag:"C",stage:"Inspire & Design",pillar:"Business Value",status:"Active",url:"",notes:""};
-  const f=$("#vbdForm"); Object.keys(v).forEach(k=>{const el=f.querySelector(`[name="${k}"]`); if(el) el.value=v[k];});
-  $("#vbdModalTitle").textContent = i>=0?"Edit VBD":"Add a new VBD"; $("#vbdModal").hidden=false; f.querySelector('[name="name"]').focus();
-}
-function saveVbd(ev){
-  ev.preventDefault(); const f=$("#vbdForm"), g=n=>f.querySelector(`[name="${n}"]`).value.trim();
-  const v={id:g("id"),name:g("name"),tag:g("tag"),stage:g("stage"),pillar:g("pillar"),status:g("status"),url:g("url"),notes:g("notes")};
-  if(!v.id||!v.name){toast("ID and name are required");return;}
-  if(v.url && !/^https:\/\//i.test(v.url)){toast("Link must start with https://");return;}
-  if(!v.url && /^\d+$/.test(v.id)) v.url=`https://esxp.microsoft.com/#/omexplanding/services/${v.id}/geo/USA/details/1`;
-  const dup=state.vbds.findIndex(x=>x.id===v.id); if(dup>=0 && dup!==vbdEditIdx){toast("That ID already exists");return;}
-  if(vbdEditIdx>=0){ const old=state.vbds[vbdEditIdx].id; state.vbds[vbdEditIdx]=v; if(old!==v.id){ state.packages.forEach(p=>p.vbds=p.vbds.map(x=>x===old?v.id:x)); state.addons.forEach(a=>a.vbds=a.vbds.map(x=>x===old?v.id:x)); } }
-  else state.vbds.push(v);
-  save(); $("#vbdModal").hidden=true; renderSettings(); toast("VBD saved 🎉");
-}
-function renderAddonAdmin(){
-  $("#addonsMaster").checked = state.rules.addonsEnabled;
-  $("#addonAdmin").classList.toggle("dim", !state.rules.addonsEnabled);
-  $("#addonAdmin").innerHTML = state.addons.map((a,i)=>`<div class="addon-card ${a.enabled?"":"off"}">
-    <div class="ac-head">
-      <label class="switch" title="Show this add-on to sellers"><input type="checkbox" data-ai="${i}" data-f="enabled" ${a.enabled?"checked":""} aria-label="Show ${esc(a.name)}"><i></i></label>
-      <span class="ac-icon">${esc(a.icon)}</span><b>${esc(a.name)}</b>
-      <span class="st ${a.enabled?"":"st-Retired"}">${a.enabled?"ON":"OFF"}</span>
-      <button class="icon-btn" data-adel="${i}" title="Delete add-on" style="margin-inline-start:auto">🗑️</button>
-    </div>
-    <div class="ac-body">
-      <div class="row3">
-        <div class="field"><label class="lbl">Icon</label><input type="text" data-ai="${i}" data-f="icon" value="${esc(a.icon)}"></div>
-        <div class="field"><label class="lbl">Add-on name</label><input type="text" data-ai="${i}" data-f="name" value="${esc(a.name)}"></div>
-        <div class="field"><label class="lbl">VBD IDs <span class="help">(comma-separated)</span></label><input type="text" data-ai="${i}" data-f="vbds" value="${esc(a.vbds.join(", "))}"></div>
-      </div>
-      <div class="row3">
-        <div class="field"><label class="lbl">Seller question (wizard step 3)</label><input type="text" data-ai="${i}" data-f="trigger" value="${esc(a.trigger)}"></div>
-        <div class="field"><label class="lbl">Question hint</label><input type="text" data-ai="${i}" data-f="hint" value="${esc(a.hint)}"></div>
-        <div class="field"><label class="lbl">Description</label><input type="text" data-ai="${i}" data-f="desc" value="${esc(a.desc)}"></div>
-      </div>
-      ${AUTO_HINT[a.key]?`<label class="small inline"><input type="checkbox" data-ai="${i}" data-f="auto" ${a.auto?"checked":""}> Also suggest automatically from deal signals <span class="muted">(${AUTO_HINT[a.key]})</span></label>`:`<div class="small muted">Suggested only when the seller ticks the question.</div>`}
-    </div></div>`).join("");
-  $$("#addonAdmin input").forEach(inp=>inp.addEventListener("change",()=>{ const a=state.addons[+inp.dataset.ai]; const f=inp.dataset.f;
-    if(f==="enabled"||f==="auto") a[f]=inp.checked; else a[f]= f==="vbds"? inp.value.split(",").map(s=>s.trim()).filter(Boolean) : inp.value;
-    save(); renderTriggers(); if(["enabled","auto","icon","name"].includes(f)) renderAddonAdmin();
-    toast(f==="enabled"?`${a.name} switched ${a.enabled?"ON ✅":"OFF"}`:"Add-on updated"); }));
-  $$("#addonAdmin [data-adel]").forEach(b=>b.addEventListener("click",()=>{ const a=state.addons[+b.dataset.adel]; if(!confirm(`Delete add-on “${a.name}”? Tip: switch it OFF instead to hide it temporarily.`)) return; state.addons.splice(+b.dataset.adel,1); save(); renderTriggers(); renderAddonAdmin(); toast("Add-on deleted"); }));
-}
-const AUTO_HINT={secure:"high complexity or E7 / security-led motion",value:"renewal motion",bpa:"core-process agents below L",agentops:"agents + moderate/high complexity"};
-function addAddon(){
-  let n=1; while(state.addons.some(a=>a.key==="custom"+n)) n++;
-  state.addons.push({key:"custom"+n,enabled:true,auto:false,name:"+ New add-on",icon:"➕",trigger:"New seller question",hint:"",desc:"Describe when to attach this add-on.",vbds:[]});
-  save(); renderTriggers(); renderAddonAdmin(); toast("Add-on created — fill in the details");
-}
-function exportCfg(){
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}); const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="unified-attach-config.json"; document.body.appendChild(a); a.click(); a.remove(); toast("Configuration exported");
-}
-function importCfg(file){
-  const rd=new FileReader(); rd.onload=()=>{ try{ const s=JSON.parse(rd.result); if(!s.packages||!s.vbds) throw 0; state=migrate(Object.assign(defaults(),s)); save(); renderSettings(); renderTriggers(); updateLive(); toast("Configuration imported 🎉"); }catch(e){ toast("That file isn't a valid configuration"); } }; rd.readAsText(file);
-}
-
-/* ---------- Init ---------- */
-document.addEventListener("DOMContentLoaded",()=>{
-  $$(".nav button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.view)));
-  $("#pwForm").addEventListener("submit",submitPassword);
-  $("#pwCancel").addEventListener("click",()=>$("#pwModal").hidden=true);
-  $("#pwModal").addEventListener("keydown",e=>{ if(e.key==="Escape") $("#pwModal").hidden=true; });
-  $("#btnLock").addEventListener("click",lockSettings);
-  $$("[data-goto]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.goto)));
-  $("#btnRecommend").addEventListener("click",recommend);
-  $("#dealForm").addEventListener("input",updateLive); $("#dealForm").addEventListener("change",updateLive);
-  $("#dealForm").addEventListener("submit",e=>e.preventDefault());
-  $$("#samples button").forEach(b=>b.addEventListener("click",()=>loadSample(b.dataset.s)));
-  ["catSearch","catTag","catStage","catStatus"].forEach(id=>$("#"+id).addEventListener("input",renderCatalogue));
-  $("#pickSearch").addEventListener("input",renderPkgVbdPicker);
-  $("#admSearch").addEventListener("input",renderVbdAdmin);
-  $("#btnSavePkg").addEventListener("click",savePkg);
-  $("#btnSaveRules").addEventListener("click",saveRules);
-  $("#btnAddVbd").addEventListener("click",()=>openVbd(-1));
-  $("#vbdForm").addEventListener("submit",saveVbd);
-  $("#btnCancelVbd").addEventListener("click",()=>$("#vbdModal").hidden=true);
-  $("#btnExport").addEventListener("click",exportCfg);
-  $("#btnImport").addEventListener("click",()=>$("#fileImport").click());
-  $("#fileImport").addEventListener("change",e=>{ if(e.target.files[0]) importCfg(e.target.files[0]); e.target.value=""; });
-  $("#btnReset").addEventListener("click",()=>{ if(confirm("Reset packages, VBDs, add-ons and rules to the defaults?")){ state=defaults(); save(); renderSettings(); renderTriggers(); updateLive(); toast("Defaults restored"); }});
-  $$(".settabs button").forEach(b=>b.addEventListener("click",()=>{ $$(".settabs button").forEach(x=>x.classList.toggle("active",x===b)); $$(".setpane").forEach(p=>p.hidden=p.id!==b.dataset.pane); }));
-  const tips=["Every Copilot deal deserves a success plan. 💪","Outcomes sell better than hours — lead with the promise.","A Unified attachment turns licences into lasting value.","You're one click away from a stronger proposal! 🚀"];
-  $("#tip").textContent = tips[new Date().getDate()%tips.length];
-  $("#addonsMaster").addEventListener("change",e=>{ state.rules.addonsEnabled=e.target.checked; save(); renderTriggers(); renderAddonAdmin(); toast(e.target.checked?"Add-ons switched ON ✅":"Add-ons switched OFF — hidden from sellers"); });
-  $("#btnAddAddon").addEventListener("click",addAddon);
-  $$("[data-wiz]").forEach(x=>x.addEventListener("change",()=>{ state.rules[x.dataset.wiz]=x.checked; save(); applyWizardFields(); toast(`${x.getAttribute("aria-label")} switched ${x.checked?"ON ✅":"OFF"}`); }));
-  $("#printToggle").addEventListener("change",e=>{ state.rules.printEnabled=e.target.checked; save(); toast(e.target.checked?"Print / PDF switched ON ✅":"Print / PDF switched OFF"); });
-  renderTriggers(); goStep(1); show("recommend");
-});
-function loadSample(s){
-  const S={ s:{customer:"Nordic Retail AB",opp:"OPP-1042",licenses:300,stage:0,adoption:0,agents:0,complexity:0,motion:"netnew",trig:[]},
-            m:{customer:"Contoso Manufacturing",opp:"OPP-2210",licenses:3000,stage:1,adoption:1,agents:1,complexity:1,motion:"expansion",trig:["optimize"]},
-            l:{customer:"Fabrikam Insurance",opp:"OPP-3307",licenses:1500,stage:1,adoption:1,agents:2,complexity:2,motion:"agents",trig:["secure"]}}[s];
-  $("#customer").value=S.customer; $("#opp").value=S.opp; $("#licenses").value=S.licenses; $("#motion").value=S.motion;
-  ["stage","adoption","agents","complexity"].forEach(n=>{ const el=$(`#dealForm [name="${n}"][value="${S[n]}"]`); if(el) el.checked=true; });
-  $$("#triggers input").forEach(i=>i.checked=S.trig.includes(i.value));
-  updateLive(); toast(`Sample loaded: ${S.customer}`);
-}
-
-</script>
 </body>
 </html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Advisor Administration</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<link rel="stylesheet" href="stylesheets/main.css">
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+</style>
+<link rel="stylesheet" href="stylesheets/admin.css">
+<script defer src="data/catalogue.js"></script>
+<script defer src="data/packages.js"></script>
+<script defer src="data/addons.js"></script>
+<script defer src="data/config.js"></script>
+<script defer src="scripts/state.js"></script>
+<script defer src="scripts/shared.js"></script>
+<script defer src="scripts/admin.js"></script>
+</head>
+<body>
+<header class="admin-header">
+  <div><h1>Advisor administration</h1><p>Manage packages, VBDs, add-ons, and default settings.</p></div>
+  <a class="btn" href="index.html">Open advisor</a>
+</header>
+<main>
+  <div class="card" id="startupError" role="alert" hidden></div>
+  <section class="admin-actions" aria-labelledby="configurationActions">
+    <div><h2 id="configurationActions">Configuration files</h2><p>Export replacement JavaScript data files or restore a JSON backup.</p></div>
+    <div class="actions no-margin"><button class="btn" id="btnExport" aria-expanded="false" aria-controls="exportPanel">⬇️ Export</button><button class="btn" id="btnImport">⬆️ Import JSON</button><button class="btn danger" id="btnReset">↺ Reset defaults</button><input type="file" id="fileImport" accept="application/json" hidden></div>
+  </section>
+  <section class="card export-panel" id="exportPanel" aria-labelledby="exportHeading" hidden>
+    <div class="toolbar"><div><h2 id="exportHeading">Export data files</h2><p>Select all files or only the ones you want to replace.</p></div><button class="btn" id="exportSelectAll">Select all</button></div>
+    <div class="export-options">
+      <label><input type="checkbox" name="dataFile" value="catalogue.js" checked><span><b>catalogue.js</b><small>VBD records, offerings, stages, pillars, and statuses</small></span></label>
+      <label><input type="checkbox" name="dataFile" value="packages.js" checked><span><b>packages.js</b><small>Package offers, prices, outcomes, and VBD mappings</small></span></label>
+      <label><input type="checkbox" name="dataFile" value="addons.js" checked><span><b>addons.js</b><small>Add-ons, triggers, automatic hints, and new add-on defaults</small></span></label>
+      <label><input type="checkbox" name="dataFile" value="config.js" checked><span><b>config.js</b><small>Decision rules, wizard options, samples, tips, and output settings</small></span></label>
+    </div>
+    <p class="small muted"><b>Apply package and VBD changes and save Settings before exporting.</b> Replace the matching files in your project's data/ folder, keeping their original names, then refresh the advisor. When changing VBD IDs or mappings, export related files together.</p>
+    <div class="actions"><button class="btn primary" id="btnDownloadData">Download selected files</button><button class="btn" id="btnExportJson">Download JSON backup</button><span class="small muted" id="exportSelection" role="status">4 files selected</span></div>
+    <p class="small muted">Your browser may ask permission for multiple downloads. Individual download links will also appear below. JSON backups are for Import, not direct replacement of data files.</p>
+    <div class="export-downloads" id="exportDownloads"></div>
+  </section>
+  <p class="admin-session-note">Changes apply only to this admin session, not to the advisor page. Reload restores file defaults. To publish changes, export the JavaScript data files, manually replace the corresponding files in data/, and refresh the advisor.</p>
+  <div class="admin-workspace">
+    <nav class="admin-sections" aria-label="Configuration sections">
+      <h2>Edit configuration</h2>
+      <button type="button" class="active" data-pane="paneSettings" aria-controls="paneSettings" aria-current="true"><span class="section-title">⚙️ Settings</span><span class="section-hint">Decision rules, wizard, and output</span></button>
+      <button type="button" data-pane="paneP" aria-controls="paneP"><span class="section-title">📦 Packages</span><span class="section-hint">Offers and delivery mapping</span></button>
+      <button type="button" data-pane="paneV" aria-controls="paneV"><span class="section-title">📚 VBD catalogue</span><span class="section-hint">Individual delivery records</span></button>
+      <button type="button" data-pane="paneA" aria-controls="paneA"><span class="section-title">➕ Add-ons</span><span class="section-hint">Optional services and triggers</span></button>
+    </nav>
+    <section class="card admin-editor" id="adminSettings" aria-label="Configuration editor">
+
+    <div class="setpane" id="paneP" role="region" aria-labelledby="packagesHeading" hidden>
+      <header class="panel-heading">
+        <div class="package-heading"><h2 id="packagesHeading">Packages</h2><div class="section-actions"><button type="button" class="btn primary" id="btnSavePkg">💾 Apply Package</button><button type="button" class="btn" data-export-section="packages" title="Export package data files">⬇️ Export Config</button></div></div>
+        <p>Define each package's offer, customer outcomes, commercials, and delivery mapping.</p>
+        <p class="package-draft-note">Text and number edits stay with each package tab until you apply that package. Reload discards unapplied edits.</p>
+        <div class="export-downloads" id="packagesDownloads"></div>
+      </header>
+      <div class="package-tabs" id="pkgTabs" role="group" aria-label="Package to edit"></div>
+      <form id="pkgForm" autocomplete="off">
+        <fieldset class="admin-fieldset"><legend>Package identity</legend>
+        <div class="row3">
+          <div class="field"><label class="lbl">Package title</label><input type="text" name="name"></div>
+          <div class="field"><label class="lbl">Icon (emoji)</label><input type="text" name="icon"></div>
+          <div class="field"><label class="lbl">Colour</label><input type="text" name="color" placeholder="#2563EB"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label class="lbl">Seller shorthand</label><input type="text" name="tagline"></div>
+          <div class="field"><label class="lbl">Promise</label><input type="text" name="promise"></div>
+        </div>
+        </fieldset>
+        <fieldset class="admin-fieldset"><legend>Customer fit and outcomes</legend>
+        <div class="row2">
+          <div class="field"><label class="lbl">Suitable when <span class="help">(one per line)</span></label><textarea name="suitable"></textarea></div>
+          <div class="field"><label class="lbl">Customer outcome <span class="help">(one per line)</span></label><textarea name="outcomes"></textarea></div>
+        </div>
+        </fieldset>
+        <fieldset class="admin-fieldset"><legend>Delivery and commercials</legend>
+        <div class="row2">
+          <div class="field"><label class="lbl">Scope of services <span class="help">(one per line)</span></label><textarea name="scope"></textarea></div>
+          <div class="field"><label class="lbl">Customer commitment needed <span class="help">(one per line)</span></label><textarea name="commitment"></textarea></div>
+        </div>
+        <div class="row3">
+          <div class="field"><label class="lbl">EDE hours – min</label><input type="number" name="hoursMin" min="0"></div>
+          <div class="field"><label class="lbl">EDE hours – max</label><input type="number" name="hoursMax" min="0"></div>
+          <div class="field"><label class="lbl">Indicative price</label><input type="text" name="price"></div>
+        </div>
+        <div class="row3">
+          <div class="field"><label class="lbl">Typical duration</label><input type="text" name="duration"></div>
+          <div class="field"><label class="lbl">Delivery vehicle (DE / EDE)</label><input type="text" name="vehicle"></div>
+          <div class="field"><label class="lbl">Typical deal signals</label><input type="text" name="signals"></div>
+        </div>
+        </fieldset>
+        <fieldset class="admin-fieldset"><legend>VBD mapping</legend>
+        <div class="field"><div class="toolbar"><span class="lbl no-margin">VBDs added at this level</span><input class="picker-search" type="text" id="pickSearch" placeholder="Filter VBDs…" aria-label="Filter VBDs"></div>
+          <div class="picker-selection"><label class="inline"><input type="checkbox" id="pickSelectAll" aria-describedby="pickSelectionHelp"><span id="pickSelectAllLabel">Select all VBDs</span></label><span id="pickCount" role="status" aria-live="polite" aria-atomic="true"></span></div>
+          <div class="help" id="pickSelectionHelp">Select all / deselect all affects the entire catalogue, including filtered-out VBDs.</div>
+          <div class="picker" id="vbdPicker"></div><div class="help">Selections apply instantly for this session. Higher packages automatically include the VBDs of lower ones.</div></div>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="setpane" id="paneV" role="region" aria-labelledby="vbdsHeading" hidden>
+      <header class="panel-heading">
+        <div class="vbd-heading"><h2 id="vbdsHeading">VBD catalogue</h2><div class="section-actions"><button type="button" class="btn primary" id="btnApplyVbds">💾 Apply Changes</button><button type="button" class="btn" data-export-section="vbds" title="Export catalogue data and any required mapping files">⬇️ Export Config</button></div></div>
+        <p>Manage the individual delivery records referenced by packages and add-ons.</p>
+        <p class="vbd-draft-note">Edits stay as drafts until Apply Changes, which also updates affected package and add-on mappings. Switching tabs keeps drafts; reloading discards them. Export includes related mapping files when needed.</p>
+        <div class="export-downloads" id="vbdsDownloads"></div>
+      </header>
+      <div class="toolbar"><input class="admin-search" type="text" id="admSearch" placeholder="Search VBDs…" aria-label="Search VBDs"><button class="btn primary" id="btnAddVbd">＋ Add VBD</button></div>
+      <div class="tablewrap"><table><thead><tr><th>ID</th><th>Name</th><th>Offering</th><th>Journey stage</th><th>Status</th><th></th></tr></thead><tbody id="admBody"></tbody></table></div>
+    </div>
+
+    <div class="setpane" id="paneA" role="region" aria-labelledby="addonsHeading" hidden>
+      <header class="panel-heading"><h2 id="addonsHeading">Add-ons</h2><p>Define optional services, their seller questions, and automatic suggestion rules.</p></header>
+      <div class="master">
+        <label class="switch big"><input type="checkbox" id="addonsMaster" aria-label="Offer add-ons"><i></i></label>
+        <div><b>Offer trigger-based add-ons</b><div class="small muted">When OFF, add-ons are hidden everywhere: on the Packages page, in the wizard's step 3 and in recommendations.</div></div>
+        <button class="btn primary push-end" id="btnAddAddon">＋ Add add-on</button>
+      </div>
+      <p class="small muted">Switch each add-on ON or OFF for this session. OFF add-ons stay listed here but are not shown on the Packages page, not asked in the wizard and never recommended.</p>
+      <div id="addonAdmin"></div>
+    </div>
+
+    <div class="setpane" id="paneSettings" role="region" aria-labelledby="settingsHeading">
+      <header class="panel-heading">
+        <div class="settings-heading"><h2 id="settingsHeading">Settings</h2><div class="section-actions"><button type="button" class="btn primary" id="btnSaveSettings">💾 Save Settings</button><button type="button" class="btn" data-export-section="settings" title="Export config.js">⬇️ Export Config</button></div></div>
+        <p>Configure decision rules, recommendation wizard fields, and output options.</p>
+        <p class="settings-draft-note">Edits stay as drafts until you click Save Settings. Switching tabs keeps your drafts; reloading discards them.</p>
+        <div class="export-downloads" id="settingsDownloads"></div>
+      </header>
+      <section class="settings-section" id="paneR" aria-labelledby="rulesHeading">
+      <header class="settings-section-heading"><h3 id="rulesHeading">Decision rules</h3><p>Set the score thresholds and overrides used to recommend a package.</p></header>
+      <p class="small muted mt-0">Five signals are scored 0–2 (max 10). Thresholds are illustrative design assumptions — calibrate them against historical opportunities.</p>
+      <div class="row2">
+        <div class="field"><label class="lbl" for="rBand1">Licence band 1 starts at (score 1)</label><input type="number" id="rBand1" min="0"></div>
+        <div class="field"><label class="lbl" for="rBand2">Licence band 2 starts at (score 2)</label><input type="number" id="rBand2" min="0"></div>
+        <div class="field"><label class="lbl" for="rThrM">Score needed for M</label><input type="number" id="rThrM" min="0" max="10"></div>
+        <div class="field"><label class="lbl" for="rThrL">Score needed for L</label><input type="number" id="rThrL" min="0" max="10"></div>
+        <div class="field"><label class="lbl" for="rHigh">High complexity requires at least</label><select id="rHigh"></select></div>
+        <div class="field"><label class="lbl">&nbsp;</label><label class="checks display-block"><label><input type="checkbox" id="rCore"><span><b>Core-process agents force L</b><small>Ambition beats seat count</small></span></label></label></div>
+      </div>
+      </section>
+
+      <section class="settings-section" id="paneW" aria-labelledby="wizardHeading">
+      <header class="settings-section-heading"><h3 id="wizardHeading">Recommendation wizard</h3><p>Choose which optional customer and deal fields the advisor asks for.</p></header>
+      <p class="small muted mt-0">The wizard always starts with Copilot licences, then the customer-journey questions. Switch on the optional fields below to ask for them in a “Deal details” section at the end. All are OFF by default.</p>
+      <div class="master"><label class="switch big"><input type="checkbox" data-wiz="showCustomer" aria-label="Customer details"><i></i></label>
+        <div><b>Customer details</b><div class="small muted">Customer name and opportunity / proposal ID — shown on the recommendation and in the copied summary.</div></div></div>
+      <div class="master"><label class="switch big"><input type="checkbox" data-wiz="showSeller" aria-label="Seller name"><i></i></label>
+        <div><b>Seller details</b><div class="small muted">The seller's own name.</div></div></div>
+      <div class="master"><label class="switch big"><input type="checkbox" data-wiz="showMotion" aria-label="Deal motion"><i></i></label>
+        <div><b>Deal motion</b><div class="small muted">Net-new, expansion, agents, E7 / security-led or renewal. When ON, a renewal suggests + Value Realisation and a security-led deal suggests + Secure &amp; Govern.</div></div></div>
+      </section>
+
+      <section class="settings-section" id="paneO" aria-labelledby="outputHeading">
+      <header class="settings-section-heading"><h3 id="outputHeading">Recommendation output</h3><p>Control the actions available on the completed recommendation.</p></header>
+      <div class="master">
+        <label class="switch big"><input type="checkbox" id="printToggle" aria-label="Allow Print / PDF"><i></i></label>
+        <div><b>Allow Print / PDF on the recommendation</b><div class="small muted">When ON, sellers see a “Print / PDF” button. The printout contains only the recommended package — no header, wizard, “How it works” or footer. Default: ON.</div></div>
+      </div>
+      </section>
+    </div>
+    </section>
+  </div>
+</main>
+<div class="modal" id="vbdModal" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="vbdModalTitle">
+  <h3 id="vbdModalTitle">Add VBD</h3>
+  <form id="vbdForm" autocomplete="off">
+    <div class="row2"><div class="field"><label class="lbl">ESXP ID</label><input type="text" name="id" placeholder="e.g. 17072"></div>
+      <div class="field"><label class="lbl">Status</label><select name="status"></select></div></div>
+    <div class="field"><label class="lbl">Name</label><input type="text" name="name"></div>
+    <div class="row3"><div class="field"><label class="lbl">Unified offering</label><select name="tag"></select></div>
+      <div class="field"><label class="lbl">Journey stage</label><select name="stage"></select></div>
+      <div class="field"><label class="lbl">Pillar</label><select name="pillar"></select></div></div>
+    <div class="field"><label class="lbl">Link (https)</label><input type="url" name="url" placeholder="Leave blank to auto-build the ESXP link"></div>
+    <div class="field"><label class="lbl">Notes</label><input type="text" name="notes" placeholder="Eligibility, duration, prerequisites…"></div>
+    <div class="actions"><button type="submit" class="btn primary">💾 Save VBD draft</button><button type="button" class="btn" id="btnCancelVbd">Cancel</button></div>
+  </form>
+</div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<footer>Local working copy only. This page has no access control; exclude it from public deployments if it must remain private.</footer>
+</body>
+</html>
