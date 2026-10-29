@@ -764,6 +764,25 @@ test("HTML loads ordered local classic scripts and an external stylesheet", () =
   }
 });
 
+test("Azure redirects the advisor directory to a trailing slash so relative assets resolve correctly", () => {
+  const config = JSON.parse(fs.readFileSync(path.join(root, "..", "staticwebapp.config.json"), "utf8"));
+  const route = config.routes.find(route => route.route === "/unifiedpackages");
+  assert.ok(route, "The extensionless advisor URL needs a canonical directory redirect");
+  assert.equal(route.statusCode, 301);
+  assert.equal(route.redirect, "/unifiedpackages/");
+  assert.ok(!config.routes.some(route => route.route === "/unifiedpackages/"), "The redirect target must not redirect again");
+  const base = new URL(route.redirect, "https://example.test");
+  for (const page of ["index.html", "admin.html"]) {
+    const html = fs.readFileSync(path.join(root, page), "utf8");
+    const assets = [...html.matchAll(/(?:src|href)="((?:stylesheets|scripts|data)\/[^"]+)"/g)];
+    assert.ok(assets.length > 0);
+    for (const [, asset] of assets) {
+      assert.equal(new URL(asset, base).pathname, `/unifiedpackages/${asset}`);
+      assert.ok(fs.existsSync(path.join(root, asset)), `${page} references missing asset ${asset}`);
+    }
+  }
+});
+
 test("admin loads only its shared data/state helpers and dedicated script", () => {
   const html = fs.readFileSync(path.join(root, "admin.html"), "utf8");
   const sources = [...html.matchAll(/<script defer src="([^"]+)"><\/script>/g)].map(match => match[1]);
