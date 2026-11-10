@@ -1,0 +1,166 @@
+/*
+  NORTHWAY Activation Journey — "Nebula" modern theme (design preview)
+  -----------------------------------------------------------------------
+  Loaded AFTER the page's inline <style> block, and only ever activated via
+  html[data-palette="nebula"] (the page's own bootstrap script already sets
+  this from ?palette=nebula or when opened from the Nebula deck preview).
+  Opening this page normally (no palette param) renders exactly as before —
+  nothing here changes default behavior.
+
+  Same deep-space palette and glass/glow language as the rest of the Nebula
+  family (agentstory-modern.css, agent-usecase-library-modern.css,
+  workbench-modern.css), tuned for this page's hero + card + journey-strip
+  layout.
+*/
+
+/* ---------------------------------------------------------------------- */
+/* 1. Palette tokens                                                      */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] {
+  color-scheme: dark;
+  --cp-bg: #050816;
+  --cp-bg-elevated: #0a0f24;
+  --cp-surface: #0c1230;
+  --cp-surface-soft: #10173a;
+  --cp-border: rgba(148, 197, 255, .16);
+  --cp-border-strong: rgba(148, 197, 255, .32);
+  --cp-text: #f1f4fc;
+  --cp-text-muted: #9fb0d6;
+  --cp-text-soft: #c7d2f0;
+  --cp-accent: #19c3ff;
+  --cp-accent-hover: #5cd8ff;
+  --cp-accent-soft: rgba(25, 195, 255, .16);
+  --cp-accent-fg: #04101f;
+  --cp-success: #34d399;
+  --cp-danger: #fb7185;
+  --cp-warning: #ffb454;
+  --cp-link: #7dd3fc;
+  --cp-shadow: 0 20px 60px rgba(2, 6, 23, .6);
+  --cp-overlay: rgba(5, 8, 22, .86);
+  --cp-panel: rgba(12, 18, 42, .68);
+  --cp-panel-strong: rgba(10, 15, 36, .92);
+  --cp-sheen: rgba(255, 255, 255, .05);
+  --cp-highlight: rgba(25, 195, 255, .12);
+
+  --nebula-glow: 0 0 0 1px rgba(25, 195, 255, .14), 0 18px 48px rgba(2, 8, 28, .5), 0 0 28px rgba(25, 195, 255, .08);
+  --nebula-glow-strong: 0 0 0 1px rgba(25, 195, 255, .35), 0 20px 56px rgba(2, 8, 28, .55), 0 0 40px rgba(25, 195, 255, .2);
+
+  font-family: "Segoe UI Variable Display", "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html[data-palette="nebula"] body {
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(25, 195, 255, .1), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 30%, rgba(124, 92, 255, .08), transparent 65%),
+    #050816;
+}
+
+@keyframes nebula-card-pop {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. Top bar + hero                                                      */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .topbar {
+  background: rgba(5, 8, 22, .82);
+  border-bottom-color: var(--cp-border);
+}
+
+html[data-palette="nebula"] .icon-btn {
+  background: var(--cp-panel);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-palette="nebula"] .icon-btn:hover {
+  background: var(--cp-accent-soft);
+  box-shadow: 0 0 16px rgba(25, 195, 255, .2);
+}
+
+html[data-palette="nebula"] .logo .accent {
+  color: var(--cp-accent);
+  text-shadow: 0 0 18px rgba(25, 195, 255, .4);
+}
+
+html[data-palette="nebula"] header.hero {
+  background:
+    radial-gradient(ellipse 60% 50% at 92% 8%, rgba(25, 195, 255, .14), transparent 65%),
+    transparent;
+  border-bottom-color: var(--cp-border);
+}
+
+html[data-palette="nebula"] h1 .accent {
+  color: var(--cp-accent);
+  text-shadow: 0 0 28px rgba(25, 195, 255, .4);
+}
+
+html[data-palette="nebula"] .chip {
+  border-color: rgba(25, 195, 255, .4);
+  box-shadow: 0 0 14px rgba(25, 195, 255, .12);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3. Cards + meta grid                                                   */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .card {
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+  border-color: var(--cp-border);
+  animation: nebula-card-pop .45s cubic-bezier(.2, .9, .3, 1.1) both;
+}
+
+html[data-palette="nebula"] .meta-item {
+  background: rgba(10, 15, 36, .55);
+  border-color: var(--cp-border);
+}
+
+html[data-palette="nebula"] .meta-item .v { color: var(--cp-text); }
+
+/* ---------------------------------------------------------------------- */
+/* 4. Journey strip (Prompt -> Skill -> Agent -> Copilot Studio)          */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .journey-card {
+  background: rgba(10, 15, 36, .55);
+  border: 1px solid var(--cp-border);
+  border-left: 3px solid var(--cp-accent);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+html[data-palette="nebula"] .journey-card:hover {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .08);
+  box-shadow: var(--nebula-glow);
+  transform: translateY(-3px);
+}
+
+html[data-palette="nebula"] .journey-num {
+  background: var(--cp-panel-strong);
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+  box-shadow: 0 0 10px rgba(25, 195, 255, .5);
+}
+
+html[data-palette="nebula"] .journey-card h3 { color: var(--cp-text); }
+
+/* ---------------------------------------------------------------------- */
+/* 5. Notes + misc                                                        */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .note {
+  border-top-color: var(--cp-border);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 6. Motion safety                                                        */
+/* ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html[data-palette="nebula"] .card,
+  html[data-palette="nebula"] .journey-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

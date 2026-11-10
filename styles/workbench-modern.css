@@ -1,0 +1,213 @@
+/*
+  Industrial AI Workbench — "Nebula" modern theme (design preview)
+  --------------------------------------------------------------------
+  Loaded AFTER the page's inline <style> block, and only ever activated via
+  html[data-palette="nebula"] (set only when opened from the Nebula deck
+  preview, agent-journey.html, or via ?palette=nebula directly). Opening
+  this page normally (no palette param) renders byte-identical to before.
+
+  Same deep-space palette and glass/glow language as the rest of the Nebula
+  family (agentstory-modern.css, agent-usecase-library-modern.css), tuned
+  for this page's hero + resource-card landing layout.
+*/
+
+/* ---------------------------------------------------------------------- */
+/* 1. Palette tokens                                                      */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] {
+  color-scheme: dark;
+  --cp-bg: #050816;
+  --cp-bg-elevated: #0a0f24;
+  --cp-surface: #0c1230;
+  --cp-surface-soft: #10173a;
+  --cp-border: rgba(148, 197, 255, .16);
+  --cp-border-strong: rgba(148, 197, 255, .32);
+  --cp-text: #f1f4fc;
+  --cp-text-muted: #9fb0d6;
+  --cp-text-soft: #c7d2f0;
+  --cp-accent: #19c3ff;
+  --cp-accent-hover: #5cd8ff;
+  --cp-accent-soft: rgba(25, 195, 255, .16);
+  --cp-accent-fg: #04101f;
+  --cp-success: #34d399;
+  --cp-danger: #fb7185;
+  --cp-warning: #ffb454;
+  --cp-link: #7dd3fc;
+  --cp-shadow: 0 20px 60px rgba(2, 6, 23, .6);
+  --cp-overlay: rgba(5, 8, 22, .86);
+  --cp-panel: rgba(12, 18, 42, .68);
+  --cp-panel-strong: rgba(10, 15, 36, .92);
+  --cp-sheen: rgba(255, 255, 255, .05);
+  --cp-highlight: rgba(25, 195, 255, .12);
+
+  --nebula-glow: 0 0 0 1px rgba(25, 195, 255, .14), 0 18px 48px rgba(2, 8, 28, .5), 0 0 28px rgba(25, 195, 255, .08);
+  --nebula-glow-strong: 0 0 0 1px rgba(25, 195, 255, .35), 0 20px 56px rgba(2, 8, 28, .55), 0 0 40px rgba(25, 195, 255, .2);
+
+  font-family: "Segoe UI Variable Display", "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html[data-palette="nebula"] body {
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(25, 195, 255, .1), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 30%, rgba(124, 92, 255, .08), transparent 65%),
+    #050816;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. Top bar + hero                                                      */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .topbar {
+  background: rgba(5, 8, 22, .6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--cp-border);
+}
+
+html[data-palette="nebula"] .brand-mark {
+  box-shadow: 0 0 18px rgba(25, 195, 255, .45);
+}
+
+html[data-palette="nebula"] .theme-button:hover,
+html[data-palette="nebula"] .text-button:hover {
+  color: var(--cp-accent);
+}
+
+html[data-palette="nebula"] .eyebrow {
+  text-shadow: 0 0 14px rgba(25, 195, 255, .35);
+}
+
+html[data-palette="nebula"] h1 {
+  text-shadow: 0 0 36px rgba(25, 195, 255, .25);
+}
+
+html[data-palette="nebula"] .primary-button {
+  box-shadow: 0 0 20px rgba(25, 195, 255, .3);
+  transition: box-shadow .18s ease, transform .18s ease, background .12s ease, border-color .12s ease;
+}
+
+html[data-palette="nebula"] .primary-button:hover {
+  box-shadow: 0 0 28px rgba(25, 195, 255, .5);
+  transform: translateY(-1px);
+}
+
+html[data-palette="nebula"] .secondary-button {
+  background: var(--cp-panel);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-palette="nebula"] .secondary-button:hover {
+  border-color: var(--cp-border-strong);
+}
+
+html[data-palette="nebula"] .disclaimer-card {
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+  border-color: var(--cp-border);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3. Scenario / resource cards                                           */
+/* ---------------------------------------------------------------------- */
+@keyframes nebula-card-pop {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+
+html[data-palette="nebula"] .scenario-card {
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .scenario-footer {
+  background: rgba(10, 15, 36, .5);
+}
+
+html[data-palette="nebula"] .status-dot {
+  box-shadow: 0 0 10px rgba(52, 211, 153, .7);
+}
+
+html[data-palette="nebula"] .knowledge-card {
+  background: var(--cp-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .knowledge-icon {
+  text-shadow: 0 0 14px rgba(25, 195, 255, .5);
+}
+
+html[data-palette="nebula"] .resource-card,
+html[data-palette="nebula"] .resource-panel {
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+  border-left: 3px solid var(--cp-accent);
+  animation: nebula-card-pop .45s cubic-bezier(.2, .9, .3, 1.1) both;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+html[data-palette="nebula"] .resource-card:hover {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .08);
+  box-shadow: var(--nebula-glow-strong);
+  transform: translateY(-3px);
+}
+
+/* "Coming soon" cards keep the glass surface but lose the accent bar and
+   glow, so the four live use cases stay visually prioritized. */
+html[data-palette="nebula"] .resource-card:not(.use-case-card) {
+  border-left-color: rgba(148, 197, 255, .25);
+}
+
+html[data-palette="nebula"] .resource-card:not(.use-case-card):hover {
+  border-color: var(--cp-border-strong);
+  background: var(--cp-panel);
+  box-shadow: var(--nebula-glow);
+  transform: none;
+}
+
+html[data-palette="nebula"] .use-case-card.inactive {
+  opacity: .5;
+  animation: none;
+}
+
+html[data-palette="nebula"] .panel-label {
+  color: var(--cp-accent);
+  text-shadow: 0 0 10px rgba(25, 195, 255, .35);
+}
+
+html[data-palette="nebula"] .prompt-card {
+  background: rgba(25, 195, 255, .08);
+  border-color: var(--cp-border-strong);
+}
+
+html[data-palette="nebula"] .copy-button {
+  background: var(--cp-panel);
+}
+
+html[data-palette="nebula"] .copy-button:hover {
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+}
+
+html[data-palette="nebula"] .footer-note {
+  border-top-color: var(--cp-border);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 4. Motion safety                                                       */
+/* ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html[data-palette="nebula"] .resource-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

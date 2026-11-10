@@ -19,6 +19,11 @@
       --cp-panel: rgba(255, 255, 255, 0.86);
       --cp-panel-strong: rgba(255, 255, 255, 0.96);
       --cp-sheen: rgba(255, 255, 255, 0.55);
+      /* Color-coded prompt parts used by the prompt-showdown scene */
+      --showdown-goal: #0078d4;
+      --showdown-context: #8a4fd1;
+      --showdown-source: #16a34a;
+      --showdown-expectation: #b45309;
     }
     html[data-theme="dark"] {
       color-scheme: dark;
@@ -41,6 +46,10 @@
       --cp-panel: rgba(41, 41, 41, 0.72);
       --cp-panel-strong: rgba(41, 41, 41, 0.96);
       --cp-sheen: rgba(255, 255, 255, 0.04);
+      --showdown-goal: #4da6ff;
+      --showdown-context: #c088ff;
+      --showdown-source: #4ade80;
+      --showdown-expectation: #fbbf24;
     }
     html[data-theme="dark"][data-palette="workscape"] {
       --cp-bg: #20211f;
@@ -246,6 +255,22 @@
     .duel-side strong { font-size: clamp(1.05rem, 1.6vw, 1.5rem); }
     .duel-side span { margin-top: .4rem; color: var(--cp-text-muted); font-size: clamp(.85rem, 1.1vw, 1rem); line-height: 1.5; }
     .duel-vs { align-self: center; color: var(--cp-text-muted); font-size: .8rem; font-weight: 750; }
+
+    /* Prompt showdown stage shell: structural only. The full Copilot-chat
+       presentation (panes, bubbles, legend, timing) lives in
+       agentstory-modern.css, mirroring the agent-first-build chat demo. */
+    .scene-stage-prompt-showdown { display: flex; align-items: center; height: 100%; }
+
+    /* Mega prompt: a full-length, realistic agent instruction set */
+    .scene-stage-mega-prompt { display: flex; flex-direction: column; justify-content: center; gap: 1rem; height: 100%; }
+    .mega-prompt-card { max-height: min(62vh, 38rem); overflow-y: auto; border: 1px solid var(--cp-border-strong); border-radius: .6rem; background: #111; box-shadow: var(--cp-shadow); }
+    .mega-prompt-toolbar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: .9rem; padding: .85rem 1.1rem; border-bottom: 1px solid #2b2b2b; background: #151515; }
+    .mega-prompt-label { color: #e6e6e6; font-size: .78rem; font-weight: 700; letter-spacing: .03em; }
+    .mega-prompt-count { margin-left: auto; color: var(--cp-accent); font-size: .72rem; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; }
+    .mega-prompt-body { padding: 1.1rem 1.4rem 1.4rem; font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: clamp(.78rem, .95vw, .92rem); line-height: 1.7; }
+    .mega-prompt-line { margin: 0; color: #e6e6e6; }
+    .mega-prompt-line.is-blank { height: .9em; }
+    .mega-prompt-caption { margin: 0; color: var(--cp-text-muted); font-size: .9rem; text-align: center; }
 
     /* Failure modes: editorial diagnosis spread */
     .scene-stage-failure-modes { display: grid; align-items: start; height: 100%; }
@@ -1401,4 +1426,40 @@ body:has(.commentary-shell[data-open="true"]) .presenter-tools { right: calc(min
   .platform-path-mark { position: absolute; top: 1rem; left: 1rem; min-height: 2rem; margin-bottom: 0; }
   .platform-path-mark img { width: 2.2rem; height: 2.2rem; }
   .platform-path-eyebrow { margin-top: 0; }
+}
+
+/* Step reveal: scene content appears one beat at a time on click / scroll / key */
+[data-step]:not([data-revealed]) { opacity: 0 !important; pointer-events: none; }
+[data-step][data-revealed] { animation: step-reveal 900ms cubic-bezier(.16, 1, .3, 1) both, step-flash 1400ms ease-out; }
+[data-step][data-revealed] > * { animation: step-child 700ms cubic-bezier(.16, 1, .3, 1) both; }
+[data-step][data-revealed] > *:nth-child(2) { animation-delay: 120ms; }
+[data-step][data-revealed] > *:nth-child(3) { animation-delay: 220ms; }
+[data-step][data-revealed] > *:nth-child(n+4) { animation-delay: 300ms; }
+.agent-journey-connector[data-step] { opacity: 1 !important; animation: none !important; stroke-dashoffset: 100; transition: stroke-dashoffset 1000ms cubic-bezier(.65, 0, .35, 1); }
+.agent-journey-connector[data-step][data-revealed] { stroke-dashoffset: 0; animation: none; }
+.agent-journey-card[data-step]:not([data-revealed]) { transform: translateY(2rem) scale(.94); }
+.agent-journey-outcome[data-step][data-revealed] { animation: step-child 900ms cubic-bezier(.16, 1, .3, 1) both; }
+
+@keyframes step-reveal {
+  from { opacity: 0; translate: 0 2.2rem; scale: .9; filter: blur(14px); }
+  60% { filter: blur(0); }
+  to { opacity: 1; translate: 0 0; scale: 1; filter: blur(0); }
+}
+@keyframes step-child {
+  from { opacity: 0; translate: 0 .9rem; filter: blur(6px); }
+  to { opacity: 1; translate: 0 0; filter: blur(0); }
+}
+@keyframes step-flash {
+  0% { box-shadow: 0 0 0 0 rgba(205, 211, 101, .7), 0 0 3rem rgba(205, 211, 101, .45); }
+  100% { box-shadow: 0 0 0 1.6rem rgba(205, 211, 101, 0), 0 0 0 rgba(205, 211, 101, 0); }
+}
+
+.step-pips { position: fixed; left: 50%; bottom: 1.1rem; z-index: 30; display: flex; gap: .45rem; transform: translateX(-50%); pointer-events: none; }
+.step-pips[hidden] { display: none; }
+.step-pips i { width: .45rem; height: .45rem; border-radius: 99px; background: rgba(205, 211, 101, .28); transition: width 400ms cubic-bezier(.16, 1, .3, 1), background 300ms; }
+.step-pips i[data-on] { width: 1.4rem; background: var(--agent-lime, #cdd365); box-shadow: 0 0 .8rem rgba(205, 211, 101, .6); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-step][data-revealed], [data-step][data-revealed] > * { animation: none; }
+  .agent-journey-connector[data-step] { transition: none; }
 }

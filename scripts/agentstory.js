@@ -5,6 +5,99 @@
       controlHintDuration: 3000
     };
 
+    // Nebula enhancements (modern theme preview)
+    // Fully inert unless html[data-palette="nebula"] is set — see agent-journey.html.
+    // index.html never sets that attribute, so this has zero effect there.
+    const NebulaFX = (() => {
+      const active = document.documentElement.dataset.palette === 'nebula';
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const enhancedScenes = new WeakSet();
+
+      function countTo(el, to, duration = 900) {
+        if (!el) return;
+        const from = Number(el.textContent) || 0;
+        if (reducedMotion || from === to) { el.textContent = to; return; }
+        const start = performance.now();
+        const tick = (now) => {
+          const progress = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(from + (to - from) * eased);
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+
+      function statChip(count, label) {
+        const chip = document.createElement('div');
+        chip.className = 'nebula-stat-chip';
+        const num = document.createElement('span');
+        num.className = 'nebula-stat-num';
+        num.textContent = '0';
+        const text = document.createElement('span');
+        text.className = 'nebula-stat-label';
+        text.textContent = label;
+        chip.append(num, text);
+        requestAnimationFrame(() => countTo(num, count, 1100));
+        return chip;
+      }
+
+      function buildChatDemo(scene) {
+        const checklist = scene.visual?.checklist || [];
+        if (!checklist.length) return null;
+        const demo = document.createElement('div');
+        demo.className = 'nebula-chat-demo';
+
+        const head = document.createElement('div');
+        head.className = 'nebula-chat-head';
+        const dot = document.createElement('span');
+        dot.className = 'nebula-chat-dot';
+        head.append(dot, document.createTextNode('Copilot · Agent Builder'));
+
+        const prompt = document.createElement('p');
+        prompt.className = 'nebula-chat-prompt';
+        prompt.textContent = '"Build me a Weekly Leadership Brief Writer"';
+
+        const thinking = document.createElement('div');
+        thinking.className = 'nebula-chat-thinking';
+        thinking.append(
+          document.createElement('span'),
+          document.createElement('span'),
+          document.createElement('span'),
+          document.createTextNode('thinking')
+        );
+
+        const list = document.createElement('ul');
+        list.className = 'nebula-chat-steps';
+        checklist.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.style.setProperty('--i', index);
+          const strong = document.createElement('strong');
+          strong.textContent = item.label;
+          const span = document.createElement('span');
+          span.textContent = item.detail;
+          li.append(strong, span);
+          list.appendChild(li);
+        });
+
+        demo.append(head, prompt, thinking, list);
+        return demo;
+      }
+
+      function onSceneChange(scene, sceneEl) {
+        if (!active || !sceneEl || enhancedScenes.has(sceneEl)) return;
+
+        if (scene.id === 'agent-first-build') {
+          const stage = sceneEl.querySelector('.scene-stage-workbench');
+          const demo = stage && buildChatDemo(scene);
+          if (demo) stage.appendChild(demo);
+        }
+
+        enhancedScenes.add(sceneEl);
+      }
+
+      return { active, countTo, onSceneChange };
+    })();
+
     // Data Manager
     class DataManager {
       constructor() {
@@ -122,6 +215,139 @@
             stage.appendChild(this.node('duel-side muted', v.left.label, v.left.detail));
             const vs = document.createElement('div'); vs.className = 'duel-vs'; vs.textContent = 'VS'; stage.appendChild(vs);
             stage.appendChild(this.node('duel-side accent', v.right.label, v.right.detail));
+          },
+          'prompt-showdown': (stage, v) => {
+            // Two side-by-side mini Copilot chats: a vague prompt that drifts
+            // into an ungrounded answer (left), and a sharp, color-coded
+            // prompt that resolves into a grounded one (right). The right
+            // prompt types in via the shared typewriter engine; everything
+            // else runs on fixed CSS timing (see agentstory-modern.css),
+            // matching the agent-first-build chat demo's convention.
+            const row = document.createElement('div');
+            row.className = 'copilot-showdown-row';
+
+            const buildPane = (side, data, typed) => {
+              const pane = document.createElement('div');
+              pane.className = `copilot-pane copilot-pane-${side}`;
+
+              const head = document.createElement('div');
+              head.className = 'copilot-pane-head';
+              const dot = document.createElement('span');
+              dot.className = 'copilot-pane-dot';
+              const name = document.createElement('span');
+              name.textContent = 'Copilot';
+              const label = document.createElement('span');
+              label.className = 'copilot-pane-label';
+              label.textContent = data.label || '';
+              head.append(dot, name, label);
+
+              const body = document.createElement('div');
+              body.className = 'copilot-pane-body';
+
+              if (data.legend?.length) {
+                const legend = document.createElement('div');
+                legend.className = 'copilot-legend';
+                data.legend.forEach((item) => {
+                  const chip = document.createElement('span');
+                  chip.className = 'copilot-legend-chip';
+                  chip.style.setProperty('--part-color', item.color);
+                  const chipDot = document.createElement('i');
+                  chip.append(chipDot, document.createTextNode(item.label));
+                  legend.appendChild(chip);
+                });
+                body.appendChild(legend);
+              }
+
+              const userBubble = document.createElement('div');
+              userBubble.className = 'copilot-bubble copilot-bubble-user' + (typed ? ' copilot-bubble-user-coded' : '');
+              const userRole = document.createElement('span');
+              userRole.className = 'copilot-bubble-role';
+              userRole.textContent = 'You';
+              const userText = document.createElement('span');
+              userText.className = 'copilot-bubble-text';
+              if (typed) {
+                const promptRuns = data.promptRuns || [];
+                userText.dataset.typewriter = JSON.stringify(promptRuns);
+                userText.dataset.typewriterDelay = String(data.typingDelay ?? 1700);
+                userText.setAttribute('aria-label', promptRuns.map((run) => run.text).join(''));
+              } else {
+                userText.textContent = data.prompt;
+              }
+              userBubble.append(userRole, userText);
+
+              const thinking = document.createElement('div');
+              thinking.className = 'copilot-thinking';
+              thinking.append(
+                document.createElement('span'),
+                document.createElement('span'),
+                document.createElement('span'),
+                document.createTextNode('Copilot is thinking')
+              );
+
+              const assistantBubble = document.createElement('div');
+              assistantBubble.className = `copilot-bubble copilot-bubble-assistant copilot-bubble-${data.tone}`;
+              const assistantRole = document.createElement('span');
+              assistantRole.className = 'copilot-bubble-role';
+              assistantRole.textContent = 'Copilot';
+              assistantBubble.appendChild(assistantRole);
+              if (data.flag) {
+                const flag = document.createElement('div');
+                flag.className = 'copilot-flag';
+                flag.textContent = data.flag;
+                assistantBubble.appendChild(flag);
+              }
+              (data.responseLines || [data.response]).forEach((line) => {
+                const p = document.createElement('p');
+                p.textContent = line;
+                assistantBubble.appendChild(p);
+              });
+
+              body.append(userBubble, thinking, assistantBubble);
+              pane.append(head, body);
+              return pane;
+            };
+
+            row.append(
+              buildPane('vague', { ...v.left, tone: 'risky' }, false),
+              buildPane('smart', { ...v.right, tone: 'good' }, true)
+            );
+            stage.appendChild(row);
+          },
+          'mega-prompt': (stage, v) => {
+            const card = document.createElement('div');
+            card.className = 'mega-prompt-card';
+            const toolbar = document.createElement('div');
+            toolbar.className = 'mega-prompt-toolbar';
+            const dots = document.createElement('div');
+            dots.className = 'console-bar';
+            dots.innerHTML = '<span></span><span></span><span></span>';
+            const label = document.createElement('span');
+            label.className = 'mega-prompt-label';
+            label.textContent = v.label || 'Full instructions';
+            toolbar.append(dots, label);
+            if (v.wordCountLabel) {
+              const count = document.createElement('span');
+              count.className = 'mega-prompt-count';
+              count.textContent = v.wordCountLabel;
+              toolbar.appendChild(count);
+            }
+            const body = document.createElement('div');
+            body.className = 'mega-prompt-body';
+            (v.lines || []).forEach((line) => {
+              const p = document.createElement('p');
+              p.className = 'mega-prompt-line';
+              if (!line.trim()) p.classList.add('is-blank');
+              p.textContent = line;
+              body.appendChild(p);
+            });
+            card.append(toolbar, body);
+            stage.appendChild(card);
+            if (v.caption) {
+              const caption = document.createElement('p');
+              caption.className = 'mega-prompt-caption';
+              caption.textContent = v.caption;
+              stage.appendChild(caption);
+            }
           },
           'failure-modes': (stage, v) => {
             const grid = document.createElement('div');
@@ -641,6 +867,7 @@
               returnUrl.searchParams.set('scene', stage.dataset.sceneId || 'agent-first-build');
               returnUrl.hash = '';
               libraryUrl.searchParams.set('return', returnUrl.href);
+              if (NebulaFX.active) libraryUrl.searchParams.set('palette', 'nebula');
               link.href = libraryUrl.href;
               link.textContent = v.libraryLink.label || 'Explore the Agent Use Case Library ->';
               stage.appendChild(link);
@@ -1003,11 +1230,19 @@
           sceneEl.dataset.state = index < this.currentSceneIndex ? 'past' : index === this.currentSceneIndex ? 'active' : 'future';
           sceneEl.setAttribute('aria-hidden', String(index !== this.currentSceneIndex));
         });
+        const activeEl = document.querySelector('.scene[data-state="active"]');
+        if (activeEl && this._stepScene !== this.currentSceneIndex) {
+          const goingBack = this._stepScene !== undefined && this.currentSceneIndex < this._stepScene;
+          this.setSteps(activeEl, goingBack ? this.buildSteps(activeEl).length : 0);
+          if (goingBack) activeEl.querySelectorAll('[data-revealed]').forEach((el) => { el.style.animation = 'none'; requestAnimationFrame(() => { el.style.animation = ''; }); });
+        }
+        this._stepScene = this.currentSceneIndex;
         document.querySelector('.desktop-viewing-notice').hidden = scene.id !== 'agent-landing';
         this.startTypewriters();
         this.updateCommentary(scene);
         this.updateProgress();
         this.updateNavigation();
+        NebulaFX.onSceneChange(scene, document.querySelector('.scene[data-state="active"]'));
       }
 
       startTypewriters() {
@@ -1089,7 +1324,12 @@
 
       updateProgress() {
         const totalScenes = this.dataManager.getTotalScenes();
-        document.querySelector('#sceneNum').textContent = this.currentSceneIndex + 1;
+        const sceneNumEl = document.querySelector('#sceneNum');
+        if (NebulaFX.active) {
+          NebulaFX.countTo(sceneNumEl, this.currentSceneIndex + 1, 420);
+        } else {
+          sceneNumEl.textContent = this.currentSceneIndex + 1;
+        }
         document.querySelector('#sceneTotal').textContent = totalScenes;
 
         const pathPosition = this.navigationPath?.indexOf(this.currentSceneIndex) ?? -1;
@@ -1161,7 +1401,72 @@
         });
       }
 
+      // Step reveal: each scene exposes beats that appear one per click/scroll/key
+      buildSteps(sceneEl) {
+        if (sceneEl._steps) return sceneEl._steps;
+        const $$ = (sel, root = sceneEl) => [...root.querySelectorAll(sel)];
+        const steps = [];
+        $$('.agent-journey-rail').forEach((rail) => {
+          const cards = $$('.agent-journey-card', rail);
+          const paths = $$('.agent-journey-connector', rail);
+          paths.forEach((path) => path.setAttribute('pathLength', '100'));
+          cards.forEach((card, i) => steps.push([paths[i], card].filter(Boolean)));
+          const outcome = rail.parentElement.querySelector('.agent-journey-outcome');
+          if (outcome) steps.push([outcome]);
+        });
+        $$('.blueprint-part').forEach((el) => steps.push([el]));
+        if (sceneEl.dataset.sceneId !== 'agent-tedtalk-return') $$('.tedtalk-reveal').forEach((el) => steps.push([el]));
+        steps.forEach((group) => group.forEach((el) => { el.dataset.step = ''; }));
+        sceneEl._steps = steps;
+        return steps;
+      }
+
+      setSteps(sceneEl, shown) {
+        const steps = this.buildSteps(sceneEl);
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        steps.forEach((group, i) => group.forEach((el) => {
+          if (i < shown) {
+            if (!('revealed' in el.dataset)) {
+              el.dataset.revealed = '';
+              if (reduce) return;
+            }
+          } else {
+            delete el.dataset.revealed;
+          }
+        }));
+        sceneEl._shown = shown;
+        this.updatePips(sceneEl);
+      }
+
+      updatePips(sceneEl) {
+        let pips = document.querySelector('.step-pips');
+        if (!pips) {
+          pips = document.createElement('div');
+          pips.className = 'step-pips';
+          pips.setAttribute('aria-hidden', 'true');
+          document.body.appendChild(pips);
+        }
+        const total = sceneEl?._steps?.length || 0;
+        pips.hidden = total === 0;
+        pips.replaceChildren(...Array.from({ length: total }, (_, i) => {
+          const dot = document.createElement('i');
+          if (i < sceneEl._shown) dot.dataset.on = '';
+          return dot;
+        }));
+      }
+
+      advanceStep(direction) {
+        const sceneEl = document.querySelector('.scene[data-state="active"]');
+        if (!sceneEl) return false;
+        const total = this.buildSteps(sceneEl).length;
+        const shown = sceneEl._shown ?? 0;
+        if (direction > 0 && shown < total) { this.setSteps(sceneEl, shown + 1); return true; }
+        if (direction < 0 && shown > 0) { this.setSteps(sceneEl, shown - 1); return true; }
+        return false;
+      }
+
       nextScene() {
+        if (this.advanceStep(1)) return;
         if (this.navigationPath) {
           const pathPosition = this.navigationPath.indexOf(this.currentSceneIndex);
           const nextIndex = pathPosition >= 0
@@ -1180,6 +1485,7 @@
       }
 
       previousScene() {
+        if (this.advanceStep(-1)) return;
         if (this.navigationPath) {
           const pathPosition = this.navigationPath.indexOf(this.currentSceneIndex);
           const previousIndex = pathPosition >= 0
@@ -1244,9 +1550,14 @@
         const returnUrl = new URL(window.location.href);
         if (scene) returnUrl.searchParams.set('scene', scene.id);
 
-        const libraryUrl = new URL('agent-usecase-library.html', window.location.href);
+        // The Nebula deck preview links out to the Northway one-pager instead
+        // of the use case library; the production deck (index.html) keeps
+        // its original destination untouched.
+        const targetPage = NebulaFX.active ? 'northway-onepage.html' : 'agent-usecase-library.html';
+        const libraryUrl = new URL(targetPage, window.location.href);
         libraryUrl.searchParams.set('return', returnUrl.href);
         libraryUrl.searchParams.set('theme', document.documentElement.getAttribute('data-theme') || 'dark');
+        if (NebulaFX.active) libraryUrl.searchParams.set('palette', 'nebula');
         window.location.href = libraryUrl.href;
       }
 
@@ -1417,12 +1728,20 @@
           if (particle.y < -5) particle.y = window.innerHeight + 5;
           if (particle.x < -5) particle.x = window.innerWidth + 5;
           if (particle.x > window.innerWidth + 5) particle.x = -5;
+          const isBright = index % 13 === 0;
+          if (NebulaFX.active && isBright) {
+            context.shadowBlur = 10;
+            context.shadowColor = accentColor;
+          } else {
+            context.shadowBlur = 0;
+          }
           context.beginPath();
-          context.fillStyle = index % 13 === 0 ? accentColor : textColor;
+          context.fillStyle = isBright ? accentColor : textColor;
           context.globalAlpha = index % 9 === 0 ? .9 : .52;
           context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
           context.fill();
         });
+        context.shadowBlur = 0;
         context.globalAlpha = 1;
         if (!reducedMotion) requestAnimationFrame(drawField);
       }

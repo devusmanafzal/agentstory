@@ -1,0 +1,886 @@
+/*
+  Agentstory — "Nebula" modern theme (design preview)
+  ----------------------------------------------------
+  Loaded AFTER styles/agentstory.css on agent-journey.html only.
+  Every rule here is scoped under html[data-palette="nebula"] so that:
+    1) index.html (which never sets data-palette="nebula") is completely unaffected.
+    2) These rules out-specificity the base stylesheet regardless of source order,
+       so nothing here depends on fragile cascade ordering.
+  Visual language borrows from devusmanafzal.github.io/workIQ: deep-space gradients,
+  glass-morphism panels, cyan glow accents, and animated pop-in reveals.
+*/
+
+/* ---------------------------------------------------------------------- */
+/* 1. Palette tokens — redefining the shared custom properties re-themes  */
+/*    every element across the deck (cards, text, chrome) for free.       */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] {
+  color-scheme: dark;
+  --cp-bg: #050816;
+  --cp-bg-elevated: #0a0f24;
+  --cp-surface: #0c1230;
+  --cp-surface-soft: #10173a;
+  --cp-border: rgba(148, 197, 255, .16);
+  --cp-border-strong: rgba(148, 197, 255, .32);
+  --cp-text: #f1f4fc;
+  --cp-text-muted: #9fb0d6;
+  --cp-text-soft: #c7d2f0;
+  --cp-accent: #19c3ff;
+  --cp-accent-hover: #5cd8ff;
+  --cp-accent-soft: rgba(25, 195, 255, .16);
+  --cp-accent-fg: #04101f;
+  --cp-link: #7dd3fc;
+  --cp-shadow: 0 20px 60px rgba(2, 6, 23, .6);
+  --cp-overlay: rgba(5, 8, 22, .86);
+  --cp-panel: rgba(12, 18, 42, .68);
+  --cp-panel-strong: rgba(10, 15, 36, .92);
+  --cp-sheen: rgba(255, 255, 255, .05);
+
+  /* Legacy "agent-*" tokens are referenced by a handful of unconditional
+     rules further up the cascade (cinema bg, scene kicker, journey rail).
+     Redefining them keeps those rules on-theme without duplicating them. */
+  --agent-ink: #050816;
+  --agent-mint: #19c3ff;
+  --agent-lime: #8be9ff;
+  --agent-coral: #ffb454;
+
+  --nebula-glow: 0 0 0 1px rgba(25, 195, 255, .14), 0 18px 48px rgba(2, 8, 28, .55), 0 0 32px rgba(25, 195, 255, .1);
+  --nebula-glow-strong: 0 0 0 1px rgba(25, 195, 255, .35), 0 20px 56px rgba(2, 8, 28, .6), 0 0 44px rgba(25, 195, 255, .22);
+
+  font-family: "Segoe UI Variable Display", "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html[data-palette="nebula"] body {
+  background: #050816;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. Deep-space backdrop                                                 */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .cinema {
+  background:
+    radial-gradient(ellipse 60% 46% at 50% 36%, rgba(25, 195, 255, .16), transparent 62%),
+    radial-gradient(ellipse 70% 55% at 85% 88%, rgba(124, 92, 255, .14), transparent 65%),
+    radial-gradient(ellipse at 55% 45%, #0b1440 0%, #050816 62%);
+}
+
+html[data-palette="nebula"] .cinema::before {
+  opacity: .08;
+}
+
+html[data-palette="nebula"] .cinema::after {
+  display: none;
+}
+
+html[data-palette="nebula"] .cinema-vignette {
+  background: radial-gradient(circle at 50% 45%, transparent 0 32%, rgba(2, 5, 16, .55) 100%);
+  opacity: .5;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3. Typography accents                                                  */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .scene .accent {
+  color: var(--cp-accent);
+  text-shadow: 0 0 28px rgba(25, 195, 255, .45);
+}
+
+html[data-palette="nebula"] .scene-kicker {
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  border: 1px solid rgba(25, 195, 255, .4);
+  box-shadow: 0 0 18px rgba(25, 195, 255, .18);
+}
+
+html[data-palette="nebula"] .scene[data-scene-id="agent-close"] .scene-kicker,
+html[data-palette="nebula"] .scene[data-scene-id="episode1-close"] .scene-kicker {
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  box-shadow: none;
+}
+
+html[data-palette="nebula"] .scene[data-scene-id="agent-close"] .scene-detail,
+html[data-palette="nebula"] .scene[data-scene-id="episode1-close"] .scene-detail {
+  border-top: 1px solid rgba(25, 195, 255, .35);
+  color: var(--cp-accent);
+}
+
+/* "episode1-close" is a duplicate of agent-close (see data/agentstory-modern.json)
+   inserted as the Episode 1 closer. agentstory.css only wires up the centered
+   title-scene layout for the literal "agent-close" id, so replicate it here. */
+.scene[data-scene-id="episode1-close"] .scene-content { display: grid; place-items: center; width: min(100%, 78rem); text-align: center; }
+.scene[data-scene-id="episode1-close"] .scene-header { display: flex; flex-direction: column; align-items: center; }
+.scene[data-scene-id="episode1-close"] h1 { max-width: 15ch; width: auto; white-space: normal; font-size: clamp(3.5rem, 7vw, 7.5rem); line-height: .88; }
+.scene[data-scene-id="episode1-close"] .scene-subtitle { max-width: 46rem; margin-top: clamp(1.25rem, 2.5vh, 2rem) !important; }
+.scene[data-scene-id="episode1-close"] .scene-detail { max-width: 38rem; margin-top: clamp(1.5rem, 3vh, 2.5rem) !important; padding-top: clamp(1.25rem, 2.5vh, 2rem); border-top: 1px solid rgba(205, 211, 101, .45); font-size: clamp(1rem, 1.5vw, 1.3rem); }
+
+/* ---------------------------------------------------------------------- */
+/* 4. Glass-morphism card system                                          */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .stage-node,
+html[data-palette="nebula"] .blueprint-part,
+html[data-palette="nebula"] .workbench-item,
+html[data-palette="nebula"] .failure-mode-card,
+html[data-palette="nebula"] .poll-option,
+html[data-palette="nebula"] .duel-side.muted,
+html[data-palette="nebula"] .frame-card,
+html[data-palette="nebula"] .deck-card,
+html[data-palette="nebula"] .chain-link,
+html[data-palette="nebula"] .prompt-anatomy-card,
+html[data-palette="nebula"] .annotated-prompt-part,
+html[data-palette="nebula"] .brief-panel,
+html[data-palette="nebula"] .arrow-stage {
+  border: 1px solid var(--cp-border);
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .blueprint-core,
+html[data-palette="nebula"] .foundation-consolidation-blueprint .blueprint-core {
+  background: var(--cp-panel-strong);
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+  text-shadow: 0 0 14px rgba(25, 195, 255, .5);
+  box-shadow: 0 0 0 .6rem rgba(25, 195, 255, .07), 0 0 2.5rem rgba(25, 195, 255, .25);
+}
+
+/* Agent trio (built-in agents) */
+html[data-palette="nebula"] .agent-trio-card {
+  border: 1px solid var(--cp-border);
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+  border-left: 3px solid var(--cp-accent);
+  transition: transform 220ms cubic-bezier(.2, .9, .3, 1.1), border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+html[data-palette="nebula"] .agent-trio-card:hover,
+html[data-palette="nebula"] .agent-trio-card:focus-visible {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .1);
+  box-shadow: var(--nebula-glow-strong);
+  transform: translateY(-.4rem) scale(1.015);
+}
+
+html[data-palette="nebula"] .agent-trio-number { color: var(--cp-accent); }
+html[data-palette="nebula"] .agent-trio-card strong { color: var(--cp-text); }
+html[data-palette="nebula"] .agent-trio-card em { color: #7dd3fc; }
+
+/* Agent library */
+html[data-palette="nebula"] .agent-library-card {
+  border: 1px solid var(--cp-border);
+  background: var(--cp-panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--nebula-glow);
+  border-left: 3px solid var(--cp-accent);
+}
+
+html[data-palette="nebula"] .agent-library-card:hover {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .1);
+  transform: translateY(-.25rem);
+}
+
+html[data-palette="nebula"] .agent-library-number { color: var(--cp-accent); }
+html[data-palette="nebula"] .agent-library-card strong { color: var(--cp-text); }
+
+html[data-palette="nebula"] .agent-library-invitation {
+  border: 1px solid var(--cp-accent);
+  background: linear-gradient(160deg, rgba(25, 195, 255, .14), rgba(10, 15, 36, .85));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow-strong);
+}
+
+html[data-palette="nebula"] .agent-library-invitation::before {
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+}
+
+html[data-palette="nebula"] .agent-library-invitation > span { color: #ffb454; }
+html[data-palette="nebula"] .agent-library-invitation strong { color: var(--cp-text); }
+html[data-palette="nebula"] .agent-library-link { color: var(--cp-text); }
+html[data-palette="nebula"] .agent-library-link:hover,
+html[data-palette="nebula"] .agent-library-link:focus-visible { color: var(--cp-accent); }
+
+html[data-palette="nebula"] .agent-library-footer,
+html[data-palette="nebula"] .scene[data-scene-id="agent-store"] .agent-library-footer {
+  border: 1px solid rgba(255, 180, 84, .5);
+  background: rgba(255, 180, 84, .08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+html[data-palette="nebula"] .agent-library-footer strong,
+html[data-palette="nebula"] .scene[data-scene-id="agent-store"] .agent-library-footer strong { color: #ffb454; }
+html[data-palette="nebula"] .scene[data-scene-id="agent-store"] .agent-library-footer::before { color: #ffb454; }
+
+/* Platform path (Agent Builder / Copilot Studio / Azure AI Foundry) */
+html[data-palette="nebula"] .platform-path-row::before {
+  background: linear-gradient(90deg, var(--cp-accent), #ffb454);
+  opacity: .5;
+}
+
+html[data-palette="nebula"] .platform-path-card {
+  border: 1px solid var(--cp-border);
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+  border-top: 3px solid var(--cp-accent);
+}
+
+html[data-palette="nebula"] .platform-path-card:hover {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .1);
+  box-shadow: var(--nebula-glow-strong);
+  transform: translateY(-.4rem);
+}
+
+html[data-palette="nebula"] .platform-path-card.path-2 { border-top-color: #ffb454; }
+html[data-palette="nebula"] .platform-path-card.path-3 {
+  background: linear-gradient(165deg, rgba(255, 180, 84, .14), rgba(10, 15, 36, .85));
+  border-top-color: #ffb454;
+}
+
+html[data-palette="nebula"] .platform-path-card[data-state="muted"] {
+  border-color: rgba(159, 176, 214, .22);
+  background: rgba(10, 15, 36, .5);
+  box-shadow: none;
+}
+
+/* Featured path: persistent "breathing" glow at load (not just on :hover),
+   so the recommended option reads as prominent without needing interaction. */
+@keyframes nebula-card-breathe {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(25, 195, 255, .35), 0 20px 56px rgba(2, 8, 28, .6), 0 0 36px rgba(25, 195, 255, .22); }
+  50% { box-shadow: 0 0 0 1px rgba(25, 195, 255, .55), 0 20px 56px rgba(2, 8, 28, .6), 0 0 56px rgba(25, 195, 255, .4); }
+}
+
+@keyframes nebula-card-breathe-amber {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(255, 180, 84, .35), 0 20px 56px rgba(2, 8, 28, .6), 0 0 36px rgba(255, 180, 84, .22); }
+  50% { box-shadow: 0 0 0 1px rgba(255, 180, 84, .55), 0 20px 56px rgba(2, 8, 28, .6), 0 0 56px rgba(255, 180, 84, .4); }
+}
+
+html[data-palette="nebula"] .platform-path-card:not([data-state="muted"]) {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .08);
+  animation: nebula-card-breathe 3.2s ease-in-out infinite;
+}
+
+html[data-palette="nebula"] .platform-path-card.path-2:not([data-state="muted"]),
+html[data-palette="nebula"] .platform-path-card.path-3:not([data-state="muted"]) {
+  border-color: #ffb454;
+  background: linear-gradient(165deg, rgba(255, 180, 84, .14), rgba(10, 15, 36, .85));
+  animation-name: nebula-card-breathe-amber;
+}
+
+html[data-palette="nebula"] .platform-path-card:not([data-state="muted"]):hover {
+  animation-play-state: paused;
+  transform: translateY(-.4rem);
+}
+
+html[data-palette="nebula"] .platform-path-eyebrow,
+html[data-palette="nebula"] .platform-path-fit { color: var(--cp-accent); }
+html[data-palette="nebula"] .platform-path-card.path-2 .platform-path-eyebrow,
+html[data-palette="nebula"] .platform-path-card.path-3 .platform-path-eyebrow,
+html[data-palette="nebula"] .platform-path-card.path-2 .platform-path-fit,
+html[data-palette="nebula"] .platform-path-card.path-3 .platform-path-fit { color: #ffb454; }
+html[data-palette="nebula"] .platform-path-card strong { color: var(--cp-text); }
+
+/* Agent journey rail + foundation consolidation */
+html[data-palette="nebula"] .agent-journey-card {
+  border: 1px solid var(--cp-accent);
+  background: rgba(12, 18, 42, .78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .agent-journey-card:nth-child(3),
+html[data-palette="nebula"] .agent-journey-card:nth-child(4) {
+  background: rgba(25, 195, 255, .1);
+}
+
+html[data-palette="nebula"] .agent-journey-number { color: #ffb454; }
+html[data-palette="nebula"] .agent-journey-card strong,
+html[data-palette="nebula"] .agent-journey-outcome,
+html[data-palette="nebula"] .agent-journey-core { color: var(--cp-text); }
+html[data-palette="nebula"] .agent-journey-core { border-color: var(--cp-accent); background: #050816; }
+
+html[data-palette="nebula"] .foundation-consolidation-blueprint .blueprint-part {
+  background: rgba(12, 18, 42, .78);
+  box-shadow: var(--nebula-glow);
+}
+
+/* Tedtalk reveal buttons */
+html[data-palette="nebula"] .tedtalk-reveal-button {
+  border-color: var(--cp-accent);
+  background: rgba(10, 15, 36, .82);
+  color: var(--cp-accent);
+  box-shadow: 0 0 0 .75rem rgba(25, 195, 255, .05), 0 0 2rem rgba(25, 195, 255, .2);
+}
+
+html[data-palette="nebula"] .tedtalk-reveal-button.question:hover,
+html[data-palette="nebula"] .tedtalk-reveal-button.question:focus-visible {
+  background: var(--cp-accent);
+  color: var(--cp-accent-fg);
+}
+
+html[data-palette="nebula"] .tedtalk-reveal-button.reject {
+  border-color: #ffb454;
+  color: #ffb454;
+}
+
+html[data-palette="nebula"] .tedtalk-reveal-button.reject:hover,
+html[data-palette="nebula"] .tedtalk-reveal-button.reject:focus-visible {
+  background: #ffb454;
+  color: var(--cp-accent-fg);
+}
+
+html[data-palette="nebula"] .tedtalk-reveal-content strong { color: var(--cp-text); }
+
+/* Misc chrome that used literal mint/coral RGB values */
+html[data-palette="nebula"] .desktop-viewing-notice {
+  border-color: var(--cp-border);
+  background: var(--cp-panel-strong);
+  backdrop-filter: blur(12px);
+}
+
+html[data-palette="nebula"] .library-shortcut {
+  border-color: var(--cp-border-strong);
+  background: var(--cp-panel-strong);
+  color: var(--cp-accent);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .library-shortcut:hover,
+html[data-palette="nebula"] .library-shortcut:focus-visible {
+  border-color: var(--cp-accent);
+  background: rgba(25, 195, 255, .14);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 5. Pop-in / stagger reveal animations                                  */
+/* ---------------------------------------------------------------------- */
+@keyframes nebula-pop {
+  from { opacity: 0; transform: translateY(20px) scale(.95); }
+  to { opacity: 1; transform: none; }
+}
+
+html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card,
+html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card,
+html[data-palette="nebula"] .scene[data-state="active"] .platform-path-card,
+html[data-palette="nebula"] .scene[data-state="active"] .blueprint-part,
+html[data-palette="nebula"] .scene[data-state="active"] .workbench-item,
+html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card,
+html[data-palette="nebula"] .scene[data-state="active"] .tedtalk-reveal,
+html[data-palette="nebula"] .scene[data-state="active"] .agent-journey-card {
+  animation: nebula-pop .62s cubic-bezier(.2, .9, .3, 1.15) both;
+}
+
+html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .platform-path-card:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .blueprint-part:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .workbench-item:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .tedtalk-reveal:nth-child(1),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-journey-card:nth-child(2) { animation-delay: .04s; }
+
+html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .platform-path-card:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .blueprint-part:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .workbench-item:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .tedtalk-reveal:nth-child(2),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-journey-card:nth-child(3) { animation-delay: .12s; }
+
+html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card:nth-child(3),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card:nth-child(3),
+html[data-palette="nebula"] .scene[data-state="active"] .platform-path-card:nth-child(3),
+html[data-palette="nebula"] .scene[data-state="active"] .blueprint-part:nth-child(3),
+html[data-palette="nebula"] .scene[data-state="active"] .workbench-item:nth-child(3),
+html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card:nth-child(3),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-journey-card:nth-child(4) { animation-delay: .2s; }
+
+html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card:nth-child(4),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card:nth-child(4),
+html[data-palette="nebula"] .scene[data-state="active"] .workbench-item:nth-child(4),
+html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card:nth-child(4) { animation-delay: .28s; }
+
+html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card:nth-child(n+5),
+html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card:nth-child(n+5),
+html[data-palette="nebula"] .scene[data-state="active"] .workbench-item:nth-child(n+5),
+html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card:nth-child(n+5) { animation-delay: .36s; }
+
+/* ---------------------------------------------------------------------- */
+/* 6. Chrome: counter, progress bar, commentary, presenter tools          */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .progress-bar {
+  background: linear-gradient(90deg, var(--cp-accent), #7dd3fc);
+  box-shadow: 0 0 12px rgba(25, 195, 255, .6);
+}
+
+html[data-palette="nebula"] .scene-counter {
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  background: var(--cp-panel-strong);
+  border: 1px solid var(--cp-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] #sceneNum {
+  color: var(--cp-accent);
+  text-shadow: 0 0 14px rgba(25, 195, 255, .5);
+}
+
+html[data-palette="nebula"] .commentary-launcher,
+html[data-palette="nebula"] .commentary-blade,
+html[data-palette="nebula"] .nav-panel {
+  background: var(--cp-panel-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .commentary-launcher:hover,
+html[data-palette="nebula"] .commentary-launcher:focus-visible {
+  background: rgba(25, 195, 255, .12);
+}
+
+html[data-palette="nebula"] .commentary-takeaway {
+  border-left-color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+}
+
+html[data-palette="nebula"] .scroll-cue-arrow { border-color: var(--cp-accent); }
+html[data-palette="nebula"] .scroll-cue-arrow:nth-child(1) { border-color: #7dd3fc; }
+html[data-palette="nebula"] .scroll-cue-arrow:nth-child(3) { border-color: #ffb454; }
+
+/* ---------------------------------------------------------------------- */
+/* 7. New component: animated stat chip                                   */
+/* ---------------------------------------------------------------------- */
+.nebula-stat-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .55rem;
+  width: max-content;
+  margin: 0 0 1.25rem;
+  padding: .55rem 1.1rem;
+  border: 1px solid var(--cp-border-strong);
+  border-radius: 999px;
+  background: var(--cp-panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--nebula-glow);
+  animation: nebula-pop .6s cubic-bezier(.2, .9, .3, 1.15) both;
+}
+
+.nebula-stat-num {
+  color: var(--cp-accent);
+  font-size: 1.5rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 16px rgba(25, 195, 255, .5);
+}
+
+.nebula-stat-label {
+  color: var(--cp-text-muted);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 8. New component: simulated Copilot chat / build demo                 */
+/*    (appended to the agent-first-build workbench scene via JS)          */
+/* ---------------------------------------------------------------------- */
+/* The chat demo stands in for the static checklist on this scene so the
+   same five steps aren't shown twice. */
+html[data-palette="nebula"] .scene[data-scene-id="agent-first-build"] .workbench-checklist {
+  display: none;
+}
+
+.nebula-chat-demo {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  margin-top: .75rem;
+  padding: 1.1rem 1.25rem 1.35rem;
+  border: 1px solid var(--cp-border-strong);
+  border-radius: .85rem;
+  background: var(--cp-panel-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--nebula-glow-strong);
+  animation: nebula-pop .7s cubic-bezier(.2, .9, .3, 1.1) both;
+}
+
+.nebula-chat-head {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .75rem;
+  color: var(--cp-text-muted);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.nebula-chat-dot {
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  box-shadow: 0 0 10px rgba(25, 195, 255, .8);
+  animation: nebula-blip 1.4s ease-in-out infinite;
+}
+
+@keyframes nebula-blip {
+  0%, 100% { opacity: .45; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.nebula-chat-prompt {
+  margin: 0 0 .9rem;
+  padding: .6rem .8rem;
+  border-radius: .55rem;
+  background: rgba(25, 195, 255, .1);
+  border: 1px solid var(--cp-accent-soft);
+  color: var(--cp-text);
+  font-size: .85rem;
+  font-style: italic;
+}
+
+.nebula-chat-thinking {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: 1rem;
+  color: var(--cp-text-muted);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  animation: nebula-fade-out 600ms ease 2.6s both;
+}
+
+.nebula-chat-thinking span {
+  width: .3rem;
+  height: .3rem;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  animation: nebula-blip 1s ease-in-out infinite;
+}
+
+.nebula-chat-thinking span:nth-child(2) { animation-delay: .15s; }
+.nebula-chat-thinking span:nth-child(3) { animation-delay: .3s; }
+
+@keyframes nebula-fade-out {
+  to { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+}
+
+.nebula-chat-steps {
+  display: grid;
+  gap: .5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nebula-chat-steps li {
+  padding: .55rem .7rem;
+  border: 1px solid var(--cp-border);
+  border-left: 2px solid var(--cp-accent);
+  border-radius: .4rem;
+  background: rgba(12, 18, 42, .6);
+  opacity: 0;
+  animation: nebula-pop .5s cubic-bezier(.2, .9, .3, 1.15) forwards;
+  animation-delay: calc(2.7s + var(--i, 0) * .22s);
+}
+
+.nebula-chat-steps li strong {
+  display: block;
+  color: var(--cp-text);
+  font-size: .8rem;
+}
+
+.nebula-chat-steps li span {
+  display: block;
+  margin-top: .15rem;
+  color: var(--cp-text-muted);
+  font-size: .72rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 860px) {
+  .nebula-chat-demo { grid-column: 1; grid-row: auto; margin-top: 1rem; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 10. New component: Copilot prompt showdown                            */
+/*     Two side-by-side mini Copilot chats: a vague prompt that drifts    */
+/*     into an ungrounded answer, and a sharp, color-coded prompt that    */
+/*     resolves into a grounded one. Styled identically to the proven     */
+/*     agent-first-build chat demo (section 8) for a consistent,          */
+/*     authentic "Copilot" look, with fixed CSS timing (not JS-synced to  */
+/*     the typing animation), matching that component's convention.       */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] {
+  --showdown-goal: var(--cp-accent);
+  --showdown-context: #b490ff;
+  --showdown-source: #4ade80;
+  --showdown-expectation: #ffb454;
+}
+
+@keyframes copilot-thinking-pulse {
+  0% { opacity: 0; }
+  15%, 85% { opacity: 1; }
+  100% { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+}
+
+.copilot-showdown-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.25rem, 2.5vw, 2.25rem);
+  width: 100%;
+  align-items: start;
+}
+
+.copilot-pane {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--cp-border-strong);
+  border-radius: .9rem;
+  background: var(--cp-panel-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--nebula-glow);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.scene[data-state="active"] .copilot-pane-vague { animation: nebula-pop .55s cubic-bezier(.2, .9, .3, 1.1) .15s both; }
+.scene[data-state="active"] .copilot-pane-smart { animation: nebula-pop .55s cubic-bezier(.2, .9, .3, 1.1) 1.5s both; }
+
+.copilot-pane-head {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 1rem;
+  border-bottom: 1px solid var(--cp-border);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--cp-text-muted);
+}
+
+.copilot-pane-dot {
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  box-shadow: 0 0 10px rgba(25, 195, 255, .8);
+  animation: nebula-blip 1.4s ease-in-out infinite;
+}
+
+.copilot-pane-label {
+  margin-left: auto;
+  color: var(--cp-text-soft);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.copilot-pane-body {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.copilot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem .8rem;
+  margin-bottom: -.25rem;
+}
+
+.copilot-legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .68rem;
+  font-weight: 650;
+  color: var(--part-color);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--part-color) 55%, transparent);
+}
+
+.copilot-legend-chip i {
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: var(--part-color);
+  box-shadow: 0 0 8px var(--part-color);
+}
+
+.copilot-bubble {
+  max-width: 96%;
+  padding: .65rem .85rem;
+  border-radius: .65rem;
+  font-size: clamp(.78rem, .95vw, .9rem);
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.copilot-bubble-role {
+  display: block;
+  margin-bottom: .2rem;
+  font-size: .62rem;
+  font-weight: 750;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: .75;
+}
+
+.copilot-bubble-user {
+  align-self: flex-end;
+  max-width: 92%;
+  background: var(--cp-accent);
+  color: var(--cp-accent-fg);
+  border-bottom-right-radius: .2rem;
+}
+
+/* Color-coded prompts (goal/context/source/expectations) need a neutral
+   backdrop so none of the four part-colors blend into the bubble itself. */
+.copilot-bubble-user-coded {
+  background: rgba(5, 8, 22, .78);
+  color: var(--cp-text);
+  border: 1px solid var(--cp-border-strong);
+}
+
+.copilot-bubble-user-coded .copilot-bubble-role { color: var(--cp-text-muted); opacity: 1; }
+.copilot-bubble-user-coded .copilot-bubble-text { white-space: pre-line; font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: .92em; line-height: 1.6; }
+
+.copilot-bubble-assistant {
+  align-self: flex-start;
+  border: 1px solid;
+  border-bottom-left-radius: .2rem;
+}
+
+.copilot-bubble-assistant.copilot-bubble-risky { border-color: #ff8fa3; background: rgba(255, 113, 133, .1); }
+.copilot-bubble-assistant.copilot-bubble-good { border-color: var(--cp-success); background: rgba(52, 211, 153, .1); }
+
+.copilot-flag {
+  margin-bottom: .4rem;
+  font-size: .64rem;
+  font-weight: 750;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.copilot-bubble-risky .copilot-flag { color: #ff8fa3; }
+.copilot-bubble-good .copilot-flag { color: var(--cp-success); text-shadow: 0 0 10px rgba(52, 211, 153, .4); }
+
+.copilot-bubble p { margin: 0 0 .4rem; color: var(--cp-text); }
+.copilot-bubble p:last-child { margin-bottom: 0; }
+
+.copilot-thinking {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: .4rem;
+  color: var(--cp-text-muted);
+  font-size: .68rem;
+  font-weight: 650;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+.copilot-thinking span {
+  width: .28rem;
+  height: .28rem;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  animation: nebula-blip 1s ease-in-out infinite;
+}
+
+.copilot-thinking span:nth-child(2) { animation-delay: .15s; }
+.copilot-thinking span:nth-child(3) { animation-delay: .3s; }
+
+/* Vague pane: the whole exchange is pre-written, so it plays out quickly on
+   a fixed schedule — bubble, thinking pulse, then the (ungrounded) answer. */
+.copilot-pane-vague .copilot-bubble-user { animation: nebula-pop .45s cubic-bezier(.2, .9, .3, 1.1) .4s both; }
+.copilot-pane-vague .copilot-thinking { animation: copilot-thinking-pulse .9s ease .6s both; }
+.copilot-pane-vague .copilot-bubble-assistant { animation: nebula-pop .5s cubic-bezier(.2, .9, .3, 1.1) 1.5s both; }
+
+/* Smart pane: chrome appears right as the vague pane's answer lands, the
+   prompt types in (color-coded, via the shared typewriter engine — see
+   data-typewriter-delay set in JS), then thinking and the grounded answer
+   follow on a schedule timed to roughly match when typing finishes. */
+.copilot-pane-smart .copilot-bubble-user { opacity: 1; transform: none; }
+.copilot-pane-smart .copilot-thinking { animation: copilot-thinking-pulse .9s ease 4.95s both; }
+.copilot-pane-smart .copilot-bubble-assistant { animation: nebula-pop .5s cubic-bezier(.2, .9, .3, 1.1) 5.85s both; }
+
+@media (max-width: 860px) {
+  .copilot-showdown-row { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 11. New component: mega prompt card                                    */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .mega-prompt-card {
+  border-color: var(--cp-border-strong);
+  box-shadow: var(--nebula-glow-strong);
+  animation: nebula-pop .6s cubic-bezier(.2, .9, .3, 1.1) both;
+}
+
+html[data-palette="nebula"] .mega-prompt-toolbar {
+  background: rgba(10, 15, 36, .92);
+  border-bottom-color: var(--cp-border);
+}
+
+html[data-palette="nebula"] .mega-prompt-count {
+  text-shadow: 0 0 10px rgba(25, 195, 255, .4);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 12. Motion safety                                                      */
+/* ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html[data-palette="nebula"] .scene[data-state="active"] .agent-trio-card,
+  html[data-palette="nebula"] .scene[data-state="active"] .agent-library-card,
+  html[data-palette="nebula"] .scene[data-state="active"] .platform-path-card,
+  html[data-palette="nebula"] .scene[data-state="active"] .blueprint-part,
+  html[data-palette="nebula"] .scene[data-state="active"] .workbench-item,
+  html[data-palette="nebula"] .scene[data-state="active"] .failure-mode-card,
+  html[data-palette="nebula"] .scene[data-state="active"] .tedtalk-reveal,
+  html[data-palette="nebula"] .scene[data-state="active"] .agent-journey-card,
+  html[data-palette="nebula"] .platform-path-card:not([data-state="muted"]),
+  html[data-palette="nebula"] .mega-prompt-card,
+  .copilot-pane,
+  .copilot-bubble,
+  .copilot-thinking,
+  .nebula-stat-chip,
+  .nebula-chat-demo,
+  .nebula-chat-steps li,
+  .nebula-chat-dot,
+  .nebula-chat-thinking span {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+

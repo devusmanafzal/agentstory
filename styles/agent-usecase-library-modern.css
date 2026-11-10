@@ -1,0 +1,322 @@
+/*
+  Agent Use Case Library — "Nebula" modern theme (design preview)
+  -----------------------------------------------------------------
+  Loaded AFTER the page's inline <style> block, and only ever activated via
+  html[data-palette="nebula"] (set only when this page is opened from the
+  Nebula deck preview, agent-journey.html, or via ?palette=nebula directly).
+  Opening this page normally (no palette param) renders byte-identical to
+  before — nothing here changes default behavior.
+
+  This is a denser, text/code-heavy reference tool rather than a cinematic
+  deck, so the treatment is intentionally calmer than agentstory-modern.css:
+  same deep-space palette and glass/glow language, but no particle canvas,
+  less motion, and extra care to keep code blocks and filters legible.
+*/
+
+/* ---------------------------------------------------------------------- */
+/* 1. Palette tokens                                                      */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] {
+  color-scheme: dark;
+  --cp-bg: #050816;
+  --cp-bg-elevated: #0a0f24;
+  --cp-surface: #0c1230;
+  --cp-surface-soft: #10173a;
+  --cp-border: rgba(148, 197, 255, .16);
+  --cp-border-strong: rgba(148, 197, 255, .32);
+  --cp-text: #f1f4fc;
+  --cp-text-muted: #9fb0d6;
+  --cp-text-soft: #c7d2f0;
+  --cp-accent: #19c3ff;
+  --cp-accent-hover: #5cd8ff;
+  --cp-accent-soft: rgba(25, 195, 255, .16);
+  --cp-accent-fg: #04101f;
+  --cp-success: #34d399;
+  --cp-danger: #fb7185;
+  --cp-warning: #ffb454;
+  --cp-link: #7dd3fc;
+  --cp-shadow: 0 20px 60px rgba(2, 6, 23, .6);
+  --cp-overlay: rgba(5, 8, 22, .86);
+  --cp-panel: rgba(12, 18, 42, .68);
+  --cp-panel-strong: rgba(10, 15, 36, .92);
+  --cp-sheen: rgba(255, 255, 255, .05);
+  --cp-highlight: rgba(25, 195, 255, .12);
+  --cp-success-soft: rgba(52, 211, 153, .12);
+  --cp-danger-soft: rgba(251, 113, 133, .12);
+  --cp-warning-soft: rgba(255, 180, 84, .12);
+  --cp-code-bg: #0a0f24;
+
+  --nebula-glow: 0 0 0 1px rgba(25, 195, 255, .14), 0 18px 48px rgba(2, 8, 28, .5), 0 0 28px rgba(25, 195, 255, .08);
+  --nebula-glow-strong: 0 0 0 1px rgba(25, 195, 255, .35), 0 20px 56px rgba(2, 8, 28, .55), 0 0 40px rgba(25, 195, 255, .2);
+
+  font-family: "Segoe UI Variable Display", "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html[data-palette="nebula"] body {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(25, 195, 255, .1), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(124, 92, 255, .08), transparent 65%),
+    #050816;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. Top bar + hero                                                      */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .topbar {
+  background: rgba(5, 8, 22, .82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--cp-border);
+}
+
+html[data-palette="nebula"] .logo .accent {
+  color: var(--cp-accent);
+  text-shadow: 0 0 18px rgba(25, 195, 255, .4);
+}
+
+html[data-palette="nebula"] .icon-btn {
+  background: var(--cp-panel);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-palette="nebula"] .icon-btn:hover {
+  background: var(--cp-accent-soft);
+  box-shadow: 0 0 16px rgba(25, 195, 255, .2);
+}
+
+html[data-palette="nebula"] header.hero {
+  background: transparent;
+  border-bottom: 1px solid var(--cp-border);
+}
+
+html[data-palette="nebula"] h1 .accent {
+  color: var(--cp-accent);
+  text-shadow: 0 0 28px rgba(25, 195, 255, .4);
+}
+
+html[data-palette="nebula"] .chip {
+  border-color: rgba(25, 195, 255, .4);
+  box-shadow: 0 0 14px rgba(25, 195, 255, .12);
+}
+
+html[data-palette="nebula"] .chip.plain {
+  color: var(--cp-link);
+  background: rgba(125, 211, 252, .1);
+  border-color: rgba(125, 211, 252, .32);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3. Filters bar                                                         */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .uc-filters {
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .filter-select,
+html[data-palette="nebula"] .capability-summary,
+html[data-palette="nebula"] .capability-search {
+  background: var(--cp-surface-soft);
+}
+
+html[data-palette="nebula"] .filter-select:focus,
+html[data-palette="nebula"] .capability-summary:focus,
+html[data-palette="nebula"] .capability-search:focus {
+  box-shadow: 0 0 0 3px var(--cp-accent-soft);
+}
+
+html[data-palette="nebula"] .capability-options {
+  background: var(--cp-panel-strong);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow-strong);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 4. Use case cards                                                      */
+/* ---------------------------------------------------------------------- */
+@keyframes nebula-card-pop {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+
+html[data-palette="nebula"] .uc-card {
+  background: var(--cp-panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--nebula-glow);
+  border-left: 3px solid var(--cp-accent);
+  animation: nebula-card-pop .45s cubic-bezier(.2, .9, .3, 1.1) both;
+}
+
+html[data-palette="nebula"] .uc-card:hover {
+  border-color: var(--cp-border-strong);
+  background: rgba(25, 195, 255, .08);
+  box-shadow: var(--nebula-glow-strong);
+  transform: translateY(-3px);
+}
+
+html[data-palette="nebula"] .uc-tier.light { background: var(--cp-success-soft); color: var(--cp-success); }
+html[data-palette="nebula"] .uc-tier.medium { background: var(--cp-warning-soft); color: var(--cp-warning); }
+html[data-palette="nebula"] .uc-tier.heavy { background: var(--cp-accent-soft); color: var(--cp-accent); }
+
+html[data-palette="nebula"] .shape-tag {
+  color: var(--cp-warning);
+  background: var(--cp-warning-soft);
+  border-color: rgba(255, 180, 84, .35);
+}
+
+html[data-palette="nebula"] .uc-cap-tag {
+  background: rgba(125, 211, 252, .1);
+  border-color: rgba(125, 211, 252, .3);
+  color: var(--cp-link);
+}
+
+html[data-palette="nebula"] .uc-value {
+  background: rgba(10, 15, 36, .6);
+  border-left-color: var(--cp-accent);
+}
+
+html[data-palette="nebula"] .uc-metadata-item {
+  background: rgba(10, 15, 36, .5);
+}
+
+html[data-palette="nebula"] .best-for-chip {
+  color: var(--cp-accent);
+  background: var(--cp-accent-soft);
+  border-color: var(--cp-accent);
+}
+
+html[data-palette="nebula"] .empty-results {
+  border-color: var(--cp-border-strong);
+  background: var(--cp-panel);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 5. Detail view                                                         */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .back-btn:hover { color: var(--cp-accent); }
+
+html[data-palette="nebula"] .stepnav button {
+  background: var(--cp-panel);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-palette="nebula"] .stepnav button:hover {
+  border-color: var(--cp-border-strong);
+  color: var(--cp-text);
+}
+
+html[data-palette="nebula"] .stepnav button.active {
+  background: var(--cp-accent);
+  color: var(--cp-accent-fg);
+  border-color: var(--cp-accent);
+  box-shadow: 0 0 18px rgba(25, 195, 255, .35);
+}
+
+html[data-palette="nebula"] .panel {
+  background: var(--cp-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--nebula-glow);
+}
+
+html[data-palette="nebula"] .estimate-item {
+  background: rgba(10, 15, 36, .55);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 6. Copy blocks + code                                                  */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .copybox .copy-toolbar,
+html[data-palette="nebula"] .copybox.mega-prompt .prompt-toolbar {
+  background: rgba(12, 18, 42, .8);
+}
+
+html[data-palette="nebula"] .copybox pre {
+  background: var(--cp-code-bg);
+  border-color: var(--cp-border);
+}
+
+html[data-palette="nebula"] .copybox .copy:hover {
+  border-color: var(--cp-accent);
+  color: var(--cp-accent);
+}
+
+html[data-palette="nebula"] .copybox .copy.done {
+  color: var(--cp-success);
+  border-color: var(--cp-success);
+}
+
+html[data-palette="nebula"] .tree {
+  background: var(--cp-code-bg);
+}
+
+html[data-palette="nebula"] .tree .sc { color: var(--cp-accent); }
+
+html[data-palette="nebula"] .fileitem {
+  background: rgba(10, 15, 36, .55);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 7. Wall (risks) / Solved (flow) panels                                 */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] .wall {
+  border-color: var(--cp-danger);
+  background: var(--cp-danger-soft);
+}
+
+html[data-palette="nebula"] .wall > h3 { color: var(--cp-danger); }
+
+html[data-palette="nebula"] .wallitem {
+  background: rgba(10, 15, 36, .6);
+}
+
+html[data-palette="nebula"] .wallitem .x { color: var(--cp-danger); }
+
+html[data-palette="nebula"] .solved {
+  border-color: var(--cp-success);
+  background: var(--cp-success-soft);
+}
+
+html[data-palette="nebula"] .solved > h3 { color: var(--cp-success); }
+
+html[data-palette="nebula"] .flowstep .sn {
+  background: var(--cp-panel-strong);
+  border-color: var(--cp-success);
+  color: var(--cp-success);
+  box-shadow: 0 0 12px rgba(52, 211, 153, .3);
+}
+
+html[data-palette="nebula"] .conn {
+  color: var(--cp-success);
+  background: var(--cp-success-soft);
+  border-color: rgba(52, 211, 153, .35);
+}
+
+html[data-palette="nebula"] .note {
+  background: rgba(10, 15, 36, .6);
+  border-left-color: var(--cp-accent);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 8. Footer                                                              */
+/* ---------------------------------------------------------------------- */
+html[data-palette="nebula"] footer {
+  border-top-color: var(--cp-border);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 9. Motion safety                                                       */
+/* ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html[data-palette="nebula"] .uc-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

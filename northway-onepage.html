@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NORTHWAY | Activation Journey</title>
+  <script>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const scoutTheme = params.get("scoutTheme");
+      const palette = params.get("palette");
+      const theme =
+        palette === "nebula"
+          ? "dark"
+          : scoutTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+      if (palette) document.documentElement.setAttribute("data-palette", palette);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      line-height: 1.55;
+    }
+    a { color: var(--cp-link); }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 60;
+      background: var(--cp-bg-elevated);
+      border-bottom: 1px solid var(--cp-border);
+      backdrop-filter: blur(10px);
+    }
+    .topbar-inner {
+      max-width: 1180px; margin: 0 auto; padding: 10px 24px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .logo { font-size: 13.5px; font-weight: 700; letter-spacing: .02em; color: var(--cp-text); }
+    .logo .accent { color: var(--cp-accent); }
+    .crumb { font-size: 13px; color: var(--cp-text-soft); }
+    .crumb::before { content: "/"; margin-right: 10px; opacity: .55; }
+    .topbar-spacer { flex: 1; }
+    .icon-btn {
+      background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 8px;
+      color: var(--cp-text-muted); cursor: pointer; font-family: inherit; font-size: 12.5px;
+      padding: 6px 12px; font-weight: 600; transition: all .12s ease;
+    }
+    .icon-btn:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+    .return-btn { text-decoration: none; }
+
+    header.hero {
+      border-bottom: 1px solid var(--cp-border);
+      background:
+        radial-gradient(ellipse 60% 50% at 92% 8%, var(--cp-accent-soft), transparent 65%),
+        var(--cp-bg-elevated);
+      padding: 44px 0 34px;
+    }
+    .hero-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+      color: var(--cp-accent); background: var(--cp-accent-soft);
+      border: 1px solid var(--cp-border-strong); padding: 5px 12px; border-radius: 999px;
+    }
+    h1 { font-size: 36px; line-height: 1.12; margin: 0 0 12px; font-weight: 700; letter-spacing: -.015em; }
+    h1 .accent { color: var(--cp-accent); }
+    .subtitle { font-size: 16.5px; color: var(--cp-text-muted); max-width: 840px; margin: 0; }
+
+    .sec { padding: 36px 0 58px; }
+    .card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 { margin: 0 0 9px; font-size: 20px; letter-spacing: -.01em; }
+    .card p { margin: 0; color: var(--cp-text-muted); }
+
+    .meta {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .meta-item {
+      min-width: 0; padding: 10px;
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 10px;
+    }
+    .meta-item .k {
+      display: block; margin-bottom: 4px; color: var(--cp-text-soft);
+      font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .meta-item .v { display: block; color: var(--cp-text); font-size: 13px; font-weight: 600; }
+
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 2px;
+    }
+    .journey-card {
+      border: 1px solid var(--cp-border);
+      border-radius: 12px;
+      background: var(--cp-surface-soft);
+      padding: 14px;
+      transition: transform .14s ease, border-color .14s ease;
+    }
+    .journey-card:hover { border-color: var(--cp-accent); transform: translateY(-2px); }
+    .journey-num {
+      width: 28px; height: 28px; display: grid; place-items: center;
+      border-radius: 999px; border: 1px solid var(--cp-border-strong);
+      color: var(--cp-accent); font-size: 12px; font-weight: 700;
+      background: var(--cp-accent-soft); margin-bottom: 8px;
+    }
+    .journey-card h3 { margin: 0 0 6px; font-size: 15.5px; }
+    .journey-card p { margin: 0; font-size: 12.8px; color: var(--cp-text-muted); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    ul.clean { margin: 0; padding-left: 20px; }
+    ul.clean li { color: var(--cp-text-muted); margin: 6px 0; font-size: 14px; }
+    .note {
+      margin-top: 12px;
+      border-top: 1px dashed var(--cp-border);
+      padding-top: 12px;
+      font-size: 12.5px;
+      color: var(--cp-text-soft);
+    }
+
+    @media (max-width: 980px) {
+      .meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .journey { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .journey { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+      .subtitle { font-size: 15px; }
+      .meta { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="styles/northway-onepage-modern.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">NORTHWAY <span class="accent">Activation Journey</span></div>
+      <div class="crumb">Company & use case brief</div>
+      <span class="topbar-spacer"></span>
+      <a class="icon-btn return-btn" id="returnBtn" href="#" hidden>Back to presentation</a>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <span class="chip">One-page brief</span>
+        <span class="chip">Session storyline</span>
+      </div>
+      <h1>NORTHWAY: <span class="accent">Activation Planning Partner</span></h1>
+      <p class="subtitle">
+        NORTHWAY is a fictional contemporary fashion retailer used for workshop learning.
+        This page introduces the company context and one coherent use case that progresses from Prompt to Skill, Agent Builder, and Copilot Studio.
+      </p>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="wrap">
+      <article class="card">
+        <h2>Company context</h2>
+        <p>NORTHWAY operates across Northern Europe with priority categories in denim, knitwear, outerwear, and essentials. Teams want faster, better activation decisions while protecting full-price perception.</p>
+        <div class="meta">
+          <div class="meta-item"><span class="k">Markets</span><span class="v">SE, DE, NL, DK</span></div>
+          <div class="meta-item"><span class="k">Audience</span><span class="v">Urban fashion customers (20–34)</span></div>
+          <div class="meta-item"><span class="k">Teams</span><span class="v">Marketing, CRM, E-commerce, Merch, Commercial</span></div>
+          <div class="meta-item"><span class="k">Current pain</span><span class="v">Manual planning across fragmented inputs</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Use case in one line</h2>
+        <p>Create a monthly activation recommendation by combining sales, campaign performance, budget mix, competitor moves, and customer signals — then turn it into decisions with owners.</p>
+      </article>
+
+      <article class="card">
+        <h2>Journey across capabilities</h2>
+        <div class="journey">
+          <div class="journey-card">
+            <div class="journey-num">1</div>
+            <h3>Prompt</h3>
+            <p>One strong answer from one person, one moment in time.</p>
+          </div>
+          <div class="journey-card">
+            <div class="journey-num">2</div>
+            <h3>Skill</h3>
+            <p>Repeatable method with references, templates, and output structure.</p>
+          </div>
+          <div class="journey-card">
+            <div class="journey-num">3</div>
+            <h3>Agent + 2 skills</h3>
+            <p>Routes between full planning and competitor-focused mini analysis.</p>
+          </div>
+          <div class="journey-card">
+            <div class="journey-num">4</div>
+            <h3>Copilot Studio</h3>
+            <p>Adds triggers, approvals, write-back, and follow-up tasks.</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="grid-2">
+        <article class="card">
+          <h2>Business value shown to audience</h2>
+          <ul class="clean">
+            <li>Less manual reporting and planning overhead</li>
+            <li>More consistent cross-market activation decisions</li>
+            <li>Faster path from insight to action</li>
+            <li>Clear owner accountability and decision trail</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Artifacts prepared</h2>
+          <ul class="clean">
+            <li>One mega prompt for baseline output</li>
+            <li>Primary skill: activation-planning-kit</li>
+            <li>Mini skill: competitor-signal-brief</li>
+            <li>Agent Builder package with skill-routing guidance</li>
+            <li>Copilot Studio flow docs (trigger, approvals, logging, tasks)</li>
+          </ul>
+        </article>
+      </div>
+
+      <article class="card">
+        <h2>Session framing</h2>
+        <p>“Prompting is a start. Skills make quality repeatable. Agents improve team reuse. Copilot Studio operationalizes the workflow.”</p>
+        <div class="note">
+          Style inspiration aligned to the shared Agent Journey and Agent Use Case Library pages (layout rhythm, panel system, chips, and journey cards), adapted to a single-page company brief.
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <script>
+    var returnBtn = document.getElementById("returnBtn");
+    var returnUrl = new URLSearchParams(window.location.search).get("return");
+    if (returnUrl) {
+      try {
+        var parsedReturnUrl = new URL(returnUrl, window.location.href);
+        if (parsedReturnUrl.protocol === "http:" || parsedReturnUrl.protocol === "https:" || parsedReturnUrl.protocol === "file:") {
+          returnBtn.href = parsedReturnUrl.href;
+          returnBtn.hidden = false;
+        }
+      } catch (err) {
+        returnBtn.hidden = true;
+      }
+    }
+  </script>
+</body>
+</html>

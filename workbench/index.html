@@ -6,10 +6,17 @@
   <title>Industrial AI Workbench</title>
   <script>
     (() => {
-      const param = new URLSearchParams(window.location.search).get("scoutTheme");
-      const theme =
-        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const params = new URLSearchParams(window.location.search);
+      const scoutTheme = params.get("scoutTheme");
+      // "palette=nebula" is only ever sent by the Nebula-themed deck preview
+      // (agent-journey.html). It is additive and inert otherwise: no param
+      // means no behavior change from the original page.
+      const palette = params.get("palette");
+      const theme = palette === "nebula"
+        ? "dark"
+        : scoutTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.setAttribute("data-theme", theme);
+      if (palette) document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
   <style>
@@ -214,6 +221,7 @@
       .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
     }
   </style>
+  <link rel="stylesheet" href="../styles/workbench-modern.css">
 </head>
 <body>
   <div class="shell">

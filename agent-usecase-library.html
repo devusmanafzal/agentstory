@@ -6,10 +6,17 @@
 <title>Microsoft 365 Copilot AGENT Use Case Library</title>
 <script>
   (() => {
-    const param = new URLSearchParams(window.location.search).get("scoutTheme");
-    const theme =
-      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const params = new URLSearchParams(window.location.search);
+    const scoutTheme = params.get("scoutTheme");
+    // "palette=nebula" is only ever sent by the Nebula-themed deck preview
+    // (agent-journey.html) via its "Open Agent Use Case Library" shortcut.
+    // It is additive and inert otherwise: no param means no behavior change.
+    const palette = params.get("palette");
+    const theme = palette === "nebula"
+      ? "dark"
+      : scoutTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     document.documentElement.setAttribute("data-theme", theme);
+    if (palette) document.documentElement.setAttribute("data-palette", palette);
   })();
 </script>
 <style>
@@ -320,6 +327,7 @@ footer p { font-size: 12.8px; color: var(--cp-text-soft); margin: 0 0 6px; max-w
   .detail { display: block !important; }
 }
 </style>
+<link rel="stylesheet" href="styles/agent-usecase-library-modern.css">
 </head>
 <body>
 
@@ -408,7 +416,7 @@ const filters = { industry: "all", persona: "all", tier: "all", workPattern: "al
 let CATALOG_INDUSTRY = "fashion-retail";
 // Master switches. Individual use cases can override these with their visibility field.
 const LIBRARY_CONFIG = {
-  showEstimatedCost: true,
+  showEstimatedCost: false, // flip to true to bring cost details back
   showBestFor: true
 };
 const BEST_FOR_OPTIONS = [
